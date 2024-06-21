@@ -52,7 +52,7 @@ public class client {
         }
     }
 
-    public static void get_file() throws IOException {
+    public static void get_file(String videoName) throws IOException {
         /*try {
 
             ServerSocket serverSocket = new ServerSocket(4042);
@@ -87,46 +87,24 @@ public class client {
             Socket socket = new Socket("localhost",4042);
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
-            String meesage = "getfile";
-            out.println(meesage);
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String videoName = in.readLine();
-
-            // Get the input stream to receive data from the server
-            InputStream inputStream = socket.getInputStream();
-
-
-            // Save video data to a local file
-            FileOutputStream fileOutputStream = new FileOutputStream("D:\\youtube\\src\\main\\resources\\client_videos\\" +videoName);
-
-            byte[] buffer = new byte[8192]; // Adjust buffer size as needed
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                fileOutputStream.write(buffer, 0, bytesRead);
-            }
-
-            // Clean up
-            fileOutputStream.close();
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void requestVideo( String videoName) {
-        try {
-            Socket serverSocket = new Socket("localhost",4042);
-            PrintWriter out = new PrintWriter(serverSocket.getOutputStream(), true);
-
             String meesage = "sendfile";
             out.println(meesage);
 
+            //BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            //String videoName1 = in.readLine();
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            String msg = in.readUTF();
+            System.out.println(msg);
+
+
+            // System.out.println(videoName1);
             // Get the input stream to receive data from the server
-            InputStream inputStream = serverSocket.getInputStream();
+            InputStream inputStream = socket.getInputStream();
+            System.out.println("D:\\final_project\\src\\main\\resources\\client_videos" +msg+".mkv");
+
 
             // Save video data to a local file
-            FileOutputStream fileOutputStream = new FileOutputStream("D:\\youtube\\src\\main\\resources\\client_videos\\" + videoName);
+            FileOutputStream fileOutputStream = new FileOutputStream("D:\\final_project\\src\\main\\resources\\client_videos" +msg+".mkv");
 
             byte[] buffer = new byte[8192]; // Adjust buffer size as needed
             int bytesRead;
@@ -142,11 +120,13 @@ public class client {
         }
     }
 
-    public static void main(String[] args){
+
+
+    public static void main(String[] args) throws IOException {
         //int num = 1;
         //send_video("C:\\Users\\Sepanta\\Downloads\\@movieo_bot.Black.Bullet.E02.720p.BluRay.@movieo_bot.mkv",num +1);
-        //get_file();
-        requestVideo("video.mkv");
+        get_file("set");
+        //requestVideo("video.mkv");
 
     }
 
