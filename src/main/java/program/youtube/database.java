@@ -36,6 +36,8 @@ public class database {
     }
 
 
+
+
     public static void add_watch_later(int video_id,int user_id,String video_title){
         // Convert ArrayList to PostgreSQL array literal
 
@@ -527,7 +529,41 @@ public class database {
     }
 
 
+    public static void making_comment(int video_id,String user_name,String comment) {
 
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Connect to the database
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Prepare the SQL statement
+            String sql = "INSERT INTO comments (user_name,video_id,comment) VALUES (?,?,?)";
+            pstmt = conn.prepareStatement(sql);
+
+            // Set the array to the prepared statement
+            pstmt.setString(1, user_name);
+            pstmt.setInt(2, video_id);
+            pstmt.setString(3, comment);
+
+
+            // Execute the insertion
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    public static void make ()
 
 
 
@@ -551,6 +587,7 @@ public class database {
         //increase_view_of_video(3);
         //System.out.println(get_bio(1));
         //int n =get_user_id("sepi");
+        making_comment(1,"sepi","that was cool!");
 
         }
 
