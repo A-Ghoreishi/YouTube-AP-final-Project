@@ -92,7 +92,9 @@ public class client {
     }
 
 
-// remember to add a method that will get video id and and return the path
+
+
+
     public static void main(String[] args) throws IOException {
         //int num = 1;
         //send_video("C:\\Users\\Sepanta\\Downloads\\@movieo_bot.Black.Bullet.E02.720p.BluRay.@movieo_bot.mkv",num +1);

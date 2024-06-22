@@ -564,8 +564,38 @@ public class database {
     }
 //i will done this later
 // to get a comment it needs to get user name the comment and the likes i need three method that return arraylist
-    public static void increase_like_for_comment (){
 
+    //how to handle a double like
+    public static void increase_like_for_comment (int comment_id){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Connect to the database
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Prepare the SQL statement
+            String sql = "UPDATE comments\n" +
+                    "SET likes = likes + 1\n" +
+                    "WHERE comment_id = ?;\n";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1,comment_id);
+
+            // Set the array to the prepared statement
+
+
+            // Execute the insertion
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
@@ -632,8 +662,6 @@ public class database {
 
             pstmt.setString(1,path);
             pstmt.setInt(2,user_id);
-            // Set the array to the prepared statement
-
 
 
             // Execute the insertion
@@ -681,6 +709,7 @@ public class database {
         //add_profile_pic_path("D:\\final_project\\src\\main\\resources\\client_videos",2);
         //String path =get_profile_pic_path(1);
         //System.out.println(path);
+        increase_like_for_comment(1);
 
         }
 
