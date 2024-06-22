@@ -501,7 +501,7 @@ public class database {
     }
 
 
-
+// this will send all the users video
     public static ArrayList<Integer> video_of_user(int user_id){
 
         String query = "SELECT video_id FROM videos WHERE user_id = ?";
@@ -562,8 +562,41 @@ public class database {
 
         }
     }
+//i will done this later
+// to get a comment it needs to get user name the comment and the likes i need three method that return arraylist
+    public static void increase_like_for_comment (){
 
-    public static void make ()
+
+    }
+
+    public static String get_video_path(int video_id){
+
+        String query = "SELECT path FROM videos WHERE video_id = ?";
+
+
+
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+
+            pstmt.setInt(1, video_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                String path_of_video = rs.getString("video_id");
+                return path_of_video;
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    //public static void
+
+    
 
 
 
