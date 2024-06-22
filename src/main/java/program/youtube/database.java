@@ -594,7 +594,64 @@ public class database {
         return null;
     }
 
-    //public static void
+    public static String get_profile_pic_path(int user_id){
+        String query = "SELECT profile_pic_path FROM user_info WHERE user_id = ?";
+
+
+
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+
+            pstmt.setInt(1, user_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                String path_of_profile_pic = rs.getString("profile_pic_path");
+                return path_of_profile_pic;
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    public static void add_profile_pic_path(String path,int user_id){
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Connect to the database
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Prepare the SQL statement
+            String sql = "UPDATE user_info SET profile_pic_path = ? WHERE user_id = ?;";
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1,path);
+            pstmt.setInt(2,user_id);
+            // Set the array to the prepared statement
+
+
+
+            // Execute the insertion
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
 
     
 
@@ -620,7 +677,10 @@ public class database {
         //increase_view_of_video(3);
         //System.out.println(get_bio(1));
         //int n =get_user_id("sepi");
-        making_comment(1,"sepi","that was cool!");
+        //making_comment(1,"sepi","that was cool!");
+        //add_profile_pic_path("D:\\final_project\\src\\main\\resources\\client_videos",2);
+        //String path =get_profile_pic_path(1);
+        //System.out.println(path);
 
         }
 
