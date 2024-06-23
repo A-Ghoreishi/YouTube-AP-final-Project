@@ -62,6 +62,29 @@ class clientHandler implements Runnable {
         }
     }
 
+    public static void server_send_pfp(Socket clientSocket) throws IOException {
+        FileInputStream videoFile = new FileInputStream("D:\\final_project\\src\\main\\resources\\profile_pictures\\1.jpg");
+
+        while (true) {
+            System.out.println("Client connected: " + clientSocket.getInetAddress());
+
+            DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
+            out.writeUTF("msg");
+
+            OutputStream outputStream = clientSocket.getOutputStream();
+
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+
+            while ((bytesRead = videoFile.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+
+            videoFile.close();
+            clientSocket.close();
+        }
+    }
+
 
 
     public static void server_video_sender(Socket clientSocket) throws IOException {
@@ -124,6 +147,11 @@ class clientHandler implements Runnable {
                         System.out.println("pfp");
                         String name = in.readLine();
                         get_pfp(clientSocket, name);
+                    }
+                    case "send_pfp" ->{
+                        System.out.println("send_pfp");
+                        String name = in.readLine();
+                        server_send_pfp(clientSocket);
                     }
                 }
 

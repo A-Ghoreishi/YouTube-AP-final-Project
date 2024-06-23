@@ -161,7 +161,45 @@ public class client {
         }
     }
 
+    public static void get_profile_picture(String name){
+        try {
+            Socket socket = new Socket("localhost",4042);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
+            String meesage = "send_pfp";
+            out.println(meesage);
+            out.println(name);
+
+            //BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            //String videoName1 = in.readLine();
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            String msg = in.readUTF();
+            //replace it with the real name
+            System.out.println(msg);
+
+
+            // System.out.println(videoName1);
+            // Get the input stream to receive data from the server
+            InputStream inputStream = socket.getInputStream();
+            //System.out.println("D:\\final_project\\src\\main\\resources\\client_videos" +msg+".mkv");
+
+
+            // Save video data to a local file
+            FileOutputStream fileOutputStream = new FileOutputStream("D:\\final_project\\src\\main\\resources\\client_profile_picture\\" +msg+".jpg");
+
+            byte[] buffer = new byte[8192]; // Adjust buffer size as needed
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                fileOutputStream.write(buffer, 0, bytesRead);
+            }
+
+            // Clean up
+            fileOutputStream.close();
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
@@ -172,9 +210,9 @@ public class client {
         //send_video("C:\\Users\\Sepanta\\Downloads\\@movieo_bot.Black.Bullet.E02.720p.BluRay.@movieo_bot.mkv",num +1);
         //get_video("set");
         //sign_in("John Doe","johndoe","Doe","securepassword","A passionate developer",1990,"January",15);
-        send_profile_picture("C:\\Users\\Sepanta\\Downloads\\won.jpg",1);
+       //send_profile_picture("C:\\Users\\Sepanta\\Downloads\\won.jpg",1);
         //requestVideo("video.mkv");
-
+        get_profile_picture("got");
     }
 
 
