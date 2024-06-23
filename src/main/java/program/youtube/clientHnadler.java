@@ -158,7 +158,7 @@ class clientHandler implements Runnable {
             String birthMonth = json.getString("birth_month");
             int birthDay = json.getInt("birth_day");
             database database = new database();
-            inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
+            //inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
 
             // Insert data into the database (use your actual method here)
             // Example (assuming you have a method called insertIntoDatabase):

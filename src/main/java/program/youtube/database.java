@@ -12,7 +12,7 @@ public class database {
     static String user = "postgres";
     static String password = "1234";
 
-    public static void inserting_user_info(String name,String user_name,String family_name,String user_password,String bio,int birth_year,String birth_month,int birth_day) {
+    public static void inserting_user_info(String name,String user_name,String family_name,String user_password,String bio,int birth_year,String birth_month,int birth_day,String email) {
 
 
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
@@ -27,6 +27,7 @@ public class database {
                 preparedStatement.setInt(7,birth_day);
                 preparedStatement.setString(8,bio);
 
+
                 // Set the array to the prepared statement
                 preparedStatement.executeUpdate();
             }
@@ -34,6 +35,142 @@ public class database {
             e.printStackTrace();
         }
     }
+    public static void inserting_birth_month(String birth_month,String user_name){
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String sql = "UPDATE user_info SET birth_month = ? WHERE user_name = ?;";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1,birth_month);
+                preparedStatement.setString(2,user_name);
+
+                // Set the array to the prepared statement
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void inserting_birth_year(int birth_year,String user_name){
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String sql = "UPDATE user_info SET birth_year = ? WHERE user_name = ?;";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1,birth_year);
+                preparedStatement.setString(2,user_name);
+
+                // Set the array to the prepared statement
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void inserting_birthday(int birthday,String user_name){
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String sql = "UPDATE user_info SET birth_day = ? WHERE user_name = ?;";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1,birthday);
+                preparedStatement.setString(2,user_name);
+
+                // Set the array to the prepared statement
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void inserting_bio(String bio,String user_name){
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String sql = "UPDATE user_info SET bio = ? WHERE user_name = ?;";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1,bio);
+                preparedStatement.setString(2,user_name);
+
+                // Set the array to the prepared statement
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void inserting_name(String name,String user_name){
+
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String sql = "UPDATE user_info SET name = ? WHERE user_name = ?;";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1,name);
+                preparedStatement.setString(2,user_name);
+
+                // Set the array to the prepared statement
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    public static void inserting_user_name(String user_name,String name){
+
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String sql = "insert into user_info (user_name) values(?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1,user_name);
+
+                // Set the array to the prepared statement
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public static void inserting_family_name(String family_name,String user_name){
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String sql = "UPDATE user_info SET family_name = ? WHERE user_name = ?;";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1,family_name);
+                preparedStatement.setString(2,user_name);
+
+                // Set the array to the prepared statement
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void inserting_password(String user_name,String password){
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String sql = "UPDATE user_info SET password = ? WHERE user_name = ?;";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1,password);
+                preparedStatement.setString(2,user_name);
+
+                // Set the array to the prepared statement
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void inserting_email(String user_name,String email){
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String sql = "UPDATE user_info SET email = ? WHERE user_name = ?;";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1,email);
+                preparedStatement.setString(2,user_name);
+
+                // Set the array to the prepared statement
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
 
 
@@ -131,7 +268,6 @@ public class database {
         }
     }
 
-    //get this to chatgpt
     //need to make a method to get the play list id
     public static ArrayList<Integer> get_playlist(int play_list_id){
         String query = "SELECT video_id FROM user_info WHERE user_name = ?";
@@ -157,11 +293,11 @@ public class database {
 
 
 
+// i changed this method from array of string to int and sending video id
+    public static ArrayList<Integer> get_liked_list(int user_id) {
+        String query = "SELECT video_id FROM liked WHERE user_id = ?";
 
-    public static ArrayList<String> get_liked_list(int user_id) {
-        String query = "SELECT video_title FROM liked WHERE user_id = ?";
-
-        ArrayList<String> liked = new ArrayList<>();
+        ArrayList<Integer> liked = new ArrayList<>();
 
         try (Connection con = DriverManager.getConnection(url, user, password)) {
             PreparedStatement stmt = con.prepareStatement(query);
@@ -170,8 +306,10 @@ public class database {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                String video_title = rs.getString("video_title");
-                liked.add(video_title);
+                int video_id = rs.getInt("video_id");
+                //String video_title = rs.getString("video_title");
+                //liked.add(video_title);
+                liked.add(video_id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
