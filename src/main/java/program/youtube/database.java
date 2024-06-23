@@ -468,6 +468,49 @@ public class database {
 
     }
 
+
+
+
+
+
+    public static void decrease_like_for_video (int video_id){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Connect to the database
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Prepare the SQL statement
+            String sql = "UPDATE videos\n" +
+                    "SET likes = likes - 1\n" +
+                    "WHERE video_id = ?;\n";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1,video_id);
+
+            // Set the array to the prepared statement
+
+
+            // Execute the insertion
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+
+
+
+
     public static void increase_view_of_video(int video_id){
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -562,10 +605,11 @@ public class database {
 
         }
     }
-//i will done this later
+
 // to get a comment it needs to get user name the comment and the likes i need three method that return arraylist
 
     //how to handle a double like
+    // ishould add to method for deacrising the like of video and comment
     public static void increase_like_for_comment (int comment_id){
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -598,6 +642,48 @@ public class database {
         }
 
     }
+
+
+
+    public static void decrease_like_for_comment (int comment_id){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Connect to the database
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Prepare the SQL statement
+            String sql = "UPDATE comments\n" +
+                    "SET likes = likes - 1\n" +
+                    "WHERE comment_id = ?;\n";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1,comment_id);
+
+            // Set the array to the prepared statement
+
+
+            // Execute the insertion
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+
+
+
+
+
 
     public static String get_video_path(int video_id){
 
