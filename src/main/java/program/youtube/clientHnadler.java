@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import static program.youtube.database.inserting_user_info;
+import static program.youtube.database.login;
 
 
 class clientHandler implements Runnable {
@@ -149,9 +150,15 @@ class clientHandler implements Runnable {
                         get_pfp(clientSocket, name);
                     }
                     case "send_pfp" ->{
+
                         System.out.println("send_pfp");
+                        // i dont remmeber what is the usee of this
                         String name = in.readLine();
                         server_send_pfp(clientSocket);
+                    }
+                    case "log_in" ->{
+                        System.out.println("login");
+                        server_log_in(clientSocket);
                     }
                 }
 
@@ -198,6 +205,33 @@ class clientHandler implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void server_log_in(Socket clientSocket){
+        try {
+            // Read data from the client
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            // Parse the JSON data
+            JSONObject json = new JSONObject(clientData);
+            String userName = json.getString("user_name");
+            String password = json.getString("user_password");
+            database database = new database();
+            //inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
+            database.login(userName,password);
+            // Insert data into the database (use your actual method here)
+            // Example (assuming you have a method called insertIntoDatabase):
+            // insertIntoDatabase(name, userName, familyName, password, bio, birthYear, birthMonth, birthDay);
+
+            // Send a response back to the client
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            writer.println("Server received your sign-in data: " + clientData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

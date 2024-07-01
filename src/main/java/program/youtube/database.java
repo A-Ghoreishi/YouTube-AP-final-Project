@@ -12,6 +12,8 @@ public class database {
     static String user = "postgres";
     static String password = "1234";
 
+
+
     public static void inserting_user_info(String name,String user_name,String family_name,String user_password,String bio,int birth_year,String birth_month,int birth_day,String email) {
 
 
@@ -815,11 +817,6 @@ public class database {
         }
 
     }
-
-
-
-
-
 
 
 

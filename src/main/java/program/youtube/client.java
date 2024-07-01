@@ -201,6 +201,36 @@ public class client {
         }
     }
 
+    public static void login(String user_name,String user_password){
+        try {
+            Socket socket = new Socket("localhost", 4042);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String meesage = "log_in";
+            out.println(meesage);
+
+            // Create a JSON object with the provided data
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("user_name", user_name);
+            jsonParams.put("user_password", user_password);
+
+            // Write data to the server
+            PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+            writer.println(jsonParams.toString());
+            System.out.println("sent");
+
+            // Read the server's response
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String serverResponse = reader.readLine();
+            System.out.println("Server response: " + serverResponse);
+
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
 
 
@@ -212,7 +242,8 @@ public class client {
         //sign_in("John Doe","johndoe","Doe","securepassword","A passionate developer",1990,"January",15);
        //send_profile_picture("C:\\Users\\Sepanta\\Downloads\\won.jpg",1);
         //requestVideo("video.mkv");
-        get_profile_picture("got");
+        //get_profile_picture("got");
+        //login("sepi","1234");
     }
 
 
