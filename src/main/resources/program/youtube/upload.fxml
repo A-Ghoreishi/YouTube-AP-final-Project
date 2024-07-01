@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="1306.0" style="-fx-background-color: transplant;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.youtube.Upload">
+   <top>
+      <HBox alignment="CENTER_LEFT" prefHeight="90.0" prefWidth="1306.0" spacing="15.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="53.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/three%20line%20menu.png" />
+               </image>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </ImageView>
+            <ImageView fitHeight="45.0" fitWidth="143.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/studio.png" />
+               </image>
+            </ImageView>
+            <Pane prefHeight="200.0" prefWidth="200.0" />
+            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="400.0" styleClass="search-bar" stylesheets="@style.css">
+               <children>
+                  <TextField prefHeight="38.0" prefWidth="428.0" promptText="search across your channel" styleClass="transplant" stylesheets="@style.css" />
+                  <ImageView fitHeight="31.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/search.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="10.0" />
+               </HBox.margin>
+            </HBox>
+            <Pane prefHeight="57.0" prefWidth="148.0" />
+            <ImageView fitHeight="57.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/help.png" />
+               </image>
+            </ImageView>
+            <HBox alignment="CENTER_LEFT" minHeight="30.0" prefHeight="30.0" prefWidth="87.0" styleClass="search-bar" stylesheets="@style.css">
+               <children>
+                  <ImageView fitHeight="36.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/yourvideo.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="CREATE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="10.0" />
+               </HBox.margin>
+            </HBox>
+            <ImageView fitHeight="52.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/avatar1.jpg" />
+               </image>
+            </ImageView>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+         </padding>
+      </HBox>
+   </top>
+   <left>
+      <VBox prefHeight="747.0" prefWidth="188.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="117.0" fitWidth="138.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/avatar1.jpg" />
+               </image>
+               <VBox.margin>
+                  <Insets left="30.0" />
+               </VBox.margin>
+            </ImageView>
+            <Label alignment="CENTER" prefHeight="22.0" prefWidth="157.0" text="Your Channel" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets left="10.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="173.0" text="adrix928" />
+            <ScrollPane style="-fx-background-color: transplant;">
+               <content>
+                  <VBox prefHeight="600.0" prefWidth="174.0" style="-fx-background-color: transplant;" styleClass="white-color" stylesheets="@style.css">
+                     <children>
+                        <VBox prefHeight="570.0" prefWidth="174.0" styleClass="white-color" stylesheets="@style.css">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="48.0" prefWidth="174.0" spacing="10.0">
+                                 <children>
+                                    <ImageView fitHeight="45.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/dashbaord.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label prefHeight="45.0" prefWidth="125.0" styleClass="white-color" text="Dashboard" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" prefHeight="52.0" prefWidth="174.0" spacing="10.0" stylesheets="@style.css">
+                                 <children>
+                                    <ImageView fitHeight="36.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/your%20content.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <Label prefHeight="26.0" prefWidth="125.0" text="Your content" textFill="RED">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <styleClass>
+                                    <String fx:value="selected" />
+                                    <String fx:value="over" />
+                                 </styleClass>
+                              </HBox>
+                              <HBox prefHeight="56.0" prefWidth="174.0" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="10.0" />
+         </padding>
+      </VBox>
+   </left>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="132.0" prefWidth="1118.0">
+               <children>
+                  <Label text="Channel content">
+                     <font>
+                        <Font name="System Bold" size="44.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="100.0" prefWidth="1127.0">
+                     <children>
+                        <Button mnemonicParsing="false" text="Videos" />
+                        <Pane prefHeight="58.0" prefWidth="48.0" />
+                        <Button mnemonicParsing="false" text="Button" />
+                        <Pane prefHeight="100.0" prefWidth="60.0" />
+                        <Button mnemonicParsing="false" text="Button" />
+                        <Pane prefHeight="100.0" prefWidth="57.0" />
+                        <Button mnemonicParsing="false" text="Button" />
+                        <Pane prefHeight="95.0" prefWidth="69.0" />
+                        <Button mnemonicParsing="false" text="Button" />
+                        <Pane prefHeight="71.0" prefWidth="86.0" />
+                        <Button mnemonicParsing="false" text="Button" />
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </VBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" />
+            <HBox prefHeight="100.0" prefWidth="200.0" />
+            <HBox alignment="CENTER" prefHeight="416.0" prefWidth="1118.0" styleClass="white-color" stylesheets="@style.css">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="76.0" prefWidth="189.0" style="-fx-background-color: blue;" text="Upload Videos" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

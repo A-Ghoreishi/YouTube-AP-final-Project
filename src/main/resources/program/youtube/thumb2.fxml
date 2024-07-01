@@ -8,18 +8,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="301.0" prefWidth="310.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.youtube.ThumbnailController">
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="310.0" type="VBox" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.youtube.Thumb2">
    <children>
       <ImageView fx:id="thumbnail" fitHeight="310.0" fitWidth="310.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/thumb1.jpg" />
+            <Image url="@../images/thumb2.jpg" />
          </image>
       </ImageView>
       <HBox alignment="CENTER" prefHeight="87.0" prefWidth="310.0" spacing="20.0">
          <children>
             <ImageView fx:id="profile" fitHeight="50.0" fitWidth="50.0" onDragDetected="#profile" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/pro1.png" />
+                  <Image url="@../images/pro2.png" />
                </image>
             </ImageView>
             <VBox prefHeight="68.0" prefWidth="257.0">
@@ -29,7 +30,7 @@
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="channelName" prefHeight="41.0" prefWidth="220.0" text="jessicaV">
+                  <Label fx:id="channelName" prefHeight="41.0" prefWidth="220.0" text="brandon728">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -56,4 +57,4 @@
          </padding>
       </HBox>
    </children>
-</VBox>
+</fx:root>

@@ -8,4 +8,6 @@ module program.youtube {
 
     opens program.youtube to javafx.fxml;
     exports program.youtube;
+//    exports model;
+//    opens model to javafx.fxml;
 }

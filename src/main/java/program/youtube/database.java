@@ -1,31 +1,69 @@
 package program.youtube;
 
 import java.sql.*;
-import java.sql.Array;
-import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.List;
 
 public class database {
 
-    static String url = "jdbc:postgresql://localhost:5432/postgres";
+    private Connection connection = null;
+    private Statement statement = null;
+    private boolean isLoaded = false;
+
+    static String url = "jdbc:postgresql://localhost:5432/youtube";
     static String user = "postgres";
-    static String password = "1234";
+    static String password = "9330670020";
 
-    public static void inserting_user_info(String name,String user_name,String family_name,String user_password,String bio,int birth_year,String birth_month,int birth_day) {
+    public database(String db_path) {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        try {
+            connection = DriverManager.getConnection(url, user, password);
+            statement = connection.createStatement();
+            isLoaded = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public boolean isAuthenticated(String username, String password) {
+        return isUserAvailable(username, password,true);
+    }
+
+    public boolean isUserAvailable(String username, String password,boolean auth) {
+        if (!isLoaded) {
+            return false;
+        }
+
+        String query = "SELECT * FROM user_info WHERE user_name = ? AND password = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, username);
+            statement.setString(2, password);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void inserting_birth_date_and_gender(int year,String birth_month,int day,String user_name,String gender){
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String sql = "INSERT INTO user_info (user_name,name,family_name,password,birth_year,birth_month,birth_day,bio) VALUES (?, ?,?,?,?,?,?,?)";
+            String sql = "UPDATE user_info\n" +
+                    "SET birth_year = ?,\n" +
+                    "    birth_month = ?,\n" +
+                    "    birth_day = ?,\n" +
+                    "    gender = ? \n"+
+                    "WHERE user_name = ?;\n";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setString(1, user_name);
-                preparedStatement.setString(2,name);
-                preparedStatement.setString(3,family_name);
-                preparedStatement.setString(4,user_password);
-                preparedStatement.setInt(5,birth_year);
-                preparedStatement.setString(6,birth_month);
-                preparedStatement.setInt(7,birth_day);
-                preparedStatement.setString(8,bio);
+                preparedStatement.setInt(1,year);
+                preparedStatement.setString(2,birth_month);
+                preparedStatement.setInt(3,day);
+                preparedStatement.setString(4,gender);
+                preparedStatement.setString(5,user_name);
 
                 // Set the array to the prepared statement
                 preparedStatement.executeUpdate();
@@ -36,7 +74,52 @@ public class database {
     }
 
 
-    public static void add_watch_later(int video_id,int user_id,String video_title){
+
+    public static boolean inserting_name_username_lname(String fname, String lname, String user_name){
+
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String sql = "INSERT INTO user_info (name,family_name,user_name) values (?,?,?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1,fname);
+                preparedStatement.setString(2,lname);
+                preparedStatement.setString(3,user_name);
+
+                // Set the array to the prepared statement
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return false;
+    }
+
+
+    public static void inserting_password_email_bio(String user_name,String user_password,String email,String bio){
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            String sql = "UPDATE user_info\n" +
+                    "SET password = ?,\n" +
+                    "    email = ?,\n" +
+                    "    bio = ?\n" +
+                    "WHERE user_name=?;\n";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1,user_password);
+                preparedStatement.setString(2,email);
+                preparedStatement.setString(3,bio);
+                preparedStatement.setString(4,user_name);
+
+                // Set the array to the prepared statement
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // i should if the user already have added this video
+    public static void add_watch_later(String user_name,int video_id,String video_title){
         // Convert ArrayList to PostgreSQL array literal
 
         Connection conn = null;
@@ -47,11 +130,11 @@ public class database {
             conn = DriverManager.getConnection(url, user, password);
 
             // Prepare the SQL statement
-            String sql = "INSERT INTO watchlater (user_id,video_id,video_title) VALUES (?,?,?)";
+            String sql = "INSERT INTO watchlater (user_name,video_id,video_title) VALUES (?,?,?)";
             pstmt = conn.prepareStatement(sql);
 
             // Set the array to the prepared statement
-            pstmt.setInt(1,user_id);
+            pstmt.setString(1,user_name);
             pstmt.setInt(2,video_id);
             pstmt.setString(3,video_title);
 
@@ -71,7 +154,7 @@ public class database {
     }
 
 
-//needs to get compeleted
+    //needs to get compeleted
     public static ArrayList<String> get_watch_later(int user_id){
         String query = "SELECT watchlater FROM Userinfo WHERE user_id = ?";
 
@@ -129,7 +212,6 @@ public class database {
         }
     }
 
-    //get this to chatgpt
     //need to make a method to get the play list id
     public static ArrayList<Integer> get_playlist(int play_list_id){
         String query = "SELECT video_id FROM user_info WHERE user_name = ?";
@@ -155,11 +237,11 @@ public class database {
 
 
 
+    // i changed this method from array of string to int and sending video id
+    public static ArrayList<Integer> get_liked_list(int user_id) {
+        String query = "SELECT video_id FROM liked WHERE user_id = ?";
 
-    public static ArrayList<String> get_liked_list(int user_id) {
-        String query = "SELECT video_title FROM liked WHERE user_id = ?";
-
-        ArrayList<String> liked = new ArrayList<>();
+        ArrayList<Integer> liked = new ArrayList<>();
 
         try (Connection con = DriverManager.getConnection(url, user, password)) {
             PreparedStatement stmt = con.prepareStatement(query);
@@ -168,8 +250,10 @@ public class database {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                String video_title = rs.getString("video_title");
-                liked.add(video_title);
+                int video_id = rs.getInt("video_id");
+                //String video_title = rs.getString("video_title");
+                //liked.add(video_title);
+                liked.add(video_id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -178,7 +262,7 @@ public class database {
     }
 
 
-// this method will get the chanels that user have subscribed
+    // this method will get the channels that user have subscribed
     public static ArrayList<Integer> get_channels_id(int subscriber_id){
         String query = "SELECT channel_id FROM subscribers WHERE subscriber_id = ?";
 
@@ -366,7 +450,7 @@ public class database {
 
 
     //DELETE FROM Customers WHERE CustomerName = 'Alfreds Futterkiste';
-
+// ishould remove it from file of videos too
     public static void delete_video(int video_id){
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -466,6 +550,49 @@ public class database {
 
     }
 
+
+
+
+
+
+    public static void decrease_like_for_video (int video_id){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Connect to the database
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Prepare the SQL statement
+            String sql = "UPDATE videos\n" +
+                    "SET likes = likes - 1\n" +
+                    "WHERE video_id = ?;\n";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1,video_id);
+
+            // Set the array to the prepared statement
+
+
+            // Execute the insertion
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+
+
+
+
     public static void increase_view_of_video(int video_id){
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -499,7 +626,7 @@ public class database {
     }
 
 
-
+    // this will send all the users video
     public static ArrayList<Integer> video_of_user(int user_id){
 
         String query = "SELECT video_id FROM videos WHERE user_id = ?";
@@ -527,6 +654,198 @@ public class database {
     }
 
 
+    public static void making_comment(int video_id,String user_name,String comment) {
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Connect to the database
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Prepare the SQL statement
+            String sql = "INSERT INTO comments (user_name,video_id,comment) VALUES (?,?,?)";
+            pstmt = conn.prepareStatement(sql);
+
+            // Set the array to the prepared statement
+            pstmt.setString(1, user_name);
+            pstmt.setInt(2, video_id);
+            pstmt.setString(3, comment);
+
+
+            // Execute the insertion
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+// to get a comment it needs to get user name the comment and the likes i need three method that return arraylist
+
+    //how to handle a double like
+    // i should add to method for deacrising the like of video and comment
+    public static void increase_like_for_comment (int comment_id){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Connect to the database
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Prepare the SQL statement
+            String sql = "UPDATE comments\n" +
+                    "SET likes = likes + 1\n" +
+                    "WHERE comment_id = ?;\n";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1,comment_id);
+
+            // Set the array to the prepared statement
+
+
+            // Execute the insertion
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+
+    public static void decrease_like_for_comment (int comment_id){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Connect to the database
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Prepare the SQL statement
+            String sql = "UPDATE comments\n" +
+                    "SET likes = likes - 1\n" +
+                    "WHERE comment_id = ?;\n";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1,comment_id);
+
+            // Set the array to the prepared statement
+
+
+            // Execute the insertion
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+    // make a methid to add video path
+    public static String get_video_path(int video_id){
+
+        String query = "SELECT path FROM videos WHERE video_id = ?";
+
+
+
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+
+            pstmt.setInt(1, video_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                String path_of_video = rs.getString("video_id");
+                return path_of_video;
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static String get_profile_pic_path(int user_id){
+        String query = "SELECT profile_pic_path FROM user_info WHERE user_id = ?";
+
+
+
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+
+            pstmt.setInt(1, user_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                String path_of_profile_pic = rs.getString("profile_pic_path");
+                return path_of_profile_pic;
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    public static void add_profile_pic_path(String path,int user_id){
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Connect to the database
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Prepare the SQL statement
+            String sql = "UPDATE user_info SET profile_pic_path = ? WHERE user_id = ?;";
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1,path);
+            pstmt.setInt(2,user_id);
+
+
+            // Execute the insertion
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+
+
+
 
 
 
@@ -542,7 +861,7 @@ public class database {
         //ArrayList <Integer> liked_list =get_channels_id(2);
         //System.out.println(liked_list);
         //add_subscriber(2,1);
-       // login("sepi","1234");
+        // login("sepi","1234");
         //add_video(1,"mia","vlog","D:\\youtube\\src\\main\\resources\\videos\\2.mkv");
         //delete_video(1);
         //ArrayList<Integer> vids =video_of_user(1);
@@ -551,8 +870,13 @@ public class database {
         //increase_view_of_video(3);
         //System.out.println(get_bio(1));
         //int n =get_user_id("sepi");
-
-        }
-
+        //making_comment(1,"sepi","that was cool!");
+        //add_profile_pic_path("D:\\final_project\\src\\main\\resources\\client_videos",2);
+        //String path =get_profile_pic_path(1);
+        //System.out.println(path);
+        //increase_like_for_comment(1);
+        // inserting_name_username_lname("sepanta","hos","mrbeast");
+        //inserting_password_email_bio("mrbeast","12345","email","bio");
+        inserting_birth_date_and_gender(1979,"august",7,"mrbeast","man");
     }
-
+}

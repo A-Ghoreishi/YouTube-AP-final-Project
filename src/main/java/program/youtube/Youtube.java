@@ -24,6 +24,8 @@ public class Youtube {
     @FXML
     private Text basicInfo;
 
+    @FXML
+    private TextField biobar;
 
     @FXML
     private Button Subscriptionbtn;
@@ -116,6 +118,9 @@ public class Youtube {
     private ImageView thumbnailImage;
 
     @FXML
+    private TextField username;
+
+    @FXML
     private Text welcomeText;
 
     @FXML
@@ -175,7 +180,7 @@ public class Youtube {
     public void signIn(boolean isVisible){
         signin.setVisible(isVisible);
         welcomeText.setVisible(isVisible);
-        emailbar.setVisible(isVisible);
+        username.setVisible(isVisible);
         passBar.setVisible(isVisible);
         nextBtn.setVisible(isVisible);
         createAccbtn.setVisible(isVisible);
@@ -205,6 +210,7 @@ public class Youtube {
         createAccount.setVisible(isVisible);
         nextBtn.setVisible(isVisible);
         youtube2.setVisible(isVisible);
+        username.setVisible(isVisible);
     }
 
     public void signUp2(boolean isVisible){
@@ -225,10 +231,16 @@ public class Youtube {
         youtube2.setVisible(isVisible);
         existingemail.setVisible(isVisible);
         emailyoutube.setVisible(isVisible);
+        biobar.setVisible(isVisible);
     }
 
     @FXML
     void basicInfo(MouseEvent event) {
+
+    }
+
+    @FXML
+    void biobar(ActionEvent event) {
 
     }
 
@@ -338,8 +350,8 @@ public class Youtube {
     void nextBtn(ActionEvent event) {
 
         if(clicked == 0){
-            if(emailbar.getText().isEmpty() || passBar.getText().isEmpty()){
-                if(emailbar.getText().isEmpty()){
+            if(username.getText().isEmpty() || passBar.getText().isEmpty()){
+                if(username.getText().isEmpty()){
                     mustEmail.setVisible(true);
                 }
 
@@ -349,29 +361,60 @@ public class Youtube {
             }
 
             else{
-                // getname of UserInfo class and then again home page but this time with videos
-                signIn(false);
-                mustEmail.setVisible(false);
-                mustPass.setVisible(false);
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("theYouTube.fxml"));
-                    Parent root = fxmlLoader.load();
+                String Username = username.getText();
+                String Password = passBar.getText();
+                database Database = new database("C:\\Users\\Ailin Ghoreishi\\Desktop\\backup.sql");
+                if(Database.isUserAvailable(Username,Password,false)){
+                    if(Database.isAuthenticated(Username,Password)){
+                        signIn(false);
+                        mustEmail.setVisible(false);
+                        mustPass.setVisible(false);
+                        try {
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("theYouTube.fxml"));
+                            Parent root = fxmlLoader.load();
 
-                    Stage stage = new Stage();
-                    stage.setTitle("YouTube");
-                    stage.setScene(new Scene(root));
-                    stage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                            Stage stage = new Stage();
+                            stage.setTitle("YouTube");
+                            stage.setScene(new Scene(root));
+                            stage.show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    else{
+                        System.out.println("invalid");
+                    }
                 }
+//                try {
+//                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("theYouTube.fxml"));
+//                            Parent root = fxmlLoader.load();
+//
+//                            Stage stage = new Stage();
+//                            stage.setTitle("YouTube");
+//                            stage.setScene(new Scene(root));
+//                            stage.show();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
             }
+
         }
         if(clicked == 1){
-            if(firstname.getText().isEmpty()){
-                mustName.setVisible(true);
+            if(firstname.getText().isEmpty() || username.getText().isEmpty()){
+                if(firstname.getText().isEmpty()){
+                    mustName.setVisible(true);
+                }
             }
 
             else{
+                String name = firstname.getText();
+                String lname = lastname.getText();
+                String theUser = username.getText();
+                database Database = new database("C:\\Users\\Ailin Ghoreishi\\Desktop\\backup.sql");
+                if (Database.inserting_name_username_lname(name, lname, theUser)) {
+
+                }
                 signUp1(false);
                 signIn(false);
                 signUp2(true);
@@ -467,6 +510,11 @@ public class Youtube {
 
     @FXML
     void thumbnailImage(MouseEvent event) {
+
+    }
+
+    @FXML
+    void username(ActionEvent event) {
 
     }
 
