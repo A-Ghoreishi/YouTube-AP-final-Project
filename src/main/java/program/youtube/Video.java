@@ -3,52 +3,50 @@ package program.youtube;
 public class Video {
     private String thumbsrc;
     private String name;
-    private String channnel;
-
+    private String channel;
     private String profilesrc;
-
     private String views;
     private String date;
+    private String videosrc; // Field to store video source URL or path
 
-    public void setProfilesrc(String profilesrc) {
-        this.profilesrc = profilesrc;
-    }
-
-    public String getProfilesrc() {
-        return profilesrc;
+    public String getThumbsrc() {
+        return thumbsrc;
     }
 
     public void setThumbsrc(String thumbsrc) {
         this.thumbsrc = thumbsrc;
     }
 
-
-    public String getThumbsrc() {
-        return thumbsrc;
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setChannel(String channnel) {
-        this.channnel = channnel;
-    }
-
     public String getChannel() {
-        return channnel;
+        return channel;
     }
 
-    public void setViews(String views) {
-        this.views = views;
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
+    public String getProfilesrc() {
+        return profilesrc;
+    }
+
+    public void setProfilesrc(String profilesrc) {
+        this.profilesrc = profilesrc;
     }
 
     public String getViews() {
         return views;
+    }
+
+    public void setViews(String views) {
+        this.views = views;
     }
 
     public String getDate() {
@@ -57,5 +55,13 @@ public class Video {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getVideosrc() {
+        return videosrc;
+    }
+
+    public void setVideosrc(String videosrc) {
+        this.videosrc = videosrc;
     }
 }

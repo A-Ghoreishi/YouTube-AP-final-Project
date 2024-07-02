@@ -1,11 +1,17 @@
 package program.youtube;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Logger;
 
@@ -28,7 +34,8 @@ public class ThumbnailController {
     @FXML
     private Label views;
 
-//    private static final Logger logger = Logger.getLogger(ThumbnailController.class.getName());
+    private Video video;
+    private int videoId;
 
     @FXML
     void profile(MouseEvent event) {
@@ -78,4 +85,20 @@ public class ThumbnailController {
             e.printStackTrace();
         }
     }
+
+//    @FXML
+//    void handleClick(MouseEvent event) throws IOException {
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("video.fxml"));
+//        Parent root = loader.load();
+//
+//        // Access the controller of video.fxml
+//        Videoplayer videoController = loader.getController();
+//        videoController.setVideoData(video);
+//
+//        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//        Scene scene = new Scene(root);
+//        stage.setScene(scene);
+//        stage.show();
+//    }
+
 }

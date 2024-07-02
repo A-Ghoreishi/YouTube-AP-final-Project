@@ -88,49 +88,109 @@ public class TheYouTube implements Initializable {
     @FXML
     private HBox yourvideoshbox;
 
-    @FXML
-    public void initialize(){
-        playlisttext.setVisible(false);
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // playlisttext.setVisible(false);
+
+        videos = new ArrayList<>();
+
+        Video video1 = new Video();
+        video1.setThumbsrc("/images/thumb1.jpg");
+        video1.setProfilesrc("/images/pro1.jpg");
+        video1.setName("Top 10 people");
+        video1.setChannel("MargaretYt");
+        video1.setViews("123K views");
+        video1.setDate("1 year ago");
+        video1.setVideosrc("/images/video1.mp4");
+        videos.add(video1);
+
+        Video video2 = new Video();
+        video2.setThumbsrc("/images/thumb2.jpg");
+        video2.setProfilesrc("/images/pro2.jpg");
+        video2.setName("Top 5 professional thumbnails");
+        video2.setChannel("Mart");
+        video2.setViews("321M views");
+        video2.setDate("1 month ago");
+        video2.setVideosrc("/images/video1.mp4");
+        videos.add(video2);
+
+        int columns = 0;
+        int rows = 1;
+
+        try {
+            for (int i = 0; i < videos.size(); i++) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("thumbnail.fxml"));
+
+                VBox box = fxmlLoader.load();
+                ThumbnailController thumbnailController = fxmlLoader.getController();
+                thumbnailController.setData(videos.get(i));
+
+                // Set an ID for each VBox for identification
+                box.setId("thumbnail-" + i);
+
+                final int index = i; // This makes `index` effectively final
+                box.setOnMouseClicked(event -> {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("videoplayer.fxml"));
+                        Parent root = loader.load();
+                        Videoplayer videoplayerController = loader.getController();
+                        videoplayerController.setVideoData(videos.get(index));
+
+                        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                if (columns == 3) {
+                    columns = 0;
+                    ++rows;
+                }
+
+                videoGrid.add(box, columns++, rows);
+                GridPane.setMargin(box, new Insets(10));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
     @FXML
     void gaminhbox(MouseEvent event) {
-
     }
 
     @FXML
     void historyhbox(MouseEvent event) {
-
     }
 
     @FXML
     void homehbox(MouseEvent event) {
-
     }
 
     @FXML
     void likedvideoshbox(MouseEvent event) {
-
     }
 
     @FXML
     void menu(MouseEvent event) {
-
     }
 
     @FXML
     void middlepage(MouseEvent event) {
-
     }
 
     @FXML
     void notification(MouseEvent event) {
-
     }
 
     @FXML
     void playlisthbox(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("playlist.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -138,32 +198,26 @@ public class TheYouTube implements Initializable {
 
     @FXML
     void premiumhbox(MouseEvent event) {
-
     }
 
     @FXML
     void profile(MouseEvent event) {
-
     }
 
     @FXML
     void reporthbox(MouseEvent event) {
-
     }
 
     @FXML
     void settinghbox(MouseEvent event) {
-
     }
 
     @FXML
     void subscriptionhbox(MouseEvent event) {
-
     }
 
     @FXML
     void trendinghbox(MouseEvent event) {
-
     }
 
     @FXML
@@ -186,94 +240,17 @@ public class TheYouTube implements Initializable {
 
     @FXML
     void videoGrid(MouseEvent event) {
-
     }
 
     @FXML
     void watchlaterhbox(MouseEvent event) {
-
     }
 
     @FXML
     void yourchannelhbox(MouseEvent event) {
-
     }
 
     @FXML
     void yourvideoshbox(MouseEvent event) {
-
     }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        videos = new ArrayList<>();
-
-        Video video = new Video();
-        video.setThumbsrc("/images/thumb1.jpg");
-        video.setProfilesrc("/images/pro1.jpg");
-        video.setName("Top 5 professional videos");
-        video.setChannel("MargaretYt");
-        video.setViews("123K views");
-        video.setDate("1 year ago");
-        videos.add(video);
-
-        video = new Video();
-        video.setThumbsrc("/images/thumb2.jpg");
-        video.setProfilesrc("/images/pro2.jpg");
-        video.setName("Top 5 professional thumbnails");
-        video.setChannel("Mart");
-        video.setViews("321M views");
-        video.setDate("1 month ago");
-        videos.add(video);
-
-        int columns = 0;
-        int rows = 1;
-
-        try {
-            for (int i = 0; i < videos.size(); i++) {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("thumbnail.fxml"));
-
-                VBox box = fxmlLoader.load();
-                ThumbnailController thumbnailController = fxmlLoader.getController();
-                thumbnailController.setData(videos.get(i));
-
-                if (columns == 3) {
-                    columns = 0;
-                    ++rows;
-                }
-
-                videoGrid.add(box, columns++, rows);
-                GridPane.setMargin(box, new Insets(10));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-//    private List<Video> videos(){
-//        List<Video> ls = new ArrayList<>();
-//
-//
-//        Video video = new Video();
-//        video.setThumbsrc("/images/thumb1.jpg");
-//        video.setProfilesrc("/images/pro1.jpg");
-//        video.setName("Top 5 professional videos");
-//        video.setChannel("MargaretYt");
-//        video.setViews("123K views");
-//        video.setDate("1 year ago");
-//        ls.add(video);
-//
-//        video= new Video();
-//        video.setThumbsrc("/images/thumb2.jpg");
-//        video.setProfilesrc("/images/pro2.jpg");
-//        video.setName("Top 5 professional thumbnails");
-//        video.setChannel("Mart");
-//        video.setViews("321M views");
-//        video.setDate("1 month ago");
-//        ls.add(video);
-//
-//        return ls;
-//    }
 }

@@ -334,14 +334,6 @@
                         </ImageView>
                      </children>
                   </HBox>
-                  <Label fx:id="playlisttext" prefHeight="92.0" prefWidth="443.0" text="Playlists">
-                     <font>
-                        <Font name="System Bold" size="37.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
-                  </Label>
                   <Label prefHeight="148.0" prefWidth="424.0" text="Greate value by sharing. Family plan lets&#10;you add up to 6 separate personalized&#10;accounts.&#10;" textFill="WHITE">
                      <VBox.margin>
                         <Insets left="30.0" />
@@ -359,7 +351,7 @@
             </VBox>
             <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="transplant" stylesheets="@style.css" VBox.vgrow="ALWAYS">
                <content>
-                  <GridPane fx:id="videoGrid">
+                  <GridPane fx:id="videoGrid" onMouseClicked="#videoGrid">
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
