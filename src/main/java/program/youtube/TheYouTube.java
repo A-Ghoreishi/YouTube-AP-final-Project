@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -25,6 +26,10 @@ public class TheYouTube implements Initializable {
     @FXML
     private GridPane videoGrid;
     private List<Video> videos;
+
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
 
     @FXML
     private VBox middlepage;
@@ -114,7 +119,7 @@ public class TheYouTube implements Initializable {
 
     @FXML
     void middlepage(MouseEvent event) {
-        playlisttext.setVisible(false);
+
     }
 
     @FXML
@@ -123,9 +128,12 @@ public class TheYouTube implements Initializable {
     }
 
     @FXML
-    void playlisthbox(MouseEvent event) {
-        middlepage.setVisible(false);
-        playlisttext.setVisible(true);
+    void playlisthbox(MouseEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("playlist.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
