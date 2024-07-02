@@ -1,14 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
 
-</AnchorPane>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="516.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.youtube.Playlist">
+   <children>
+      <HBox prefHeight="61.0" prefWidth="509.0" styleClass="white-color" stylesheets="@style.css">
+         <children>
+            <ImageView fx:id="backward" fitHeight="44.0" fitWidth="45.0" onMouseClicked="#backward" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/backward.png" />
+               </image>
+            </ImageView>
+            <Label text="Playlist">
+               <font>
+                  <Font name="System Bold" size="38.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <VBox prefHeight="347.0" prefWidth="600.0">
+         <children>
+            <HBox prefHeight="119.0" prefWidth="600.0" spacing="10.0">
+               <children>
+                  <VBox prefHeight="116.0" prefWidth="156.0">
+                     <children>
+                        <ImageView fitHeight="90.0" fitWidth="188.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/thumb2.jpg" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="166.0" text="Watch later">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="116.0" prefWidth="156.0">
+                     <children>
+                        <ImageView fitHeight="90.0" fitWidth="188.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/thumb2.jpg" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="166.0" text="Liked videos">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="116.0" prefWidth="156.0">
+                     <children>
+                        <ImageView fitHeight="90.0" fitWidth="188.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/thumb2.jpg" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="166.0" text="Watch later">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="121.0" prefWidth="600.0" spacing="10.0">
+               <children>
+                  <VBox prefHeight="116.0" prefWidth="156.0">
+                     <children>
+                        <ImageView fitHeight="90.0" fitWidth="188.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/thumb2.jpg" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="166.0" text="Watch later">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="116.0" prefWidth="156.0">
+                     <children>
+                        <ImageView fitHeight="90.0" fitWidth="188.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/thumb2.jpg" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="166.0" text="Watch later">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="116.0" prefWidth="156.0">
+                     <children>
+                        <ImageView fitHeight="90.0" fitWidth="188.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/thumb2.jpg" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="166.0" text="Watch later">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="115.0" prefWidth="600.0" />
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets left="7.0" />
+   </padding>
+</VBox>
