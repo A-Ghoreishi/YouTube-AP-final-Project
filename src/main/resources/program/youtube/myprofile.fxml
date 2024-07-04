@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="1306.0" style="-fx-background-color: transplant;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.youtube.TheYouTube">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="1306.0" style="-fx-background-color: transplant;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.youtube.MyProfileController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="white-color" stylesheets="@style.css" BorderPane.alignment="CENTER_RIGHT">
          <children>
@@ -69,7 +69,7 @@
                   <Image url="@../images/grid-dots.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="profile" fitHeight="98.0" fitWidth="136.0" onMouseClicked="#profile" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="profile" fitHeight="98.0" fitWidth="136.0" onDragDetected="#profile" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/avatar1.jpg" />
                </image>
@@ -320,44 +320,57 @@
    <center>
       <VBox fx:id="middlepage" onDragDetected="#middlepage" prefHeight="200.0" prefWidth="100.0" styleClass="body-background" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="250.0" prefWidth="100.0" styleClass="black-color" stylesheets="@style.css">
+            <HBox alignment="CENTER_LEFT" prefHeight="139.0" prefWidth="1026.0" spacing="10.0">
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
                <children>
-                  <HBox prefHeight="3.0" prefWidth="975.0">
+                  <ImageView fitHeight="128.0" fitWidth="115.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/avatar1.jpg" />
+                     </image>
+                  </ImageView>
+                  <VBox prefHeight="139.0" prefWidth="326.0">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
                      <children>
-                        <ImageView fitHeight="127.0" fitWidth="204.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/ytmusic.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                        </ImageView>
+                        <HBox prefHeight="70.0" prefWidth="254.0">
+                           <children>
+                              <Label fx:id="name" prefHeight="52.0" prefWidth="156.0" text="Name">
+                                 <font>
+                                    <Font name="System Bold" size="21.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lname" prefHeight="52.0" prefWidth="135.0" text="lname">
+                                 <font>
+                                    <Font name="System Bold" size="23.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <Label fx:id="username" prefHeight="21.0" prefWidth="310.0" text="username" />
                      </children>
-                  </HBox>
-                  <Label prefHeight="148.0" prefWidth="424.0" text="Greate value by sharing. Family plan lets&#10;you add up to 6 separate personalized&#10;accounts.&#10;" textFill="WHITE">
-                     <VBox.margin>
-                        <Insets left="30.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Button mnemonicParsing="false" prefHeight="22.0" prefWidth="170.0" text="1 MONTH FREE" textFill="#fdfdfd">
-                     <VBox.margin>
-                        <Insets bottom="10.0" left="30.0" />
-                     </VBox.margin>
-                  </Button>
+                  </VBox>
                </children>
-            </VBox>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="transplant" stylesheets="@style.css" VBox.vgrow="ALWAYS">
+            </HBox>
+            <ScrollPane prefHeight="455.0" prefWidth="1026.0" styleClass="transplant" stylesheets="@style.css" VBox.vgrow="ALWAYS">
                <content>
-                  <GridPane fx:id="videoGrid">
+                  <GridPane fx:id="videoGrid" onMouseClicked="#videoGrid">
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                   </GridPane>
                </content>
             </ScrollPane>
+            <VBox alignment="CENTER" prefHeight="106.0" prefWidth="1026.0">
+               <children>
+                  <Button fx:id="createbtn" mnemonicParsing="false" onAction="#createbtn" prefHeight="77.0" prefWidth="193.0" style="-fx-background-radius: 30;" stylesheets="@style.css" text="Create" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </VBox>
          </children>
       </VBox>
    </center>

@@ -1,24 +1,56 @@
 package program.youtube;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Videoplayer implements Initializable {
 
     @FXML
+    private Button addcommentbtn;
+
+    @FXML
     private ImageView backforth;
+
+    @FXML
+    private Label channelname;
+
+    @FXML
+    private ImageView channelprofile;
+
+    @FXML
+    private TextArea commentArea;
+
+    @FXML
+    private ImageView commenter;
+
+    @FXML
+    private Label discription;
+
+    @FXML
+    private ImageView home;
+
+    @FXML
+    private ScrollPane scrollpane;
+
+    @FXML
+    private VBox commentsVBox;
 
     @FXML
     private MediaView mediaView;
@@ -33,13 +65,64 @@ public class Videoplayer implements Initializable {
     private ImageView speaker;
 
     @FXML
+    private Label subscribers;
+
+    @FXML
+    private Label subscribersnum;
+
+    @FXML
     private Label timeduration;
+
+    @FXML
+    private VBox videoListVBox;
 
     private boolean isPlaying = false;
 
     @FXML
+    private Label videotitle;
+
+    @FXML
+    void addcommentbtn(ActionEvent event) {
+        String commentText = commentArea.getText();
+        if (!commentText.isEmpty()) {
+            HBox commentBox = new HBox(10); // Create an HBox with spacing of 10
+
+            ImageView profileImage = new ImageView(new Image(getClass().getResourceAsStream(getUserProfileImage())));
+            profileImage.setFitHeight(40);
+            profileImage.setFitWidth(40);
+
+            VBox userDetails = new VBox(5); // Create a VBox to hold user details
+            Label usernameLabel = new Label(getUsername());
+            Label commentLabel = new Label(commentText);
+
+            userDetails.getChildren().addAll(usernameLabel, commentLabel);
+            commentBox.getChildren().addAll(profileImage, userDetails);
+
+            commentsVBox.getChildren().add(commentBox);
+            commentArea.clear();
+
+            // Scroll to the bottom to show the new comment
+            scrollpane.layout();
+            scrollpane.setVvalue(1.0);
+        }
+    }
+
+    private String getUserProfileImage() {
+        return "/images/pro1.png";
+    }
+
+    private String getUsername() {
+        return "janedoe2004";
+    }
+
+    @FXML
     void backforth(MouseEvent event) {
         mediaPlayer.seek(mediaPlayer.getCurrentTime().subtract(Duration.seconds(10)));
+    }
+
+    @FXML
+    void home(MouseEvent event) {
+
     }
 
     @FXML
@@ -56,7 +139,6 @@ public class Videoplayer implements Initializable {
 
     @FXML
     void speaker(MouseEvent event) {
-        // Toggle mute
         mediaPlayer.setMute(!mediaPlayer.isMute());
         speaker.setImage(new Image(getClass().getResourceAsStream(mediaPlayer.isMute() ? "/images/mute.png" : "/images/speaker.png")));
     }
@@ -64,6 +146,38 @@ public class Videoplayer implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initial setup can be done here if needed
+        // For demo purposes, adding some videos to sidebar
+        addVideoToSidebar("Video Title 1", "Channel 1", "2024-07-03", "1K views", "/images/thumb3.jpg");
+        addVideoToSidebar("Video Title 2", "Channel 2", "2024-06-20", "500 views", "/images/thumb2.jpg");
+        addVideoToSidebar("Video Title 3", "Channel 3", "2024-05-15", "10K views", "/images/thumb5.jpg");
+        addVideoToSidebar("Video Title 1", "Channel 1", "2024-07-03", "1K views", "/images/thumb3.jpg");
+        addVideoToSidebar("Video Title 2", "Channel 2", "2024-06-20", "500 views", "/images/thumb2.jpg");
+        addVideoToSidebar("Video Title 3", "Channel 3", "2024-05-15", "10K views", "/images/thumb5.jpg");
+        addVideoToSidebar("Video Title 1", "Channel 1", "2024-07-03", "1K views", "/images/thumb3.jpg");
+        addVideoToSidebar("Video Title 2", "Channel 2", "2024-06-20", "500 views", "/images/thumb2.jpg");
+        addVideoToSidebar("Video Title 3", "Channel 3", "2024-05-15", "10K views", "/images/thumb5.jpg");
+        addVideoToSidebar("Video Title 1", "Channel 1", "2024-07-03", "1K views", "/images/thumb3.jpg");
+        addVideoToSidebar("Video Title 2", "Channel 2", "2024-06-20", "500 views", "/images/thumb2.jpg");
+        addVideoToSidebar("Video Title 3", "Channel 3", "2024-05-15", "10K views", "/images/thumb5.jpg");
+    }
+
+    private void addVideoToSidebar(String title, String channel, String date, String views, String thumbnailPath) {
+        HBox videoItem = new HBox(10); // Create an HBox with spacing of 10
+
+        ImageView thumbnail = new ImageView(new Image(getClass().getResourceAsStream(thumbnailPath)));
+        thumbnail.setFitHeight(80);
+        thumbnail.setFitWidth(120);
+
+        VBox videoDetails = new VBox(5); // Create a VBox to hold video details
+        Label titleLabel = new Label(title);
+        Label channelLabel = new Label(channel);
+        Label dateLabel = new Label(date);
+        Label viewsLabel = new Label(views);
+
+        videoDetails.getChildren().addAll(titleLabel, channelLabel, dateLabel, viewsLabel);
+        videoItem.getChildren().addAll(thumbnail, videoDetails);
+
+        videoListVBox.getChildren().add(videoItem);
     }
 
     public void setVideoData(Video video) {
@@ -87,10 +201,8 @@ public class Videoplayer implements Initializable {
                     (int) newValue.toSeconds() % 60));
         });
 
-        // Set the maximum value of the progress bar to the total duration of the media
         mediaPlayer.setOnReady(() -> {
             Duration total = mediaPlayer.getMedia().getDuration();
-            // progressBar.setMax(total.toSeconds()); // If using a progress bar
         });
     }
 }

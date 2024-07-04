@@ -12,8 +12,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
-
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="1306.0" style="-fx-background-color: transplant;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.youtube.Upload">
    <top>
@@ -165,17 +165,17 @@
                   </Label>
                   <HBox prefHeight="100.0" prefWidth="1127.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Videos" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: transparent;" text="Videos" />
                         <Pane prefHeight="58.0" prefWidth="48.0" />
-                        <Button mnemonicParsing="false" text="Button" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: transparent;" text="Shorts" />
                         <Pane prefHeight="100.0" prefWidth="60.0" />
-                        <Button mnemonicParsing="false" text="Button" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: transparent;" text="Live" />
                         <Pane prefHeight="100.0" prefWidth="57.0" />
-                        <Button mnemonicParsing="false" text="Button" />
-                        <Pane prefHeight="95.0" prefWidth="69.0" />
-                        <Button mnemonicParsing="false" text="Button" />
-                        <Pane prefHeight="71.0" prefWidth="86.0" />
-                        <Button mnemonicParsing="false" text="Button" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: transparenet;" text="Playlist" />
+                        <Pane prefHeight="67.0" prefWidth="57.0" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: transparent;" text="Podcast" />
+                        <Pane prefHeight="67.0" prefWidth="60.0" />
+                        <Button mnemonicParsing="false" style="-fx-background-color: transparent;" text="Promotion" />
                      </children>
                   </HBox>
                </children>
@@ -184,16 +184,22 @@
                </padding>
             </VBox>
             <HBox prefHeight="100.0" prefWidth="200.0" />
-            <HBox prefHeight="100.0" prefWidth="200.0" />
-            <HBox alignment="CENTER" prefHeight="416.0" prefWidth="1118.0" styleClass="white-color" stylesheets="@style.css">
+            <HBox prefHeight="91.0" prefWidth="1118.0" />
+            <HBox alignment="CENTER" prefHeight="308.0" prefWidth="1118.0" spacing="70.0" styleClass="white-color" stylesheets="@style.css">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="76.0" prefWidth="189.0" style="-fx-background-color: blue;" text="Upload Videos" textFill="WHITE">
+                  <MediaView fx:id="mediaView" fitHeight="300.0" fitWidth="400.0" />
+                  <Button fx:id="uploadbtn" mnemonicParsing="false" onAction="#uploadbtn" prefHeight="76.0" prefWidth="189.0" style="-fx-background-color: blue;" text="Upload Videos" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
                   </Button>
                </children>
             </HBox>
+            <Label fx:id="filePathLabel" prefHeight="90.0" prefWidth="585.0" text="Label">
+               <VBox.margin>
+                  <Insets left="40.0" />
+               </VBox.margin>
+            </Label>
          </children>
       </VBox>
    </center>
