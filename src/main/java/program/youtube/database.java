@@ -790,9 +790,103 @@ public class database {
         }
 
     }
-
+// i need some method like get video title and like and views and
 
 // make a methid to add video path
+
+    public  String get_video_title(int video_id){
+
+        String query = "SELECT title FROM videos WHERE video_id = ?";
+
+
+
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+
+            pstmt.setInt(1, video_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                return rs.getString("title");
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public  int  get_video_likes(int video_id){
+
+        String query = "SELECT likes FROM videos WHERE video_id = ?";
+
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+
+            pstmt.setInt(1, video_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                int likes = rs.getInt("likes");
+                return likes;
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public String get_video_user_name(int video_id){
+        String query = "SELECT user_name FROM videos WHERE video_id = ?";
+
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+
+            pstmt.setInt(1, video_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                return rs.getString("user_name");
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public int get_video_views(int video_id){
+        String query = "SELECT views FROM videos WHERE video_id = ?";
+
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+
+            pstmt.setInt(1, video_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                return rs.getInt("views");
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+
+
+
+
     public static String get_video_path(int video_id){
 
         String query = "SELECT path FROM videos WHERE video_id = ?";
@@ -807,8 +901,7 @@ public class database {
 
             while (rs.next()) {
 
-                String path_of_video = rs.getString("video_id");
-                return path_of_video;
+                return rs.getString("path");
 
             }
         } catch (SQLException e) {
@@ -912,6 +1005,8 @@ public class database {
        // add_to_liked(1,3);
         //checkUsernameExists("mrbeast");
         //inserting_name_username_lname("sepanta","hos","mrbeast");
+        //System.out.println(database.get_video_path(3));
+
         }
 
     }

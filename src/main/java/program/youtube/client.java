@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import static program.youtube.account.hashPassword;
+import static program.youtube.database.making_comment;
 
 public class client {
     //change the path of vieo for client and for server
@@ -99,32 +100,134 @@ public class client {
         }
     }
 
+    public static String get_video_title(int video_id){
+        try {
+            Socket clientSocket = new Socket("localhost",4042);
+            // Read data from the client
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
 
-    public static void get_video(String videoName) throws IOException {
+            // Parse the JSON data
+            JSONObject json = new JSONObject(clientData);
+            String title = json.getString("title");
+
+
+            // Send a response back to the client
+            clientSocket.close();
+            return title;
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String get_video_username(int video_id){
+        try {
+            Socket clientSocket = new Socket("localhost",4042);
+            // Read data from the client
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            // Parse the JSON data
+            JSONObject json = new JSONObject(clientData);
+            String user_name = json.getString("user_name");
+
+
+            // Send a response back to the client
+            clientSocket.close();
+            return user_name;
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static int get_video_like(int video_id){
+        try {
+            Socket clientSocket = new Socket("localhost",4042);
+            // Read data from the client
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            // Parse the JSON data
+            JSONObject json = new JSONObject(clientData);
+            int likes = json.getInt("likes");
+
+
+            // Send a response back to the client
+            clientSocket.close();
+            return likes;
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static int get_video_views(int video_id){
+        try {
+            Socket clientSocket = new Socket("localhost",4042);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("video_id",video_id);
+
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            writer.println(jsonObject.toString());
+
+            // Read data from the client
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            // Parse the JSON data
+            JSONObject json = new JSONObject(clientData);
+            int views = json.getInt("views");
+
+
+            // Send a response back to the client
+            clientSocket.close();
+            return views;
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
+    public static void get_video(int video_id) throws IOException {
 
         try {
             Socket socket = new Socket("localhost",4042);
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
-            String meesage = "sendfile";
+            String meesage = "send_video";
             out.println(meesage);
+            Thread.sleep(1000);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("video_id",video_id);
 
-            //BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            //String videoName1 = in.readLine();
-            DataInputStream in = new DataInputStream(socket.getInputStream());
-            String msg = in.readUTF();
-            //replace it with the real name
-            System.out.println(msg);
+            out.println(jsonObject.toString());
 
-
-            // System.out.println(videoName1);
-            // Get the input stream to receive data from the server
             InputStream inputStream = socket.getInputStream();
-            System.out.println("D:\\final_project\\src\\main\\resources\\client_videos" +msg+".mkv");
+
+            String name = Integer.toString(video_id);
 
 
             // Save video data to a local file
-            FileOutputStream fileOutputStream = new FileOutputStream("D:\\final_project\\src\\main\\resources\\client_videos\\" +msg+".mkv");
+            FileOutputStream fileOutputStream = new FileOutputStream("D:\\final_project\\src\\main\\resources\\client_videos\\" +name+".mkv");
 
             byte[] buffer = new byte[8192]; // Adjust buffer size as needed
             int bytesRead;
@@ -137,6 +240,8 @@ public class client {
             inputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -441,7 +546,7 @@ public class client {
     }
 
 
-
+//things to do: completing the apis about the whatch list not letting user like somthing twice and handeling race condition completing method about sending thumbnail and chck the method about sending profile pic rename where videos save and api for getting comment from the server
 
 
 

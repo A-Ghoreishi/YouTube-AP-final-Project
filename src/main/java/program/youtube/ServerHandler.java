@@ -9,6 +9,7 @@ import static program.youtube.database.*;
 
 
 class ServerHandler implements Runnable {
+    static database database = new database();
     private final Socket clientSocket;
 
     public ServerHandler(Socket clientSocket) {
@@ -50,8 +51,6 @@ class ServerHandler implements Runnable {
                     case "send_pfp" ->{
 
                         System.out.println("send_pfp");
-                        // i dont remmeber what is the usee of this
-                        String name = in.readLine();
                         server_send_pfp(clientSocket);
                     }
                     case "log_in" ->{
@@ -126,11 +125,12 @@ class ServerHandler implements Runnable {
 
             int videoid=database.getLastVideoId();
             String name = Integer.toString(videoid);
-            String save_path = "D:\\final_project\\src\\main\\resources\\videos\\"+name+".mkv";
+            String save_path = "D:\\final_project\\src\\main\\resources\\server_videos\\"+name+".mkv";
             InputStream inputStream = clientSocket.getInputStream();
             byte[] buffer = new byte[1024];
             int byteread;
-            FileOutputStream fileOutputStream = new FileOutputStream("D:\\final_project\\src\\main\\resources\\videos\\"+name+".mkv");
+            FileOutputStream fileOutputStream = new FileOutputStream(save_path);
+            database.puting_the_file_path_into_table(save_path,videoid);
 
             while ((byteread = inputStream.read(buffer)) != -1){
                 fileOutputStream.write(buffer,0,byteread);
@@ -145,26 +145,170 @@ class ServerHandler implements Runnable {
         }
     }
 
-    public static void get_pfp(Socket socket,String name) {
+    public void server_send_video_user_name(Socket clientSocket){
         try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            JSONObject jsonObject = new JSONObject(clientData);
+            int video_id = jsonObject.getInt("user_id");
 
 
-            InputStream inputStream = socket.getInputStream();
-            byte[] buffer = new byte[8192];
-            int byteread;
-            FileOutputStream fileOutputStream = new FileOutputStream("D:\\final_project\\src\\main\\resources\\profile_pictures\\" + name + ".jpg");
+            Thread.sleep(1000);
+            // Create a JSON object with the provided data
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("user_name",database.get_video_user_name(video_id));
 
-            while ((byteread = inputStream.read(buffer)) != -1) {
-                fileOutputStream.write(buffer, 0, byteread);
-            }
-            fileOutputStream.close();
-            inputStream.close();
+            // Write data to the server
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            writer.println(jsonParams.toString());
+            System.out.println("sent");
 
+            // Read the server's response
 
-        } catch (Exception e) {
+            clientSocket.close();
+        } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
+    public void server_send_video_title(Socket clientSocket){
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            JSONObject jsonObject = new JSONObject(clientData);
+            int video_id = jsonObject.getInt("user_id");
+
+
+            Thread.sleep(1000);
+            // Create a JSON object with the provided data
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("title",database.get_video_title(video_id));
+
+            // Write data to the server
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            writer.println(jsonParams.toString());
+            System.out.println("sent");
+
+            // Read the server's response
+
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void server_send_likes(Socket clientSocket){
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            JSONObject jsonObject = new JSONObject(clientData);
+            int video_id = jsonObject.getInt("user_id");
+
+
+            Thread.sleep(1000);
+            // Create a JSON object with the provided data
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("likes",database.get_video_likes(video_id));
+
+            // Write data to the server
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            writer.println(jsonParams.toString());
+            System.out.println("sent");
+
+            // Read the server's response
+
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void server_send_views(){
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            JSONObject jsonObject = new JSONObject(clientData);
+            int video_id = jsonObject.getInt("user_id");
+
+
+            Thread.sleep(1000);
+            // Create a JSON object with the provided data
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("views",database.get_video_views(video_id));
+
+            // Write data to the server
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            writer.println(jsonParams.toString());
+            System.out.println("sent");
+
+            // Read the server's response
+
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void server_video_sender(Socket clientSocket) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        String clientData = reader.readLine();
+        System.out.println("Received login-in data from client: " + clientData);
+
+        JSONObject json = new JSONObject(clientData);
+        int video_id = json.getInt("video_id");
+
+        String path = get_video_path(video_id);
+
+        FileInputStream videoFile = new FileInputStream(path);
+
+        while (true) {
+            System.out.println("Client connected: " + clientSocket.getInetAddress());
+
+            DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
+            out.writeUTF("msg");
+
+            OutputStream outputStream = clientSocket.getOutputStream();
+
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+
+            while ((bytesRead = videoFile.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+
+            videoFile.close();
+            clientSocket.close();
+
+
+        }
+    }
+    /* FileInputStream videoFile = new FileInputStream("C:\\Users\\Sepanta\\Downloads\\@movieo_bot.Black.Bullet.E02.720p.BluRay.@movieo_bot.mkv");
+
+        while (true) {
+            System.out.println("Client connected: " + clientSocket.getInetAddress());
+
+            DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
+            out.writeUTF("msg");
+
+            OutputStream outputStream = clientSocket.getOutputStream();
+
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+
+            while ((bytesRead = videoFile.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+
+            videoFile.close();
+            clientSocket.close();
+        }*/
+
+
 
     public static void server_send_pfp(Socket clientSocket) throws IOException {
         FileInputStream videoFile = new FileInputStream("D:\\final_project\\src\\main\\resources\\profile_pictures\\1.jpg");
@@ -188,33 +332,30 @@ class ServerHandler implements Runnable {
             clientSocket.close();
         }
     }
+//check methods about sending pfp
+    public static void get_pfp(Socket socket,String name) {
+        try {
 
 
+            InputStream inputStream = socket.getInputStream();
+            byte[] buffer = new byte[8192];
+            int byteread;
+            FileOutputStream fileOutputStream = new FileOutputStream("D:\\final_project\\src\\main\\resources\\server_profile_pictures\\" + name + ".jpg");
 
-    public static void server_video_sender(Socket clientSocket) throws IOException {
-        FileInputStream videoFile = new FileInputStream("C:\\Users\\Sepanta\\Downloads\\@movieo_bot.Black.Bullet.E02.720p.BluRay.@movieo_bot.mkv");
-
-        while (true) {
-            System.out.println("Client connected: " + clientSocket.getInetAddress());
-
-            DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
-            out.writeUTF("msg");
-
-            OutputStream outputStream = clientSocket.getOutputStream();
-
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-
-            while ((bytesRead = videoFile.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
+            while ((byteread = inputStream.read(buffer)) != -1) {
+                fileOutputStream.write(buffer, 0, byteread);
             }
+            fileOutputStream.close();
+            inputStream.close();
 
-            videoFile.close();
-            clientSocket.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-
     }
+
+
+
 
 
     private static void server_sign_in(Socket clientSocket) {
