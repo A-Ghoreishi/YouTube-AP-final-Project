@@ -3,24 +3,131 @@ package program.youtube;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 import static program.youtube.database.*;
 
 
-class clientHandler implements Runnable {
+class ServerHandler implements Runnable {
     private final Socket clientSocket;
 
-    public clientHandler(Socket clientSocket) {
+    public ServerHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
 
-    public static void get_video(Socket socket,String name){
+    @Override
+    public void run() {
+        try {
+            // Get input and output streams
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            // Read client input
+            String clientInput;
+
+            while ((clientInput = in.readLine()) != null) {
+
+                switch (clientInput) {
+                    case "get video" -> {
+                        System.out.println("get_video");
+                        get_video(clientSocket);
+
+                    }
+                    case "send_video" -> {
+                        server_video_sender(clientSocket);
+                        out.println("sent");
+                    }
+                    case "sign_in" -> {
+                        System.out.println("on");
+                        server_sign_in(clientSocket);
+                        System.out.println("got the info");
+                    }
+                    case "get_pfp" -> {
+                        System.out.println("pfp");
+                        String name = in.readLine();
+                        get_pfp(clientSocket, name);
+                    }
+                    case "send_pfp" ->{
+
+                        System.out.println("send_pfp");
+                        // i dont remmeber what is the usee of this
+                        String name = in.readLine();
+                        server_send_pfp(clientSocket);
+                    }
+                    case "log_in" ->{
+                        System.out.println("login");
+                        server_log_in(clientSocket);
+                    }
+                    case "sign_in_name" ->{
+                        System.out.println("sign_in_name");
+                        sign_in_get_name(clientSocket);
+                    }
+                    case "sign_in_birth_dates" ->{
+                        System.out.println("birth");
+                        sign_in_get_birth_dates(clientSocket);
+                    }
+                    case "sign_in_eamil,pass,bio" ->{
+                        System.out.println("email");
+                        sign_in_get_email_pass_bio(clientSocket);
+                    }
+                    case "sending comment" ->{
+                        System.out.println("getting the comment");
+                        get_comment(clientSocket);
+                        System.out.println("done getting the comment");
+                    }
+                    case "liking the video" ->{
+                        System.out.println("liking the video");
+                        server_liking_video(clientSocket);
+                        System.out.println("done");
+                    }
+                    case "get user_id" ->{
+                        System.out.println("sending the user_id");
+                        send_user_id();
+                    }
+                }
+
+                // Process client input (you can customize this part)
+                //String response = "Hello, client!"; // Your custom response
+
+                // Send response back to client
+                //out.println(response);
+            }
+
+            // Clean up
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public static void get_video(Socket clientSocket){
         try {
 
+            // Read data from the client
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
 
-            InputStream inputStream = socket.getInputStream();
+            // Parse the JSON data
+            JSONObject json = new JSONObject(clientData);
+            String userName = json.getString("user_name");
+            String title = json.getString("title");
+            int user_id = json.getInt("user_id");
+            database database = new database();
+            //inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
+            add_video(user_id,userName,title);
+
+
+            // Send a response back to the client
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            writer.println("Server received your sign-in data: " + clientData);
+
+            int videoid=database.getLastVideoId();
+            String name = Integer.toString(videoid);
+            String save_path = "D:\\final_project\\src\\main\\resources\\videos\\"+name+".mkv";
+            InputStream inputStream = clientSocket.getInputStream();
             byte[] buffer = new byte[1024];
             int byteread;
             FileOutputStream fileOutputStream = new FileOutputStream("D:\\final_project\\src\\main\\resources\\videos\\"+name+".mkv");
@@ -28,14 +135,11 @@ class clientHandler implements Runnable {
             while ((byteread = inputStream.read(buffer)) != -1){
                 fileOutputStream.write(buffer,0,byteread);
             }
+
+
             fileOutputStream.close();
             inputStream.close();
-
-
-
-
-
-
+            clientSocket.close();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -113,79 +217,6 @@ class clientHandler implements Runnable {
     }
 
 
-
-
-
-    @Override
-    public void run() {
-        try {
-            // Get input and output streams
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-
-            // Read client input
-            String clientInput;
-
-            while ((clientInput = in.readLine()) != null) {
-
-                switch (clientInput) {
-                    case "getfile" -> {
-                        String name = in.readLine();
-                        get_video(clientSocket, name);
-                        out.println("get");
-                    }
-                    case "sendfile" -> {
-                        server_video_sender(clientSocket);
-                        out.println("sent");
-                    }
-                    case "sign_in" -> {
-                        System.out.println("on");
-                        server_sign_in(clientSocket);
-                        System.out.println("got the info");
-                    }
-                    case "get_pfp" -> {
-                        System.out.println("pfp");
-                        String name = in.readLine();
-                        get_pfp(clientSocket, name);
-                    }
-                    case "send_pfp" ->{
-
-                        System.out.println("send_pfp");
-                        // i dont remmeber what is the usee of this
-                        String name = in.readLine();
-                        server_send_pfp(clientSocket);
-                    }
-                    case "log_in" ->{
-                        System.out.println("login");
-                        server_log_in(clientSocket);
-                    }
-                    case "sign_in_name" ->{
-                        System.out.println("sign_in_name");
-                        sign_in_get_name(clientSocket);
-                    }
-                    case "sign_in_birth_dates" ->{
-                        System.out.println("birth");
-                        sign_in_get_birth_dates(clientSocket);
-                    }
-                    case "sign_in_eamil,pass,bio" ->{
-                        System.out.println("email");
-                        sign_in_get_email_pass_bio(clientSocket);
-                    }
-                }
-
-                // Process client input (you can customize this part)
-                //String response = "Hello, client!"; // Your custom response
-
-                // Send response back to client
-                //out.println(response);
-            }
-
-            // Clean up
-            clientSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     private static void server_sign_in(Socket clientSocket) {
         try {
             // Read data from the client
@@ -335,6 +366,84 @@ class clientHandler implements Runnable {
             e.printStackTrace();
         }
 
+    }
+    public static void get_comment(Socket clientSocket){
+        try {
+            // Read data from the client
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            // Parse the JSON data
+            JSONObject json = new JSONObject(clientData);
+            String userName = json.getString("user_name");
+            String comment = json.getString("comment");
+            int video_id = json.getInt("video_id");
+            database database = new database();
+            //inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
+            making_comment(video_id,userName,comment);
+            // Insert data into the database (use your actual method here)
+            // Example (assuming you have a method called insertIntoDatabase):
+            // insertIntoDatabase(name, userName, familyName, password, bio, birthYear, birthMonth, birthDay);
+
+            // Send a response back to the client
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            writer.println("Server received your sign-in data: " + clientData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void server_liking_video(Socket clientSocket){
+        try {
+            // Read data from the client
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            // Parse the JSON data
+            JSONObject json = new JSONObject(clientData);
+            int user_id = json.getInt("user_id");
+            int video_id = json.getInt("video_id");
+
+            database database = new database();
+            //inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
+            increase_likes_of_video(video_id);
+            add_to_liked(user_id,video_id);
+            // Insert data into the database (use your actual method here)
+            // Example (assuming you have a method called insertIntoDatabase):
+            // insertIntoDatabase(name, userName, familyName, password, bio, birthYear, birthMonth, birthDay);
+
+            // Send a response back to the client
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            writer.println("Server received your sign-in data: " + clientData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void send_user_id() {
+        try {
+            // Read data from the client
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            // Parse the JSON data
+            JSONObject json = new JSONObject(clientData);
+            String user_name = json.getString("user_name");
+
+            database database = new database();
+            int user_id = get_user_id(user_name);
+            json.put("user_id",user_id);
+
+            // Send a response back to the client
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            writer.println(json.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

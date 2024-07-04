@@ -45,27 +45,38 @@ public class client {
         }
     }
 
+    public void sending_video(String title,String path,String user_name,int user_id){
 
 
-    // i should check on this method if it works
-    public static void send_video(String path,int video_id){
-        String name = Integer.toString(video_id);
-
-        try{
-            Socket socket = new Socket("localhost",4042);
-
-
+        try {
+            Socket socket = new Socket("localhost", 4042);
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            String meesage = "get_pfp";
+            String meesage = "get video";
             out.println(meesage);
-            out.println(name);
+            Thread.sleep(1000);
+            // Create a JSON object with the provided data
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("user_name",user_name);
+            jsonParams.put("title", title);
+            jsonParams.put("user_id",user_id);
 
-            File videfile =new File(path) ;
-            byte[] videobytes = new byte[(int)videfile.length()];
+
+
+            // Write data to the server
+            PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+            writer.println(jsonParams.toString());
+            System.out.println("sent");
+
+            // Read the server's response
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String serverResponse = reader.readLine();
+            System.out.println("Server response: " + serverResponse);
+
+            File videfile = new File(path);
+            byte[] videobytes = new byte[(int) videfile.length()];
             //FileInputStream fileInputStream = new FileInputStream(videfile);
             //fileInputStream.read(videobytes);
             //fileInputStream.close();
-
 
 
             OutputStream outputStream = socket.getOutputStream();
@@ -83,11 +94,11 @@ public class client {
             socket.close();
 
 
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     public static void get_video(String videoName) throws IOException {
 
@@ -236,6 +247,7 @@ public class client {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             String meesage = "sign_in_name";
             out.println(meesage);
+            Thread.sleep(1000);
 
             // Create a JSON object with the provided data
             JSONObject jsonParams = new JSONObject();
@@ -257,6 +269,8 @@ public class client {
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -328,6 +342,104 @@ public class client {
 
     }
 
+    public void sending_comment(String comment,String user_name,int video_id){
+        try {
+            Socket socket = new Socket("localhost", 4042);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String meesage = "sending comment";
+            out.println(meesage);
+            Thread.sleep(1000);
+            // Create a JSON object with the provided data
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("user_name",user_name);
+            jsonParams.put("comment", comment);
+            jsonParams.put("video_id",video_id);
+
+
+
+            // Write data to the server
+            PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+            writer.println(jsonParams.toString());
+            System.out.println("sent");
+
+            // Read the server's response
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String serverResponse = reader.readLine();
+            System.out.println("Server response: " + serverResponse);
+
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void liking_the_video(int video_id,int user_id){
+        try {
+            Socket socket = new Socket("localhost", 4042);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String meesage = "liking the video";
+            out.println(meesage);
+            Thread.sleep(1000);
+
+            // Create a JSON object with the provided data
+
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("video_id",video_id);
+            jsonParams.put("user_id",user_id);
+
+            // Write data to the server
+            PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+            writer.println(jsonParams.toString());
+            System.out.println("sent");
+
+            // Read the server's response
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String serverResponse = reader.readLine();
+            System.out.println("Server response: " + serverResponse);
+
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int get_user_id(String user_name){
+        int user_id=0;
+        try {
+            Socket socket = new Socket("localhost", 4042);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String meesage = "get user_id";
+            out.println(meesage);
+            Thread.sleep(1000);
+
+            // Create a JSON object with the provided data
+
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("user_name",user_name);
+            // Write data to the server
+            PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+            writer.println(jsonParams.toString());
+            System.out.println("sent");
+
+            // Read the server's response
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String serverResponse = reader.readLine();
+            JSONObject json = new JSONObject(serverResponse);
+            user_id = json.getInt("user_id");
+
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return user_id;
+    }
+
 
 
 
@@ -347,6 +459,14 @@ public class client {
         //sending_fname_lname_user_name("christian","bale","patric_bateman");
         //sending_birth_dates("patric_bateman",1969,"january",18,"man");
         //send_email_password_bio("patric_bateman","nvjkn@gmail.com","vfknk;v","hello there -obi-one");
+        client client = new client();
+        //client.sending_comment("lame video","mrbeast",1);
+        //client.liking_the_video(3,1);
+        //sending_fname_lname_user_name("sepanta","hos","mrbeast1");
+        //System.out.println(client.get_user_id("mrbeast"));
+        client.sending_video("vlog3","C:\\Users\\Sepanta\\Downloads\\ccc8ac35723faa7986342aff76a0eda68350123-360p.mp4","mrbeast",5);
+
+
     }
 
 

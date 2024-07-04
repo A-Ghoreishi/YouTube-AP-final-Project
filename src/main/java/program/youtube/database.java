@@ -8,35 +8,12 @@ import java.util.List;
 
 public class database {
 
-    static String url = "jdbc:postgresql://localhost:5432/postgres";
-    static String user = "postgres";
-    static String password = "1234";
+    private static final String url = "jdbc:postgresql://localhost:5432/postgres";
+    private static final String user = "postgres";
+    private static final String password = "1234";
 
 
 
-    public static void inserting_user_info(String name,String user_name,String family_name,String user_password,String bio,int birth_year,String birth_month,int birth_day,String email) {
-
-
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String sql = "INSERT INTO user_info (user_name,name,family_name,password,birth_year,birth_month,birth_day,bio) VALUES (?, ?,?,?,?,?,?,?)";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setString(1, user_name);
-                preparedStatement.setString(2,name);
-                preparedStatement.setString(3,family_name);
-                preparedStatement.setString(4,user_password);
-                preparedStatement.setInt(5,birth_year);
-                preparedStatement.setString(6,birth_month);
-                preparedStatement.setInt(7,birth_day);
-                preparedStatement.setString(8,bio);
-
-
-                // Set the array to the prepared statement
-                preparedStatement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
     public static void inserting_birth_date_and_gender(int year,String birth_month,int day,String user_name,String gender){
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             String sql = "UPDATE user_info\n" +
@@ -60,24 +37,48 @@ public class database {
         }
     }
 
-
-
-    public static void inserting_name_username_lname(String fname,String lname,String user_name){
-
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            String sql = "INSERT INTO user_info (name,family_name,user_name) values (?,?,?)";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-                preparedStatement.setString(1,fname);
-                preparedStatement.setString(2,lname);
-                preparedStatement.setString(3,user_name);
-
-                // Set the array to the prepared statement
-                preparedStatement.executeUpdate();
+    public static boolean checkUsernameExists(String username) {
+        boolean usernameExists = false;
+        try {
+            Connection connection = DriverManager.getConnection(url, user, password);
+            PreparedStatement st = connection.prepareStatement("SELECT * FROM user_info WHERE user_name = ?");
+            st.setString(1, username);
+            ResultSet resultSet = st.executeQuery();
+            if (resultSet.next()) {
+                System.out.println("Username already exists: " + username);
+                usernameExists = true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return usernameExists;
+    }
 
+
+
+
+    public static boolean inserting_name_username_lname(String fname,String lname,String user_name){
+
+        if(!checkUsernameExists(user_name)) {
+
+            try (Connection connection = DriverManager.getConnection(url, user, password)) {
+                String sql = "INSERT INTO user_info (name,family_name,user_name) values (?,?,?)";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                    preparedStatement.setString(1, fname);
+                    preparedStatement.setString(2, lname);
+                    preparedStatement.setString(3, user_name);
+
+                    // Set the array to the prepared statement
+                    preparedStatement.executeUpdate();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+        System.out.println("this user name already exist chose another one");
+
+        return false;
 
     }
 
@@ -272,7 +273,7 @@ public class database {
         return chanels;
     }
 
-    public static void add_to_liked(int user_id,String video_title){
+    public static void add_to_liked(int user_id,int video_id){
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -281,12 +282,12 @@ public class database {
             conn = DriverManager.getConnection(url, user, password);
 
             // Prepare the SQL statement
-            String sql = "INSERT INTO liked (user_id,video_title) VALUES (?,?)";
+            String sql = "INSERT INTO liked (user_id,video_id) VALUES (?,?)";
             pstmt = conn.prepareStatement(sql);
 
             // Set the array to the prepared statement
             pstmt.setInt(1,user_id);
-            pstmt.setString(2,video_title);
+            pstmt.setInt(2,video_id);
 
             // Execute the insertion
             pstmt.executeUpdate();
@@ -387,7 +388,7 @@ public class database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
+        return false;
     }
 
     public static int get_user_id(String user_name){
@@ -466,8 +467,26 @@ public class database {
         }
     }
 
+    public int getLastVideoId() {
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            String query = "SELECT video_id FROM videos ORDER BY video_id DESC LIMIT 1";
+            try (PreparedStatement stmt = conn.prepareStatement(query);
+                 ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("video_id");
+                } else {
+                    System.out.println("No videos found in the table.");
+                    return -1; // Or handle the absence of records as needed
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching last video_id: " + e.getMessage());
+            return -1; // Handle the exception appropriately
+        }
+    }
 
-    public static void add_video(int user_id,String user_name, String title,String path){
+
+    public static void add_video(int user_id,String user_name, String title){
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -477,16 +496,13 @@ public class database {
             conn = DriverManager.getConnection(url, user, password);
 
             // Prepare the SQL statement
-            String sql = "INSERT INTO videos (user_id,user_name,title,path,likes,views) VALUES (?,?,?,?,?,?)";
+            String sql = "INSERT INTO videos (user_id,user_name,title) VALUES (?,?,?)";
             pstmt = conn.prepareStatement(sql);
 
             // Set the array to the prepared statement
             pstmt.setInt(1,user_id);
             pstmt.setString(2,user_name);
             pstmt.setString(3,title);
-            pstmt.setString(4,path);
-            pstmt.setInt(5,0);
-            pstmt.setInt(6,0);
 
             // Execute the insertion
             pstmt.executeUpdate();
@@ -501,6 +517,35 @@ public class database {
             }
         }
 
+    }
+    public void puting_the_file_path_into_table(String path,int video_id){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Connect to the database
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Prepare the SQL statement
+            String sql = "UPDATE videos SET path = ? WHERE video_id = ? ";
+            pstmt = conn.prepareStatement(sql);
+
+            // Set the array to the prepared statement
+            pstmt.setString(1,path);
+            pstmt.setInt(2,video_id);
+
+            // Execute the insertion
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
     public static void increase_likes_of_video(int video_id){
 
@@ -863,7 +908,10 @@ public class database {
         //increase_like_for_comment(1);
        // inserting_name_username_lname("sepanta","hos","mrbeast");
         //inserting_password_email_bio("mrbeast","12345","email","bio");
-        inserting_birth_date_and_gender(1979,"august",7,"mrbeast","man");
+        //inserting_birth_date_and_gender(1979,"august",7,"mrbeast","man");
+       // add_to_liked(1,3);
+        //checkUsernameExists("mrbeast");
+        //inserting_name_username_lname("sepanta","hos","mrbeast");
         }
 
     }
