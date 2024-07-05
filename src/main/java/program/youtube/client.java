@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import static program.youtube.account.hashPassword;
-import static program.youtube.database.making_comment;
+
 
 public class client {
     //change the path of vieo for client and for server
@@ -622,8 +622,38 @@ public class client {
         return null;
     }
 
+    public String get_bio(int user_id){
+        try {
+            Socket socket = new Socket("localhost",4042);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
-//things to do: completing the apis about the whatch list not letting user like somthing twice and handeling race condition completing method about sending thumbnail and chck the method about sending profile pic rename where videos save and api for getting comment from the server
+            String meesage = "send_bio";
+            out.println(meesage);
+
+            Thread.sleep(1000);
+
+            JSONObject json = new JSONObject();
+            json.put("video_id",user_id);
+            out.print(json.toString());
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            JSONObject json1 = new JSONObject(clientData);
+            String bio = json1.getString("bio");
+
+            return bio;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+
+//things to do: completing the apis about the whatch list not letting user like somthing twice and handeling race condition  and chck the method about sending profile pic rename where videos save and api for getting comment from the server
 //remember to make the search method in database
 
 

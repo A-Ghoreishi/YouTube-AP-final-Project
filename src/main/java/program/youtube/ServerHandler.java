@@ -150,7 +150,7 @@ class ServerHandler implements Runnable {
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String clientData = reader.readLine();
             JSONObject jsonObject = new JSONObject(clientData);
-            int video_id = jsonObject.getInt("user_id");
+            int video_id = jsonObject.getInt("video_id");
 
 
             Thread.sleep(1000);
@@ -177,7 +177,7 @@ class ServerHandler implements Runnable {
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String clientData = reader.readLine();
             JSONObject jsonObject = new JSONObject(clientData);
-            int video_id = jsonObject.getInt("user_id");
+            int video_id = jsonObject.getInt("video_id");
 
 
             Thread.sleep(1000);
@@ -204,7 +204,7 @@ class ServerHandler implements Runnable {
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String clientData = reader.readLine();
             JSONObject jsonObject = new JSONObject(clientData);
-            int video_id = jsonObject.getInt("user_id");
+            int video_id = jsonObject.getInt("video_id");
 
 
             Thread.sleep(1000);
@@ -231,7 +231,7 @@ class ServerHandler implements Runnable {
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String clientData = reader.readLine();
             JSONObject jsonObject = new JSONObject(clientData);
-            int video_id = jsonObject.getInt("user_id");
+            int video_id = jsonObject.getInt("video_id");
 
 
             Thread.sleep(1000);
@@ -674,6 +674,31 @@ class ServerHandler implements Runnable {
             }
 
         }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void send_bio(Socket clientSocket){
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            int user_id = jsonObject.getInt("user_id");
+
+            // Create a JSON object with the provided data
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("bio",get_bio(user_id));
+
+            // Write data to the server
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            writer.println(jsonParams.toString());
+            System.out.println("sent");
+
+            // Read the server's response
+
+            clientSocket.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

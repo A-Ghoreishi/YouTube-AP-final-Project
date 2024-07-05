@@ -432,7 +432,7 @@ public class database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "no name";
+        return "";
     }
 
 
