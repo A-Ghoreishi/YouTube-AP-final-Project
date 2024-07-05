@@ -46,7 +46,7 @@ class ServerHandler implements Runnable {
                     case "get_pfp" -> {
                         System.out.println("pfp");
                         String name = in.readLine();
-                        get_pfp(clientSocket, name);
+                        get_pfp(clientSocket);
                     }
                     case "send_pfp" ->{
 
@@ -81,7 +81,7 @@ class ServerHandler implements Runnable {
                     }
                     case "get user_id" ->{
                         System.out.println("sending the user_id");
-                        send_user_id();
+                        send_user_id(clientSocket);
                     }
                 }
 
@@ -311,7 +311,17 @@ class ServerHandler implements Runnable {
 
 
     public static void server_send_pfp(Socket clientSocket) throws IOException {
-        FileInputStream videoFile = new FileInputStream("D:\\final_project\\src\\main\\resources\\profile_pictures\\1.jpg");
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        String clientData = reader.readLine();
+        System.out.println("Received login-in data from client: " + clientData);
+
+        JSONObject json = new JSONObject(clientData);
+        int user_id = json.getInt("user_id");
+
+
+
+        FileInputStream videoFile = new FileInputStream(get_profile_pic_path(user_id));
 
         while (true) {
             System.out.println("Client connected: " + clientSocket.getInetAddress());
@@ -333,14 +343,25 @@ class ServerHandler implements Runnable {
         }
     }
 //check methods about sending pfp
-    public static void get_pfp(Socket socket,String name) {
+    public static void get_pfp(Socket clientSocket) {
         try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            JSONObject json = new JSONObject(clientData);
+            int user_id = json.getInt("user_id");
+            String name = Integer.toString(user_id);
+
+            String path = "D:\\final_project\\src\\main\\resources\\server_profile_pictures\\" + name + ".jpg";
+            add_profile_pic_path(path,user_id);
 
 
-            InputStream inputStream = socket.getInputStream();
+            InputStream inputStream = clientSocket.getInputStream();
             byte[] buffer = new byte[8192];
             int byteread;
-            FileOutputStream fileOutputStream = new FileOutputStream("D:\\final_project\\src\\main\\resources\\server_profile_pictures\\" + name + ".jpg");
+
+            FileOutputStream fileOutputStream = new FileOutputStream(path);
 
             while ((byteread = inputStream.read(buffer)) != -1) {
                 fileOutputStream.write(buffer, 0, byteread);
@@ -563,7 +584,7 @@ class ServerHandler implements Runnable {
         }
     }
 
-    public void send_user_id() {
+    public void send_user_id(Socket clientSocket) {
         try {
             // Read data from the client
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -583,6 +604,76 @@ class ServerHandler implements Runnable {
 
             writer.println(json.toString());
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void get_thumbnail(Socket clientSocket) {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            JSONObject json = new JSONObject(clientData);
+            int video_id = json.getInt("video_id");
+            String name = Integer.toString(video_id);
+
+            String path = "D:\\final_project\\src\\main\\resources\\server_thumbnail\\" + name + ".jpg";
+            //add_profile_pic_path(path,video_id);
+            database.add_thumbnail(video_id,path);
+
+            InputStream inputStream = clientSocket.getInputStream();
+            byte[] buffer = new byte[8192];
+            int byteread;
+
+            FileOutputStream fileOutputStream = new FileOutputStream(path);
+
+            while ((byteread = inputStream.read(buffer)) != -1) {
+                fileOutputStream.write(buffer, 0, byteread);
+            }
+            fileOutputStream.close();
+            inputStream.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void server_send_thumbnail(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            JSONObject json = new JSONObject(clientData);
+            int video_id = json.getInt("video_id");
+
+
+
+            FileInputStream videoFile = new FileInputStream(database.get_thumbnail_path(video_id));
+
+            while (true) {
+                System.out.println("Client connected: " + clientSocket.getInetAddress());
+
+                DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
+                out.writeUTF("msg");
+
+                OutputStream outputStream = clientSocket.getOutputStream();
+
+                byte[] buffer = new byte[8192];
+                int bytesRead;
+
+                while ((bytesRead = videoFile.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+
+                videoFile.close();
+                clientSocket.close();
+            }
+
+        }catch (Exception e){
             e.printStackTrace();
         }
     }

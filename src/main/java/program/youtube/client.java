@@ -15,7 +15,7 @@ public class client {
     static Scanner  scanner = new Scanner(System.in);
 
     public static void send_profile_picture(String path, int user_id) {
-        String name = Integer.toString(user_id);
+
 
         try {
             Socket socket = new Socket("localhost", 4042);
@@ -23,7 +23,9 @@ public class client {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             String message = "get_pfp";
             out.println(message);
-            out.println(name);
+            JSONObject json = new JSONObject();
+            json.put("user_id",user_id);
+            out.print(json.toString());
 
             File pictureFile = new File(path);
             byte[] pictureBytes = new byte[(int) pictureFile.length()];
@@ -545,9 +547,84 @@ public class client {
         return user_id;
     }
 
+    public void send_thumbnail(int video_id,String path){
+        try {
+            Socket socket = new Socket("localhost", 4042);
+
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String message = "get_thumbnail";
+            out.println(message);
+
+            Thread.sleep(1000);
+
+            JSONObject json = new JSONObject();
+            json.put("video_id",video_id);
+            out.print(json.toString());
+
+            File pictureFile = new File(path);
+            byte[] pictureBytes = new byte[(int) pictureFile.length()];
+
+            OutputStream outputStream = socket.getOutputStream();
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(pictureFile));
+
+            int count;
+            byte[] buffer = new byte[8192]; // 8KB buffer
+            while ((count = bis.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, count);
+                outputStream.flush(); // Flush after each write
+            }
+
+            bis.close();
+            outputStream.close();
+            socket.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String get_thumbnail(int video_id){
+        try {
+            Socket socket = new Socket("localhost",4042);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+            String meesage = "send_thumbnail";
+            out.println(meesage);
+
+            Thread.sleep(1000);
+
+            JSONObject json = new JSONObject();
+            json.put("video_id",video_id);
+            out.print(json.toString());
+
+            String name = Integer.toString(video_id);
+
+            InputStream inputStream = socket.getInputStream();
+
+            String path = "D:\\final_project\\src\\main\\resources\\client_thumbnail\\" +name+".jpg";
+            // Save video data to a local file
+            FileOutputStream fileOutputStream = new FileOutputStream(path);
+
+            byte[] buffer = new byte[8192]; // Adjust buffer size as needed
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                fileOutputStream.write(buffer, 0, bytesRead);
+            }
+
+            // Clean up
+            fileOutputStream.close();
+            inputStream.close();
+            return path;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
 
 //things to do: completing the apis about the whatch list not letting user like somthing twice and handeling race condition completing method about sending thumbnail and chck the method about sending profile pic rename where videos save and api for getting comment from the server
-
+//remember to make the search method in database
 
 
 

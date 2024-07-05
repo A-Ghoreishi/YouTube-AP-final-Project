@@ -967,7 +967,60 @@ public class database {
 
     }
 
+    public void add_thumbnail(int video_id,String path){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
 
+        try {
+            // Connect to the database
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Prepare the SQL statement
+            String sql = "UPDATE videos SET thumbnail = ? WHERE video_id = ?;";
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1,path);
+            pstmt.setInt(2,video_id);
+
+
+            // Execute the insertion
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    public String get_thumbnail_path(int video_id){
+        String query = "SELECT profile_pic_path FROM user_info WHERE user_id = ?";
+
+
+
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+
+            pstmt.setInt(1, video_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                String path_of_profile_pic = rs.getString("thumbnail");
+                return path_of_profile_pic;
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
 
     
