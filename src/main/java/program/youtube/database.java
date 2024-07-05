@@ -1022,6 +1022,57 @@ public class database {
         return null;
     }
 
+    public List<String> searchByUsername(String searchString) {
+        List<String> results = new ArrayList<>();
+
+        String sql = "SELECT user_name FROM videos WHERE user_name LIKE ?";
+        try (Connection connection = DriverManager.getConnection(url,user,password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            // Set the search string as a parameter (using % for wildcard matching)
+            statement.setString(1, "%" + searchString + "%");
+
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    String userName = resultSet.getString("user_name");
+
+                    results.add(userName);
+                }
+            }
+        } catch (SQLException e) {
+            // Handle any exceptions (e.g., log or throw)
+            e.printStackTrace();
+        }
+
+        return results;
+    }
+
+    public List<Integer> search_video(String searchString){
+        List<Integer> results = new ArrayList<>();
+
+        String sql = "SELECT video_id FROM videos WHERE title LIKE ?";
+        try (Connection connection = DriverManager.getConnection(url,user,password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            // Set the search string as a parameter (using % for wildcard matching)
+            statement.setString(1, "%" + searchString + "%");
+
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+
+                    int video_id = resultSet.getInt("video_id");
+                    results.add(video_id);
+
+                }
+            }
+        } catch (SQLException e) {
+            // Handle any exceptions (e.g., log or throw)
+            e.printStackTrace();
+        }
+
+        return results;
+    }
+
 
     
 

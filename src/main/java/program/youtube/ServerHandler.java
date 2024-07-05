@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import static program.youtube.database.*;
 
@@ -699,6 +700,55 @@ class ServerHandler implements Runnable {
 
             clientSocket.close();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void server_search(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            String search = jsonObject.getString("search");
+
+            database.search_video(search);
+            database.searchByUsername(search);
+
+
+            // Create a JSON object with the provided data
+
+            ArrayList<String> myList = new ArrayList<>();
+            myList.add("apple");
+            myList.add("banana");
+            myList.add("cherry");
+
+            // Create an ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
+            Object ObjectMapper;
+            ObjectMapper
+
+            // Serialize the ArrayList to JSON
+            String json = objectMapper.writeValueAsString(myList);
+
+            System.out.println("JSON representation of ArrayList:");
+            System.out.println(json);
+
+
+
+            // Write data to the server
+
+
+            System.out.println("sent");
+
+            // Read the server's response
+
+            clientSocket.close();
+
+
+        }catch (Exception e){
             e.printStackTrace();
         }
     }

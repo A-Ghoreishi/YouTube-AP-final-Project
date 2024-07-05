@@ -652,9 +652,30 @@ public class client {
         return null;
     }
 
+    public static void search(String search){
+        try {
+
+            Socket socket = new Socket("localhost", 4042);
+
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String message = "get_thumbnail";
+            out.println(message);
+
+            Thread.sleep(1000);
+
+            JSONObject json = new JSONObject();
+            json.put("search",search);
+            out.print(json.toString());
+
+            socket.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
 //things to do: completing the apis about the whatch list not letting user like somthing twice and handeling race condition  and chck the method about sending profile pic rename where videos save and api for getting comment from the server
-//remember to make the search method in database
+//make api for search
 
 
 
@@ -676,7 +697,7 @@ public class client {
         //client.liking_the_video(3,1);
         //sending_fname_lname_user_name("sepanta","hos","mrbeast1");
         //System.out.println(client.get_user_id("mrbeast"));
-        client.sending_video("vlog3","C:\\Users\\Sepanta\\Downloads\\ccc8ac35723faa7986342aff76a0eda68350123-360p.mp4","mrbeast",5);
+       //client.sending_video("vlog3","C:\\Users\\Sepanta\\Downloads\\ccc8ac35723faa7986342aff76a0eda68350123-360p.mp4","mrbeast",5);
 
 
     }
