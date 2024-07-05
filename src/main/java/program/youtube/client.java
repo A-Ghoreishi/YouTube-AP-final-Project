@@ -1,10 +1,14 @@
 package program.youtube;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static program.youtube.account.hashPassword;
@@ -652,13 +656,15 @@ public class client {
         return null;
     }
 
-    public static void search(String search){
+    public static List<String> search_username(String search){
+        List <String> myList = new ArrayList<>();
+
         try {
 
             Socket socket = new Socket("localhost", 4042);
 
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            String message = "get_thumbnail";
+            String message = "search";
             out.println(message);
 
             Thread.sleep(1000);
@@ -667,15 +673,74 @@ public class client {
             json.put("search",search);
             out.print(json.toString());
 
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // Deserialize the JSON array to an ArrayList
+            myList = objectMapper.readValue(clientData, new TypeReference<List<String>>() {});
+
+            // Now you have your ArrayList
+            System.out.println("Deserialized ArrayList:");
+            System.out.println(myList);
+
             socket.close();
+
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        return myList;
+    }
+
+    public static List<Integer> search_video(String search){
+        List <Integer> myList = new ArrayList<>();
+
+        try {
+
+            Socket socket = new Socket("localhost", 4042);
+
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String message = "search";
+            out.println(message);
+
+            Thread.sleep(1000);
+
+            JSONObject json = new JSONObject();
+            json.put("search",search);
+            out.print(json.toString());
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // Deserialize the JSON array to an ArrayList
+            myList = objectMapper.readValue(clientData, new TypeReference<List<Integer>>() {});
+
+            // Now you have your ArrayList
+            System.out.println("Deserialized ArrayList:");
+            System.out.println(myList);
+
+            socket.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return myList;
+    }
+
+    public void add_watch_later(int video_id,int user_id){
+
     }
 
 
 //things to do: completing the apis about the whatch list not letting user like somthing twice and handeling race condition  and chck the method about sending profile pic rename where videos save and api for getting comment from the server
-//make api for search
+//make api for search:done
 
 
 

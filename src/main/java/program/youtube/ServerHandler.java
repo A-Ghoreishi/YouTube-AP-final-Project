@@ -1,10 +1,12 @@
 package program.youtube;
 
 import org.json.JSONObject;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 import static program.youtube.database.*;
 
@@ -704,7 +706,7 @@ class ServerHandler implements Runnable {
         }
     }
 
-    public void server_search(Socket clientSocket){
+    public void server_search_video(Socket clientSocket){
         try{
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -714,31 +716,66 @@ class ServerHandler implements Runnable {
             JSONObject jsonObject = new JSONObject(clientData);
             String search = jsonObject.getString("search");
 
-            database.search_video(search);
-            database.searchByUsername(search);
+            List<Integer> videos = database.search_video(search);
+
 
 
             // Create a JSON object with the provided data
 
-            ArrayList<String> myList = new ArrayList<>();
-            myList.add("apple");
-            myList.add("banana");
-            myList.add("cherry");
 
             // Create an ObjectMapper
             ObjectMapper objectMapper = new ObjectMapper();
-            Object ObjectMapper;
-            ObjectMapper
+
 
             // Serialize the ArrayList to JSON
-            String json = objectMapper.writeValueAsString(myList);
+            String json = objectMapper.writeValueAsString(videos);
 
-            System.out.println("JSON representation of ArrayList:");
-            System.out.println(json);
+            // Write data to the server
+            writer.println(json);
+
+
+            System.out.println("sent");
+
+            // Read the server's response
+
+            clientSocket.close();
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void server_search_user_name(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            String search = jsonObject.getString("search");
+
+
+            List<String> username =  database.searchByUsername(search);
+
+
+            // Create a JSON object with the provided data
+
+
+            // Create an ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
+
+
+            // Serialize the ArrayList to JSON
+            String json = objectMapper.writeValueAsString(username);
+
+
 
 
 
             // Write data to the server
+            writer.println(json);
 
 
             System.out.println("sent");
