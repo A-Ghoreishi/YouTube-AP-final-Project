@@ -106,7 +106,7 @@ public class database {
 
 
 // i should if the user already have added this video
-    public static void add_watch_later(String user_name,int video_id,String video_title){
+    public static void add_watch_later(int video_id,int user_id){
         // Convert ArrayList to PostgreSQL array literal
 
         Connection conn = null;
@@ -117,13 +117,12 @@ public class database {
             conn = DriverManager.getConnection(url, user, password);
 
             // Prepare the SQL statement
-            String sql = "INSERT INTO watchlater (user_name,video_id,video_title) VALUES (?,?,?)";
+            String sql = "INSERT INTO watchlater (video_id,user_id) VALUES (?,?)";
             pstmt = conn.prepareStatement(sql);
 
             // Set the array to the prepared statement
-            pstmt.setString(1,user_name);
-            pstmt.setInt(2,video_id);
-            pstmt.setString(3,video_title);
+            pstmt.setInt(1,video_id);
+            pstmt.setInt(2,user_id);
 
 
             // Execute the insertion
@@ -142,11 +141,11 @@ public class database {
 
 
 //needs to get compeleted
-    public static ArrayList<String> get_watch_later(int user_id){
-        String query = "SELECT watchlater FROM Userinfo WHERE user_id = ?";
+    public static ArrayList<Integer> get_watch_later(int user_id){
+        String query = "SELECT video_id FROM watchlater WHERE user_id = ?";
 
-        ArrayList<String> watchLaterList = new ArrayList<>();
-        ArrayList <String> wacthlater = new ArrayList<>();
+
+        ArrayList <Integer> watchlater = new ArrayList<>();
         try (Connection con = DriverManager.getConnection(url, user, password);
              PreparedStatement pstmt = con.prepareStatement(query)) {
 
@@ -155,20 +154,20 @@ public class database {
 
             while (rs.next()) {
 
-                String video_title = rs.getString("video_title");
-                wacthlater.add(video_title);
+                int video_id = rs.getInt("video_id");
+                watchlater.add(video_id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return watchLaterList;
+        return watchlater;
     }
 
     //this is for the list of play lists
     // i will done this later
     //use this method when user want to make another play list
     public static void add_to_playlists(int user_id,String playlist_name){
-        // Convert ArrayList to PostgreSQL array literal
+
 
         Connection conn = null;
         PreparedStatement pstmt = null;

@@ -2,6 +2,7 @@ package program.youtube;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.scene.image.Image;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -695,7 +696,7 @@ public class client {
         return myList;
     }
 
-    public static List<Integer> search_video(String search){
+    public  List<Integer> search_video(String search){
         List <Integer> myList = new ArrayList<>();
 
         try {
@@ -735,7 +736,93 @@ public class client {
     }
 
     public void add_watch_later(int video_id,int user_id){
+        try {
 
+            Socket socket = new Socket("localhost", 4042);
+
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String message = "add_to_watch_later";
+            out.println(message);
+
+            Thread.sleep(1000);
+
+            JSONObject json = new JSONObject();
+            json.put("video_id",video_id);
+            json.put("user_id",user_id);
+            out.print(json.toString());
+
+            socket.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public ArrayList<Integer> get_watch_later(int user_id){
+        ArrayList <Integer> myList = new ArrayList<>();
+
+        try {
+
+            Socket socket = new Socket("localhost", 4042);
+
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String message = "get_watch_later";
+            out.println(message);
+
+            Thread.sleep(1000);
+
+            JSONObject json = new JSONObject();
+            json.put("user_id",user_id);
+
+            out.print(json.toString());
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+            json = new JSONObject(clientData);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // Deserialize the JSON array to an ArrayList
+            myList = objectMapper.readValue(clientData, new TypeReference<ArrayList<Integer>>() {});
+
+
+            socket.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return myList;
+    }
+
+    public void make_new_play_list(int user_id,String name) {
+
+        try {
+
+            Socket socket = new Socket("localhost", 4042);
+
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String message = "make_new_play_list";
+            out.println(message);
+
+            Thread.sleep(1000);
+
+            JSONObject json = new JSONObject();
+            json.put("user_id", user_id);
+            json.put("name",name);
+
+
+            out.print(json.toString());
+
+
+            // Deserialize the JSON array to an ArrayList
+            socket.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -762,17 +762,11 @@ class ServerHandler implements Runnable {
 
             // Create a JSON object with the provided data
 
-
             // Create an ObjectMapper
             ObjectMapper objectMapper = new ObjectMapper();
 
-
             // Serialize the ArrayList to JSON
             String json = objectMapper.writeValueAsString(username);
-
-
-
-
 
             // Write data to the server
             writer.println(json);
@@ -789,6 +783,92 @@ class ServerHandler implements Runnable {
             e.printStackTrace();
         }
     }
+
+    public void server_add_to_watch_later(Socket clientSocket){
+
+        try{
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+            JSONObject json = new JSONObject(clientData);
+
+            int video_id = json.getInt("video_id");
+            int user_id = json.getInt("user_id");
+            add_watch_later(video_id,user_id);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void server_get_watch_later(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            int user_id = jsonObject.getInt("user_id");
+
+            ArrayList<Integer> videos = get_watch_later(user_id);
+
+
+            // Create a JSON object with the provided data
+
+
+            // Create an ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
+
+
+            // Serialize the ArrayList to JSON
+            String json = objectMapper.writeValueAsString(videos);
+
+            // Write data to the server
+            writer.println(json);
+
+
+            System.out.println("sent");
+
+            // Read the server's response
+
+            clientSocket.close();
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void server_make_new_watch_list(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            int user_id = jsonObject.getInt("user_id");
+            String name = jsonObject.getString("name");
+
+            add_to_playlists(user_id,name);
+
+            System.out.println("sent");
+
+            clientSocket.close();
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    
+
+
+
+
 
 }
 
