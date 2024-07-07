@@ -958,7 +958,7 @@ public class client {
         //login("sepi","1234");
         //sending_fname_lname_user_name("christian","bale","patric_bateman");
         //sending_birth_dates("patric_bateman",1969,"january",18,"man");
-        //send_email_password_bio("patric_bateman","nvjkn@gmail.com","vfknk;v","hello there -obi-one");
+        send_email_password_bio("patric_bateman","nvjkn@gmail.com","vfknk;v","hello there -obi-one");
         client client = new client();
         //client.sending_comment("lame video","mrbeast",1);
         //client.liking_the_video(3,1);
