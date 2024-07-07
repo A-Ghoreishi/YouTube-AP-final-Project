@@ -326,7 +326,8 @@ public class client {
         }
     }
 
-    public static void login(String user_name,String user_password){
+    public static boolean login(String user_name,String user_password){
+        boolean login = false;
         try {
             Socket socket = new Socket("localhost", 4042);
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -347,11 +348,14 @@ public class client {
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String serverResponse = reader.readLine();
             System.out.println("Server response: " + serverResponse);
+            JSONObject jsonObject = new JSONObject(serverResponse);
+            login = jsonObject.getBoolean("login");
 
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return login;
     }
     public static void sending_fname_lname_user_name(String name,String lname,String user_name){
         try {

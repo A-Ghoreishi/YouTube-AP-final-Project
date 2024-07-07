@@ -519,13 +519,16 @@ class ServerHandler implements Runnable {
             String password = json.getString("user_password");
             database database = new database();
             //inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
-            database.login(userName,password);
+            boolean login = database.login(userName,password);
             // Insert data into the database (use your actual method here)
             // Example (assuming you have a method called insertIntoDatabase):
             // insertIntoDatabase(name, userName, familyName, password, bio, birthYear, birthMonth, birthDay);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("login",login);
 
             // Send a response back to the client
             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            writer.println(jsonObject);
             writer.println("Server received your sign-in data: " + clientData);
         } catch (IOException e) {
             e.printStackTrace();
