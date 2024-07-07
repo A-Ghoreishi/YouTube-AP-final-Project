@@ -1,8 +1,6 @@
 package program.youtube;
 
 import java.sql.*;
-import java.sql.Array;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -168,7 +166,6 @@ public class database {
     //use this method when user want to make another play list
     public static void add_to_playlists(int user_id,String playlist_name){
 
-
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -198,22 +195,21 @@ public class database {
         }
     }
 
-    //need to make a method to get the play list id
-    public static ArrayList<Integer> get_playlist(int play_list_id){
-        String query = "SELECT video_id FROM user_info WHERE user_name = ?";
+    public ArrayList<String> get_play_lists(int user_id){
+        String query = "SELECT playlist_name FROM list_playlist WHERE user_id = ?;";
 
-        ArrayList<Integer> selected_playlist = new ArrayList<>();
+        ArrayList<String> selected_playlist = new ArrayList<>();
 
         try (Connection con = DriverManager.getConnection(url, user, password);
              PreparedStatement pstmt = con.prepareStatement(query)) {
 
-            pstmt.setInt(1, play_list_id);
+            pstmt.setInt(1, user_id);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                //String video_title = rs.getString("video_title");
-                int video_id = rs.getInt("video_id");
-                selected_playlist.add(video_id);
+
+                String play_list_name = rs.getString("playlist_name");
+                selected_playlist.add(play_list_name);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -221,9 +217,98 @@ public class database {
         return selected_playlist;
     }
 
+    public void add_video_to_play_list(int video_id,int user_id,String playList_name){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Connect to the database
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Prepare the SQL statement
+            String sql = "INSERT INTO watch_list (user_id,playlist_name,video_id) VALUES (?,?,?)";
+            pstmt = conn.prepareStatement(sql);
+
+            // Set the array to the prepared statement
+            pstmt.setInt(1,user_id);
+            pstmt.setString(2,playList_name);
+            pstmt.setInt(3,video_id);
+
+            // Execute the insertion
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
-// i changed this method from array of string to int and sending video id
+
+    //need to make a method to get the play list id
+    public  ArrayList<Integer> get_video_playlist(int user_id,String watch_list_name){
+        String query = "SELECT video_id FROM watch_list WHERE user_id = ? AND watch_list_name = ?;";
+
+        ArrayList<Integer> videos_playlist = new ArrayList<>();
+
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+
+            pstmt.setInt(1, user_id);
+            pstmt.setString(2,watch_list_name);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                int video_id = rs.getInt("video_id");
+                videos_playlist.add(video_id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return videos_playlist;
+    }
+
+
+    public static void add_to_liked(int user_id,int video_id){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Connect to the database
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Prepare the SQL statement
+            String sql = "INSERT INTO liked (user_id,video_id) VALUES (?,?)";
+            pstmt = conn.prepareStatement(sql);
+
+            // Set the array to the prepared statement
+            pstmt.setInt(1,user_id);
+            pstmt.setInt(2,video_id);
+
+            // Execute the insertion
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
+
+
     public static ArrayList<Integer> get_liked_list(int user_id) {
         String query = "SELECT video_id FROM liked WHERE user_id = ?";
 
@@ -237,8 +322,6 @@ public class database {
 
             while (rs.next()) {
                 int video_id = rs.getInt("video_id");
-                //String video_title = rs.getString("video_title");
-                //liked.add(video_title);
                 liked.add(video_id);
             }
         } catch (SQLException e) {
@@ -272,36 +355,7 @@ public class database {
         return chanels;
     }
 
-    public static void add_to_liked(int user_id,int video_id){
-        Connection conn = null;
-        PreparedStatement pstmt = null;
 
-        try {
-            // Connect to the database
-            conn = DriverManager.getConnection(url, user, password);
-
-            // Prepare the SQL statement
-            String sql = "INSERT INTO liked (user_id,video_id) VALUES (?,?)";
-            pstmt = conn.prepareStatement(sql);
-
-            // Set the array to the prepared statement
-            pstmt.setInt(1,user_id);
-            pstmt.setInt(2,video_id);
-
-            // Execute the insertion
-            pstmt.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
 
     public  static void add_subscriber(int channel_id, int subs_id ){
 //chanel id is the same as the user id i will explain it more later
@@ -1072,10 +1126,63 @@ public class database {
         return results;
     }
 
+    public ArrayList<String> get_comment(int video_id){
+        ArrayList<String> list_comment = new ArrayList<>();
+
+        String sql = "SELECT comment FROM comments WHERE video_id = ?";
+        try (Connection connection = DriverManager.getConnection(url,user,password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            // Set the search string as a parameter (using % for wildcard matching)
+            statement.setInt(1, video_id);
+
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+
+                    String comment = resultSet.getString("comment");
+                    list_comment.add(comment);
+
+                }
+            }
+        } catch (SQLException e) {
+            // Handle any exceptions (e.g., log or throw)
+            e.printStackTrace();
+        }
+
+        return list_comment;
+    }
+
+    public ArrayList<String> get_username_comment(int video_id){
+        ArrayList<String> list_user_name = new ArrayList<>();
+
+        String sql = "SELECT user_name FROM comments WHERE video_id = ?";
+        try (Connection connection = DriverManager.getConnection(url,user,password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            // Set the search string as a parameter (using % for wildcard matching)
+            statement.setInt(1, video_id);
+
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+
+                    String user_name = resultSet.getString("user_name");
+                    list_user_name.add(user_name);
+
+                }
+            }
+        } catch (SQLException e) {
+            // Handle any exceptions (e.g., log or throw)
+            e.printStackTrace();
+        }
+
+        return list_user_name;
+
+    }
+
 
     
 
-
+//make method for getting comment and api
 
     //i should complete the sub and making new tables for the or place it in other tabled making thumbnail and correcting the sending and getting video in client make a method to find the the video name by video id or sending video by video id
 // making method for getting video with video id and complete the login method

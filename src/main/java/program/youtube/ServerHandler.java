@@ -864,6 +864,113 @@ class ServerHandler implements Runnable {
         }
     }
 
+    public void Server_add_video_play_list(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            int user_id = jsonObject.getInt("user_id");
+            String name = jsonObject.getString("name");
+            int video_id = jsonObject.getInt("video_id");
+
+
+            database.add_video_to_play_list(video_id,user_id,name);
+
+            System.out.println("sent");
+
+            clientSocket.close();
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void server_get_play_list(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            int user_id = jsonObject.getInt("user_id");
+
+            ArrayList<String> videos = database.get_play_lists(user_id);
+
+
+            // Create a JSON object with the provided data
+
+
+            // Create an ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
+
+
+            // Serialize the ArrayList to JSON
+            String json = objectMapper.writeValueAsString(videos);
+
+            // Write data to the server
+            writer.println(json);
+            clientSocket.close();
+
+
+            System.out.println("sent");
+
+            // Read the server's response
+
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void Server_get_video_playlist(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            int user_id = jsonObject.getInt("user_id");
+            String name = jsonObject.getString("name");
+
+            ArrayList<Integer> videos = database.get_video_playlist(user_id,name);
+
+
+            // Create a JSON object with the provided data
+
+
+            // Create an ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
+
+
+            // Serialize the ArrayList to JSON
+            String json = objectMapper.writeValueAsString(videos);
+
+            // Write data to the server
+            writer.println(json);
+            clientSocket.close();
+
+
+            System.out.println("sent");
+
+            // Read the server's response
+
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
     
 
 
