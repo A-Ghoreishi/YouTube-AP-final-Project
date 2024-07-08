@@ -85,11 +85,28 @@ class ServerHandler implements Runnable {
                         System.out.println("sending the user_id");
                         send_user_id(clientSocket);
                     }
+                    case "get_thumbnail" ->{
+                        System.out.println("get thumbnail");
+                        get_thumbnail(clientSocket);
+                    }
+                    case "send_thumbnail" ->{
+                        System.out.println("send_thumbnail");
+                        server_send_thumbnail(clientSocket);
+                    }
+                    case "send_bio" ->{
+                        System.out.println("send bio");
+                        send_bio(clientSocket);
+                    }
+                    case "change_bio" ->{
+                        System.out.println("change bio");
+                        server_change_bio(clientSocket);
+                    }
+
                 }
 
                 // Process client input (you can customize this part)
                 //String response = "Hello, client!"; // Your custom response
-
+// i should add a method for changing the bio
                 // Send response back to client
                 //out.println(response);
             }
@@ -1028,12 +1045,12 @@ class ServerHandler implements Runnable {
             ArrayList<Integer> user = database.get_channels_id(user_id);
 
 
+            ObjectMapper objectMapper = new ObjectMapper();
+
             // Create a JSON object with the provided data
 
 
             // Create an ObjectMapper
-            ObjectMapper objectMapper = new ObjectMapper();
-
 
             // Serialize the ArrayList to JSON
             String json = objectMapper.writeValueAsString(user);
@@ -1312,6 +1329,97 @@ class ServerHandler implements Runnable {
         }
 
 
+    }
+
+
+    public void server_videos_of_user(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            int user_id = jsonObject.getInt("user_id");
+
+
+            ArrayList<Integer> user = database.video_of_user(user_id);
+
+
+            // Create a JSON object with the provided data
+
+
+            // Create an ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
+
+
+            // Serialize the ArrayList to JSON
+            String json = objectMapper.writeValueAsString(user);
+
+            // Write data to the server
+            writer.println(json);
+            clientSocket.close();
+
+
+            System.out.println("sent");
+
+            // Read the server's response
+
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void increase_view_videos(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            clientSocket.close();
+            int video_id = jsonObject.getInt("video_id");
+
+            database.increase_view_of_video(video_id);
+            // Create an ObjectMapper
+
+
+            // Read the server's response
+
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void server_change_bio(Socket clientSocket){
+
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            int user_id = jsonObject.getInt("user_id");
+            String bio  = jsonObject.getString("bio");
+
+            database.change_bio(bio,user_id);
+
+            clientSocket.close();
+
+            System.out.println("sent");
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

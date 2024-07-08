@@ -1225,6 +1225,96 @@ public class client {
         return myList;
     }
 
+    public ArrayList <Integer> client_videos_of_user(int user_id){
+        ArrayList<Integer> myList = new ArrayList<>();
+
+        try {
+
+            Socket socket = new Socket("localhost", 4042);
+
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String message = "send_videos_of_user";
+            out.println(message);
+
+            Thread.sleep(1000);
+
+            JSONObject json = new JSONObject();
+            json.put("user_id", user_id);
+
+            // write data to socket
+            out.print(json.toString());
+
+
+            // read data from socket
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String clientData = reader.readLine();
+            socket.close();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // Deserialize the JSON array to an ArrayList
+            myList = objectMapper.readValue(clientData, new TypeReference<ArrayList<Integer>>() {});
+
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return myList;
+    }
+
+    public void increase_view_video(int video_id){
+        try {
+
+            Socket socket = new Socket("localhost", 4042);
+
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String message = "delete_video";
+            out.println(message);
+
+            Thread.sleep(1000);
+
+            JSONObject json = new JSONObject();
+            json.put("video_id", video_id);
+
+            // write data to socket
+            out.print(json.toString());
+
+
+            // read data from socket
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String clientData = reader.readLine();
+            socket.close();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void change_bio(String bio,int user_id){
+
+        try {
+
+            Socket socket = new Socket("localhost", 4042);
+
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String message = "change_bio";
+            out.println(message);
+
+            Thread.sleep(1000);
+
+            JSONObject json = new JSONObject();
+            json.put("bio",bio);
+            json.put("user_id",user_id);
+            out.print(json.toString());
+
+            // Deserialize the JSON array to an ArrayList
+
+            socket.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
 
 

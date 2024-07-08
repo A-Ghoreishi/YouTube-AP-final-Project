@@ -685,7 +685,7 @@ public class database {
 
 
 
-    public static void increase_view_of_video(int video_id){
+    public  void increase_view_of_video(int video_id){
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -719,7 +719,7 @@ public class database {
 
 
 // this will send all the users video
-    public static ArrayList<Integer> video_of_user(int user_id){
+    public  ArrayList<Integer> video_of_user(int user_id){
 
         String query = "SELECT video_id FROM videos WHERE user_id = ?";
 
@@ -1270,6 +1270,37 @@ public class database {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void change_bio(String bio , int user_id){
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            // Connect to the database
+            conn = DriverManager.getConnection(url, user, password);
+
+            // Prepare the SQL statement
+            String sql = "UPDATE user_info SET bio = ? WHERE user_id = ?;";
+            pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1,bio);
+            pstmt.setInt(2,user_id);
+
+
+            // Execute the insertion
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
 
