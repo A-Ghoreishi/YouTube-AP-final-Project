@@ -499,6 +499,8 @@ public class database {
         Connection conn = null;
         PreparedStatement pstmt = null;
         String path = get_video_path(video_id);
+        database database = new database();
+        database.file_deleter(path);
 
         try {
             // Connect to the database
@@ -544,7 +546,7 @@ public class database {
     }
 
 
-    public static void add_video(int user_id,String user_name, String title){
+    public static void add_video(int user_id,String user_name, String title,String description){
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -554,13 +556,14 @@ public class database {
             conn = DriverManager.getConnection(url, user, password);
 
             // Prepare the SQL statement
-            String sql = "INSERT INTO videos (user_id,user_name,title) VALUES (?,?,?)";
+            String sql = "INSERT INTO videos (user_id,user_name,title,description) VALUES (?,?,?,?)";
             pstmt = conn.prepareStatement(sql);
 
             // Set the array to the prepared statement
             pstmt.setInt(1,user_id);
             pstmt.setString(2,user_name);
             pstmt.setString(3,title);
+            pstmt.setString(4,description);
 
             // Execute the insertion
             pstmt.executeUpdate();
@@ -576,7 +579,7 @@ public class database {
         }
 
     }
-    public void puting_the_file_path_into_table(String path,int video_id){
+    public void putting_the_file_path_into_table(String path, int video_id){
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -1184,6 +1187,44 @@ public class database {
 
     }
 
+    public ArrayList<Integer> get_comments_like(int video_id){
+        ArrayList<Integer> likes = new ArrayList<>();
+
+        String sql = "SELECT likes FROM comments WHERE video_id = ?";
+        try (Connection connection = DriverManager.getConnection(url,user,password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            // Set the search string as a parameter (using % for wildcard matching)
+            statement.setInt(1, video_id);
+
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+
+                    int like = resultSet.getInt("likes");
+                    likes.add(like);
+
+                }
+            }
+        } catch (SQLException e) {
+            // Handle any exceptions (e.g., log or throw)
+            e.printStackTrace();
+        }
+
+        return likes;
+    }
+
+    public void file_deleter(String path){
+
+        Path filePath = Paths.get(path);
+
+        try {
+            Files.deleteIfExists(filePath);
+            System.out.println("Deletion successful.");
+        } catch (IOException e) {
+            System.out.println("Error while deleting the file: " + e.getMessage());
+        }
+    }
+
 
     
 
@@ -1201,7 +1242,7 @@ public class database {
         //System.out.println(liked_list);
         //add_subscriber(2,1);
        // login("sepi","1234");
-        //add_video(1,"mia","vlog","D:\\youtube\\src\\main\\resources\\videos\\2.mkv");
+       // add_video(1,"mia","vlog","D:\\youtube\\src\\main\\resources\\videos\\2.mkv");
         //delete_video(1);
         //ArrayList<Integer> vids =video_of_user(1);
         //System.out.println(vids);
@@ -1223,14 +1264,7 @@ public class database {
         //System.out.println(database.get_video_path(3));
         //login("patric_bateman","bb2edb1762549e25f9656f7fce3101d889447e010d4a5d9dac6694f0d47eafd3");
 
-            Path filePath = Paths.get("C:\\path\\to\\your\\file.txt");
 
-            try {
-                Files.deleteIfExists(filePath);
-                System.out.println("Deletion successful.");
-            } catch (IOException e) {
-                System.out.println("Error while deleting the file: " + e.getMessage());
-            }
 
 
 

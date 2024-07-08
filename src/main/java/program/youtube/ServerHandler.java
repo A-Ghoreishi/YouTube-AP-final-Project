@@ -1,7 +1,6 @@
 package program.youtube;
 
 import org.json.JSONObject;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.*;
 import java.net.Socket;
@@ -117,9 +116,10 @@ class ServerHandler implements Runnable {
             String userName = json.getString("user_name");
             String title = json.getString("title");
             int user_id = json.getInt("user_id");
+            String description = json.getString("description");
             database database = new database();
             //inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
-            add_video(user_id,userName,title);
+            add_video(user_id,userName,title,description);
 
 
             // Send a response back to the client
@@ -133,7 +133,7 @@ class ServerHandler implements Runnable {
             byte[] buffer = new byte[1024];
             int byteread;
             FileOutputStream fileOutputStream = new FileOutputStream(save_path);
-            database.puting_the_file_path_into_table(save_path,videoid);
+            database.putting_the_file_path_into_table(save_path,videoid);
 
             while ((byteread = inputStream.read(buffer)) != -1){
                 fileOutputStream.write(buffer,0,byteread);
@@ -1132,6 +1132,130 @@ class ServerHandler implements Runnable {
         }
 
     }
+
+    public void server_send_comment(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            int video_id = jsonObject.getInt("video_id");
+
+
+            ArrayList<String> videos = database.get_comment(video_id);
+
+
+            // Create a JSON object with the provided data
+
+
+            // Create an ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
+
+
+            // Serialize the ArrayList to JSON
+            String json = objectMapper.writeValueAsString(videos);
+
+            // Write data to the server
+            writer.println(json);
+            clientSocket.close();
+
+
+            System.out.println("sent");
+
+            // Read the server's response
+
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void server_send_username_comment(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            int video_id = jsonObject.getInt("video_id");
+
+
+            ArrayList<String> videos = database.get_username_comment(video_id);
+
+
+            // Create a JSON object with the provided data
+
+
+            // Create an ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
+
+
+            // Serialize the ArrayList to JSON
+            String json = objectMapper.writeValueAsString(videos);
+
+            // Write data to the server
+            writer.println(json);
+            clientSocket.close();
+
+
+            System.out.println("sent");
+
+            // Read the server's response
+
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void server_send_like(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            int video_id = jsonObject.getInt("video_id");
+
+
+            ArrayList<Integer> videos = database.get_comments_like(video_id);
+
+
+            // Create a JSON object with the provided data
+
+
+            // Create an ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
+
+
+            // Serialize the ArrayList to JSON
+            String json = objectMapper.writeValueAsString(videos);
+
+            // Write data to the server
+            writer.println(json);
+            clientSocket.close();
+
+
+            System.out.println("sent");
+
+            // Read the server's response
+
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
 
 
