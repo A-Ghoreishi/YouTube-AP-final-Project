@@ -1225,6 +1225,55 @@ public class database {
         }
     }
 
+    public String get_name(int user_id){
+        String sql = "SELECT name FROM user_info WHERE user_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(url,user,password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            // Set the search string as a parameter (using % for wildcard matching)
+            statement.setInt(1, user_id);
+
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+
+                    return resultSet.getString("name");
+
+                }
+            }
+        } catch (SQLException e) {
+            // Handle any exceptions (e.g., log or throw)
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
+    public String get_family_name(int user_id){
+        String sql = "SELECT family_name FROM user_info WHERE user_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(url,user,password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            // Set the search string as a parameter (using % for wildcard matching)
+            statement.setInt(1, user_id);
+
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+
+                    return resultSet.getString("name");
+
+                }
+            }
+        } catch (SQLException e) {
+            // Handle any exceptions (e.g., log or throw)
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
 
     
 

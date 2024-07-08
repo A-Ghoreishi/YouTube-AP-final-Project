@@ -1228,10 +1228,6 @@ class ServerHandler implements Runnable {
 
             ArrayList<Integer> videos = database.get_comments_like(video_id);
 
-
-            // Create a JSON object with the provided data
-
-
             // Create an ObjectMapper
             ObjectMapper objectMapper = new ObjectMapper();
 
@@ -1281,7 +1277,42 @@ class ServerHandler implements Runnable {
         }
     }
 
+    public void server_send_name(Socket clientSocket){
+        ArrayList <String> names = new ArrayList<>();
+        try{
 
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            int user_id = jsonObject.getInt("user_id");
+
+            names.add(database.get_name(user_id));
+            names.add(database.get_family_name(user_id));
+
+
+            // Create an ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
+
+
+            // Serialize the ArrayList to JSON
+            String json = objectMapper.writeValueAsString(names);
+
+            // Write data to the server
+            writer.println(json);
+            clientSocket.close();
+
+
+            System.out.println("sent");
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
 
 
 
