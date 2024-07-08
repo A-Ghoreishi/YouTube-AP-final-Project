@@ -1,5 +1,9 @@
 package program.youtube;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -309,7 +313,7 @@ public class database {
 
 
 
-    public static ArrayList<Integer> get_liked_list(int user_id) {
+    public  ArrayList<Integer> get_liked_list(int user_id) {
         String query = "SELECT video_id FROM liked WHERE user_id = ?";
 
         ArrayList<Integer> liked = new ArrayList<>();
@@ -332,7 +336,7 @@ public class database {
 
 
 // this method will get the chanels that user have subscribed
-    public static ArrayList<Integer> get_channels_id(int subscriber_id){
+    public  ArrayList<Integer> get_channels_id(int subscriber_id){
         String query = "SELECT channel_id FROM subscribers WHERE subscriber_id = ?";
 
         ArrayList<Integer> chanels = new ArrayList<>();
@@ -357,7 +361,7 @@ public class database {
 
 
 
-    public  static void add_subscriber(int channel_id, int subs_id ){
+    public   void add_subscriber(int channel_id, int subs_id ){
 //chanel id is the same as the user id i will explain it more later
 
 
@@ -392,7 +396,7 @@ public class database {
     }
 
     //the method down here will show the user what users have subscribed him
-    public static ArrayList<Integer> get_subscriber(int user_id){
+    public  ArrayList<Integer> get_subscriber(int user_id){
 
         String query = "SELECT subscriber_id FROM subscribers WHERE channel_id = ?";
 
@@ -494,13 +498,14 @@ public class database {
     public static void delete_video(int video_id){
         Connection conn = null;
         PreparedStatement pstmt = null;
+        String path = get_video_path(video_id);
 
         try {
             // Connect to the database
             conn = DriverManager.getConnection(url, user, password);
 
             // Prepare the SQL statement
-            String sql = "DELETE FROM videos WHERE user_id = ?";
+            String sql = "DELETE FROM videos WHERE video_id = ?";
             pstmt = conn.prepareStatement(sql);
 
             // Set the array to the prepared statement
@@ -1216,6 +1221,17 @@ public class database {
         //checkUsernameExists("mrbeast");
         //inserting_name_username_lname("sepanta","hos","mrbeast");
         //System.out.println(database.get_video_path(3));
+        //login("patric_bateman","bb2edb1762549e25f9656f7fce3101d889447e010d4a5d9dac6694f0d47eafd3");
+
+            Path filePath = Paths.get("C:\\path\\to\\your\\file.txt");
+
+            try {
+                Files.deleteIfExists(filePath);
+                System.out.println("Deletion successful.");
+            } catch (IOException e) {
+                System.out.println("Error while deleting the file: " + e.getMessage());
+            }
+
 
 
         }

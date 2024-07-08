@@ -74,7 +74,7 @@ class ServerHandler implements Runnable {
                     }
                     case "sending comment" ->{
                         System.out.println("getting the comment");
-                        get_comment(clientSocket);
+                        server_add_comment(clientSocket);
                         System.out.println("done getting the comment");
                     }
                     case "liking the video" ->{
@@ -535,7 +535,7 @@ class ServerHandler implements Runnable {
         }
 
     }
-    public static void get_comment(Socket clientSocket){
+    public static void server_add_comment(Socket clientSocket){
         try {
             // Read data from the client
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -972,6 +972,168 @@ class ServerHandler implements Runnable {
             e.printStackTrace();
         }
     }
+
+    public void server_get_subscriber(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            int user_id = jsonObject.getInt("user_id");
+
+
+            ArrayList<Integer> user = database.get_subscriber(user_id);
+
+
+            // Create a JSON object with the provided data
+
+
+            // Create an ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
+
+
+            // Serialize the ArrayList to JSON
+            String json = objectMapper.writeValueAsString(user);
+
+            // Write data to the server
+            writer.println(json);
+            clientSocket.close();
+
+
+            System.out.println("sent");
+
+            // Read the server's response
+
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void server_channel_id(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            int user_id = jsonObject.getInt("user_id");
+
+
+            ArrayList<Integer> user = database.get_channels_id(user_id);
+
+
+            // Create a JSON object with the provided data
+
+
+            // Create an ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
+
+
+            // Serialize the ArrayList to JSON
+            String json = objectMapper.writeValueAsString(user);
+
+            // Write data to the server
+            writer.println(json);
+            clientSocket.close();
+
+
+            System.out.println("sent");
+
+            // Read the server's response
+
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void server_get_liked_list(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            int user_id = jsonObject.getInt("user_id");
+
+
+            ArrayList<Integer> user = database.get_liked_list(user_id);
+
+
+            // Create a JSON object with the provided data
+
+
+            // Create an ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
+
+
+            // Serialize the ArrayList to JSON
+            String json = objectMapper.writeValueAsString(user);
+
+            // Write data to the server
+            writer.println(json);
+            clientSocket.close();
+
+
+            System.out.println("sent");
+
+            // Read the server's response
+
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void add_subscriber(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            int user_id = jsonObject.getInt("user_id");
+            int channel_id = jsonObject.getInt("channel_id");
+
+
+            database.add_subscriber(channel_id,user_id);
+
+
+            // Create a JSON object with the provided data
+
+
+            // Serialize the ArrayList to JSON
+
+            // Write data to the server
+            clientSocket.close();
+
+
+            System.out.println("sent");
+
+            // Read the server's response
+
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
 
 
     

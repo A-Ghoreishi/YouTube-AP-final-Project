@@ -1,6 +1,8 @@
 package program.youtube;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.image.Image;
 import org.json.JSONObject;
@@ -8,6 +10,7 @@ import org.json.JSONObject;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -333,11 +336,12 @@ public class client {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             String meesage = "log_in";
             out.println(meesage);
+            Thread.sleep(1000);
 
             // Create a JSON object with the provided data
             JSONObject jsonParams = new JSONObject();
             jsonParams.put("user_name", user_name);
-            jsonParams.put("user_password", user_password);
+            jsonParams.put("user_password", hashPassword(user_password));
 
             // Write data to the server
             PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
@@ -354,6 +358,8 @@ public class client {
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
         return login;
     }
@@ -939,6 +945,114 @@ public class client {
 
     }
 
+    public ArrayList <Integer> get_subscriber(int user_id){
+        ArrayList <Integer> myList = new ArrayList<>();
+
+        try {
+
+            Socket socket = new Socket("localhost", 4042);
+
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String message = "get_video_playlist";
+            out.println(message);
+
+            Thread.sleep(1000);
+
+            JSONObject json = new JSONObject();
+            json.put("user_id",user_id);
+
+
+            out.print(json.toString());
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String clientData = reader.readLine();
+            socket.close();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // Deserialize the JSON array to an ArrayList
+            myList = objectMapper.readValue(clientData, new TypeReference<ArrayList<Integer>>() {});
+
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return myList;
+    }
+
+    public void add_subscriber(int user_id,int channel_id){
+        try {
+            Socket socket = new Socket("localhost", 4042);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String meesage = "add_to_subscriber";
+            out.println(meesage);
+            Thread.sleep(1000);
+
+            // Create a JSON object with the provided data
+
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("channel_id",channel_id);
+            jsonParams.put("user_id",user_id);
+
+            // Write data to the server
+            PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+            writer.println(jsonParams.toString());
+            System.out.println("sent");
+
+            // Read the server's response
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String serverResponse = reader.readLine();
+            socket.close();
+            System.out.println("Server response: " + serverResponse);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ArrayList <Integer> get_liked_list(int user_id) {
+        ArrayList<Integer> myList = new ArrayList<>();
+
+        try {
+
+            Socket socket = new Socket("localhost", 4042);
+
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String message = "get_liked_list";
+            out.println(message);
+
+            Thread.sleep(1000);
+
+            JSONObject json = new JSONObject();
+            json.put("user_id", user_id);
+
+            // write data to socket
+            out.print(json.toString());
+
+
+            // read data from socket
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String clientData = reader.readLine();
+            socket.close();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // Deserialize the JSON array to an ArrayList
+            myList = objectMapper.readValue(clientData, new TypeReference<ArrayList<Integer>>() {});
+
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return myList;
+
+    }
 
 
 //things to do: completing the apis about the whatch list not letting user like somthing twice and handeling race condition  and chck the method about sending profile pic rename where videos save and api for getting comment from the server
@@ -958,8 +1072,9 @@ public class client {
         //login("sepi","1234");
         //sending_fname_lname_user_name("christian","bale","patric_bateman");
         //sending_birth_dates("patric_bateman",1969,"january",18,"man");
-        send_email_password_bio("patric_bateman","nvjkn@gmail.com","vfknk;v","hello there -obi-one");
+        //send_email_password_bio("patric_bateman","nvjkn@gmail.com","vfknk;v","hello there -obi-one");
         client client = new client();
+        login("patric_bateman","vfknk;v");
         //client.sending_comment("lame video","mrbeast",1);
         //client.liking_the_video(3,1);
         //sending_fname_lname_user_name("sepanta","hos","mrbeast1");
