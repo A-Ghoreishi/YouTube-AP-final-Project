@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -41,7 +42,17 @@ public class Videoplayer implements Initializable {
     private ImageView commenter;
 
     @FXML
-    private Label discription;
+    private TextArea description;
+
+    @FXML
+    private ImageView dislikebtn;
+
+    @FXML
+    private ImageView likebtn;
+
+    @FXML
+    private Text likecount;
+
 
     @FXML
     private ImageView home;
@@ -63,6 +74,9 @@ public class Videoplayer implements Initializable {
 
     @FXML
     private ImageView speaker;
+
+    @FXML
+    private Button subscribebtn;
 
     @FXML
     private Label subscribers;
@@ -118,6 +132,21 @@ public class Videoplayer implements Initializable {
     @FXML
     void backforth(MouseEvent event) {
         mediaPlayer.seek(mediaPlayer.getCurrentTime().subtract(Duration.seconds(10)));
+    }
+
+    @FXML
+    void dislikebtn(MouseEvent event) {
+
+    }
+
+    @FXML
+    void likebtn(MouseEvent event) {
+
+    }
+
+    @FXML
+    void likecount(MouseEvent event) {
+
     }
 
     @FXML
@@ -204,5 +233,10 @@ public class Videoplayer implements Initializable {
         mediaPlayer.setOnReady(() -> {
             Duration total = mediaPlayer.getMedia().getDuration();
         });
+    }
+
+    @FXML
+    void subscribebtn(ActionEvent event) {
+
     }
 }

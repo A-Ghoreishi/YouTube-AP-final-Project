@@ -320,12 +320,12 @@
    <center>
       <VBox fx:id="middlepage" onDragDetected="#middlepage" prefHeight="200.0" prefWidth="100.0" styleClass="body-background" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="139.0" prefWidth="1026.0" spacing="10.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="139.0" prefWidth="1026.0" spacing="10.0" styleClass="white-color" stylesheets="@style.css">
                <padding>
                   <Insets left="20.0" />
                </padding>
                <children>
-                  <ImageView fitHeight="128.0" fitWidth="115.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="profilepic" fitHeight="128.0" fitWidth="115.0" onMouseClicked="#profilepic" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../images/avatar1.jpg" />
                      </image>
@@ -337,16 +337,8 @@
                      <children>
                         <HBox prefHeight="70.0" prefWidth="254.0">
                            <children>
-                              <Label fx:id="name" prefHeight="52.0" prefWidth="156.0" text="Name">
-                                 <font>
-                                    <Font name="System Bold" size="21.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="lname" prefHeight="52.0" prefWidth="135.0" text="lname">
-                                 <font>
-                                    <Font name="System Bold" size="23.0" />
-                                 </font>
-                              </Label>
+                              <TextField fx:id="name" onMouseClicked="#name" style="-fx-background-color: transparent;" text="name" />
+                              <TextField fx:id="lname" onMouseClicked="#lname" style="-fx-background-color: transparent;" text="lname" />
                            </children>
                         </HBox>
                         <Label fx:id="username" prefHeight="21.0" prefWidth="310.0" text="username" />
@@ -354,7 +346,7 @@
                   </VBox>
                </children>
             </HBox>
-            <ScrollPane prefHeight="455.0" prefWidth="1026.0" styleClass="transplant" stylesheets="@style.css" VBox.vgrow="ALWAYS">
+            <ScrollPane prefHeight="455.0" prefWidth="1026.0" style="-fx-background-color: transparent;" styleClass="white-color" stylesheets="@style.css" VBox.vgrow="ALWAYS">
                <content>
                   <GridPane fx:id="videoGrid" onMouseClicked="#videoGrid">
                     <rowConstraints>

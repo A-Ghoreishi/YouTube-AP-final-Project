@@ -15,13 +15,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
-
+<?import javafx.scene.text.Text?>
 
 <ScrollPane prefHeight="985.0" prefWidth="1314.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.youtube.Videoplayer">
    <content>
       <VBox>
          <children>
-            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="1299.0" styleClass="white-color" stylesheets="@style.css">
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="978.0" prefWidth="1299.0" styleClass="white-color" stylesheets="@style.css">
                <children>
                   <MediaView fx:id="mediaView" fitHeight="420.0" fitWidth="850.0" layoutX="14.0" layoutY="59.0" />
                   <HBox alignment="CENTER_LEFT" layoutX="11.0" layoutY="479.0" prefHeight="17.0" prefWidth="858.0" spacing="5.0" styleClass="white-color" stylesheets="@style.css">
@@ -58,7 +58,7 @@
                      <content>
                         <VBox fx:id="commentsVBox" prefHeight="311.0" prefWidth="836.0">
                            <children>
-                              <HBox alignment="CENTER_LEFT" prefHeight="48.0" prefWidth="763.0">
+                              <HBox alignment="CENTER_LEFT" prefHeight="48.0" prefWidth="763.0" styleClass="white-color" stylesheets="@style.css">
                                  <children>
                                     <ImageView fx:id="channelprofile" fitHeight="70.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -80,9 +80,26 @@
                                           </HBox>
                                        </children>
                                     </VBox>
+                                    <Pane prefHeight="68.0" prefWidth="67.0" />
+                                    <Button fx:id="subscribebtn" mnemonicParsing="false" onAction="#subscribebtn" prefHeight="37.0" prefWidth="109.0" style="-fx-background-radius: 20;" styleClass="search-bar" stylesheets="@style.css" text="Subscribe" />
+                                    <Pane prefHeight="61.0" prefWidth="33.0" />
+                                    <ImageView fx:id="likebtn" fitHeight="29.0" fitWidth="33.0" onMouseClicked="#likebtn" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/like.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Text fx:id="likecount" onDragDetected="#likecount" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="32.13671875" />
+                                    <ImageView fx:id="dislikebtn" fitHeight="32.0" fitWidth="33.0" onMouseClicked="#dislikebtn" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../images/dislike.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets top="5.0" />
+                                       </HBox.margin>
+                                    </ImageView>
                                  </children>
                               </HBox>
-                              <Label fx:id="discription" prefHeight="66.0" prefWidth="766.0" text="Discription" />
+                              <TextArea fx:id="description" prefHeight="76.0" prefWidth="826.0" text="description" />
                               <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="763.0" spacing="10.0">
                                  <opaqueInsets>
                                     <Insets left="5.0" />

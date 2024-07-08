@@ -26,6 +26,12 @@
       <version>42.2.18</version>
     </dependency>
 
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.14.2</version>
+      <!--  Use the latest version  -->
+    </dependency>
 
     <dependency>
       <groupId>org.openjfx</groupId>
@@ -58,7 +64,13 @@
       <artifactId>junit-jupiter-engine</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
-    </dependency>  </dependencies>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20210307</version>
+    </dependency>
+  </dependencies>
 
   <build>
     <plugins>

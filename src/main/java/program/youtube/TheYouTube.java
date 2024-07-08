@@ -23,6 +23,8 @@ import java.util.ResourceBundle;
 
 public class TheYouTube implements Initializable {
 
+    private UserInfo userInfo;
+
     @FXML
     private GridPane videoGrid;
     private List<Video> videos;
@@ -111,7 +113,7 @@ public class TheYouTube implements Initializable {
         video2.setChannel("Mart");
         video2.setViews("321M views");
         video2.setDate("1 month ago");
-        video2.setVideosrc("/images/video1.mp4");
+        video2.setVideosrc("/images/file.mp4");
         videos.add(video2);
 
         int columns = 0;
@@ -157,6 +159,10 @@ public class TheYouTube implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 
     @FXML

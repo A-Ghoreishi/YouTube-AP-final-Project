@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 //this class only have some static mthod like hash and regex
 //these methods can be transfers somewhere else
-public class account {
+public class Account {
 
     public static boolean isValidEmail(String email) {
         // Define the email pattern using regex
@@ -47,10 +47,6 @@ public class account {
         }
     }
 
-
-    public static void main(String[] args) {
-
-    }
 
 
 }

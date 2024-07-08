@@ -7,13 +7,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 public class MyProfileController {
@@ -34,7 +38,7 @@ public class MyProfileController {
     private HBox likedvideoshbox;
 
     @FXML
-    private Label lname;
+    private TextField lname;
 
     @FXML
     private ImageView menu;
@@ -43,7 +47,7 @@ public class MyProfileController {
     private VBox middlepage;
 
     @FXML
-    private Label name;
+    private TextField name;
 
     @FXML
     private ImageView notification;
@@ -56,6 +60,9 @@ public class MyProfileController {
 
     @FXML
     private ImageView profile;
+
+    @FXML
+    private ImageView profilepic;
 
     @FXML
     private HBox reporthbox;
@@ -86,6 +93,11 @@ public class MyProfileController {
 
     @FXML
     private HBox yourvideoshbox;
+
+    @FXML
+    void initialize(){
+
+    }
 
     @FXML
     void createbtn(ActionEvent event) {
@@ -126,6 +138,12 @@ public class MyProfileController {
     }
 
     @FXML
+    void lname(MouseEvent event) {
+        String Name = lname.getText();
+        lname.setText(Name);
+    }
+
+    @FXML
     void menu(MouseEvent event) {
 
     }
@@ -133,6 +151,12 @@ public class MyProfileController {
     @FXML
     void middlepage(MouseEvent event) {
 
+    }
+
+    @FXML
+    void name(MouseEvent event) {
+        String Name = name.getText();
+        name.setText(Name);
     }
 
     @FXML
@@ -153,6 +177,31 @@ public class MyProfileController {
     @FXML
     void profile(MouseEvent event) {
 
+    }
+
+    @FXML
+    void profilepic(MouseEvent event) {
+        String profilePicPath;
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose Profile Picture");
+
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+
+        if (selectedFile != null) {
+            Image newImage = new Image(selectedFile.toURI().toString());
+            profile.setImage(newImage);  // Assuming `profile` is the ImageView for the profile picture
+            profilepic.setImage(newImage);
+            profilePicPath = selectedFile.getAbsolutePath(); // Save the file path
+//            UserInfo userInfo = new UserInfo();
+//            String name = userInfo.getName();
+//            Client client = new Client();
+//            int userID = client.get_user_id(name);
+//            client.send_profile_picture(profilePicPath,userID);
+        }
     }
 
     @FXML
