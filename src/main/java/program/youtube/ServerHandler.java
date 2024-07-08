@@ -101,6 +101,28 @@ class ServerHandler implements Runnable {
                         System.out.println("change bio");
                         server_change_bio(clientSocket);
                     }
+                    case "search_video" ->{
+                        System.out.println("searching video");
+                        server_search_video(clientSocket);
+                    }
+                    case "search_user_name" ->{
+                        System.out.println("searching user_name");
+                        server_search_user_name(clientSocket);
+                    }
+                    case "get_video_title" ->{
+                        System.out.println("send title");
+                        server_send_video_title(clientSocket);
+
+                    }
+                    case "get_video_user_name" -> {
+                        System.out.println("send_video_user_name");
+                        server_send_video_user_name(clientSocket);
+                    }
+                    case "get_video_likes" ->{
+                        System.out.println("send likes");
+                        server_send_video_likes(clientSocket);
+                    }
+
 
                 }
 
@@ -219,7 +241,7 @@ class ServerHandler implements Runnable {
             throw new RuntimeException(e);
         }
     }
-    public void server_send_likes(Socket clientSocket){
+    public void server_send_video_likes(Socket clientSocket){
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String clientData = reader.readLine();

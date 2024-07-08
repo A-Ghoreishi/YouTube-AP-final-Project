@@ -1343,6 +1343,7 @@ public class database {
         //inserting_name_username_lname("sepanta","hos","mrbeast");
         //System.out.println(database.get_video_path(3));
         //login("patric_bateman","bb2edb1762549e25f9656f7fce3101d889447e010d4a5d9dac6694f0d47eafd3");
+        add_video(5,"name","title","djnksnk");
 
 
 

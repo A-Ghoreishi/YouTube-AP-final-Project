@@ -109,6 +109,11 @@ public class client {
     public static String get_video_title(int video_id){
         try {
             Socket clientSocket = new Socket("localhost",4042);
+
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            String mesage = "get_video_title";
+            out.println(mesage);
+
             // Read data from the client
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String clientData = reader.readLine();
@@ -134,6 +139,10 @@ public class client {
     public static String get_video_username(int video_id){
         try {
             Socket clientSocket = new Socket("localhost",4042);
+
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            String mesage = "get_video_user_name";
+            out.println(mesage);
             // Read data from the client
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String clientData = reader.readLine();
@@ -156,9 +165,13 @@ public class client {
         return null;
     }
 
-    public static int get_video_like(int video_id){
+    public  int get_video_like(int video_id){
         try {
             Socket clientSocket = new Socket("localhost",4042);
+
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            String message = "get_video_likes";
+            out.println(message);
             // Read data from the client
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String clientData = reader.readLine();
@@ -213,7 +226,7 @@ public class client {
     }
 
 
-    public static void get_video(int video_id) throws IOException {
+    public  String get_video(int video_id) throws IOException {
 
         try {
             Socket socket = new Socket("localhost",4042);
@@ -231,6 +244,8 @@ public class client {
 
             String name = Integer.toString(video_id);
 
+            String path = "D:\\final_project\\src\\main\\resources\\client_videos\\" +name+".mkv";
+
 
             // Save video data to a local file
             FileOutputStream fileOutputStream = new FileOutputStream("D:\\final_project\\src\\main\\resources\\client_videos\\" +name+".mkv");
@@ -244,11 +259,14 @@ public class client {
             // Clean up
             fileOutputStream.close();
             inputStream.close();
+            socket.close();
+            return path;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        return null;
     }
 
     public static void sign_in(String name,String user_name,String family_name,String user_password,String bio,int birth_year,String birth_month,int birth_day){
