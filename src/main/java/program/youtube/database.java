@@ -495,7 +495,7 @@ public class database {
 
     //DELETE FROM Customers WHERE CustomerName = 'Alfreds Futterkiste';
 // ishould remove it from file of videos too
-    public static void delete_video(int video_id){
+    public  void delete_video(int video_id){
         Connection conn = null;
         PreparedStatement pstmt = null;
         String path = get_video_path(video_id);

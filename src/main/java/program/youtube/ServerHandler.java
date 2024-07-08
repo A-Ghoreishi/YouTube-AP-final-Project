@@ -1256,6 +1256,31 @@ class ServerHandler implements Runnable {
         }
     }
 
+    public void server_delete_video(Socket clientSocket){
+        try{
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            JSONObject jsonObject = new JSONObject(clientData);
+            clientSocket.close();
+            int video_id = jsonObject.getInt("video_id");
+
+            database.delete_video(video_id);
+            // Create an ObjectMapper
+
+
+            // Read the server's response
+
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
 
 

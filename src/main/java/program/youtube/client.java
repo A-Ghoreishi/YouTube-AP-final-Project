@@ -1161,6 +1161,34 @@ public class client {
         return myList;
     }
 
+    public void client_delete_video(int video_id){
+        try {
+
+            Socket socket = new Socket("localhost", 4042);
+
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String message = "delete_video";
+            out.println(message);
+
+            Thread.sleep(1000);
+
+            JSONObject json = new JSONObject();
+            json.put("video_id", video_id);
+
+            // write data to socket
+            out.print(json.toString());
+
+
+            // read data from socket
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String clientData = reader.readLine();
+            socket.close();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
 
 
