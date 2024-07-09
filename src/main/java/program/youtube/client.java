@@ -1390,8 +1390,48 @@ public class client {
         return myList;
     }
 
+    public void download_the_video(int video_id){
+        try {
+            Socket socket = new Socket("localhost",4042);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+            String meesage = "send_video";
+            out.println(meesage);
+            Thread.sleep(1000);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("video_id",video_id);
+
+            out.println(jsonObject.toString());
+
+            InputStream inputStream = socket.getInputStream();
+
+            String name = Integer.toString(video_id);
+
+            // Save video data to a local file
+            FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\Sepanta\\Downloads\\" +name+".mkv");
+
+            byte[] buffer = new byte[8192]; // Adjust buffer size as needed
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                fileOutputStream.write(buffer, 0, bytesRead);
+            }
+
+            // Clean up
+            fileOutputStream.close();
+            inputStream.close();
+            socket.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
 
+// i should do the cathegory and make the video liked for once
+    
 
 
 //things to do: completing the apis about the whatch list not letting user like somthing twice and handeling race condition  and chck the method about sending profile pic rename where videos save and api for getting comment from the server
