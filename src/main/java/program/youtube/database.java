@@ -1028,7 +1028,7 @@ public class database {
 
     }
 
-    public void add_thumbnail(int video_id,String path){
+    public void add_thumbnail(String path){
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -1037,11 +1037,11 @@ public class database {
             conn = DriverManager.getConnection(url, user, password);
 
             // Prepare the SQL statement
-            String sql = "UPDATE videos SET thumbnail = ? WHERE video_id = ?;";
+            String sql = "UPDATE videos SET thumbnail = ? WHERE video_id = (SELECT MAX(video_id) FROM videos);";
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1,path);
-            pstmt.setInt(2,video_id);
+
 
 
             // Execute the insertion

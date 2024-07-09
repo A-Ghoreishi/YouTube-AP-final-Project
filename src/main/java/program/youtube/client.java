@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -1471,7 +1472,8 @@ public class client {
        // client.send_thumbnail(3,"C:\\Users\\Sepanta\\Downloads\\won.jpg");
         //client.sending_video("ldn","C:\\Users\\Sepanta\\Downloads\\@movieo_bot.Black.Bullet.E01.720p.BluRay.@movieo_bot.mkv","mia");
         //client.get_thumbnail(3);
-       send_profile_picture("C:\\Users\\Sepanta\\Downloads\\won.jpg",3);
+       //send_profile_picture("C:\\Users\\Sepanta\\Downloads\\won.jpg",2);
+        get_profile_picture(2);
        // client.send_thumbnail(3,"C:\\Users\\Sepanta\\Downloads\\won.jpg");
 
 

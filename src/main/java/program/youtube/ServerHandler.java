@@ -232,7 +232,7 @@ class ServerHandler implements Runnable {
             String path = "D:\\final_project\\src\\main\\resources\\server_thumbnail\\" + name + ".jpg";
 
             lock.lock();
-            database.add_thumbnail(video_id, path);
+            database.add_thumbnail( path);
             lock.unlock();
 
 
@@ -510,6 +510,11 @@ public void get_pfp(Socket clientSocket) {
 
         // Save profile picture to a file (e.g., user123.jpg)
         String profilePicPath = "D:\\final_project\\src\\main\\resources\\server_profile_pictures\\" + userId + ".jpg";
+
+        lock.lock();
+        database.add_profile_pic_path(profilePicPath,userId);
+        lock.unlock();
+
         FileOutputStream fileOutputStream = new FileOutputStream(profilePicPath);
         byte[] buffer = new byte[8192];
         int bytesRead;
