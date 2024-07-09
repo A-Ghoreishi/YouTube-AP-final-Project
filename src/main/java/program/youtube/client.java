@@ -51,6 +51,9 @@ public class client {
         }
     }
 
+
+
+
     public void sending_video(String title,String path,String user_name,int user_id,String description){
 
 
@@ -197,6 +200,12 @@ public class client {
     public static int get_video_views(int video_id){
         try {
             Socket clientSocket = new Socket("localhost",4042);
+
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            String message = "send_view";
+            out.println(message);
+
+
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("video_id",video_id);
 
@@ -303,21 +312,24 @@ public class client {
         }
     }
 
-    public static void get_profile_picture(String name){
+    public static void get_profile_picture(int user_id){
         try {
             Socket socket = new Socket("localhost",4042);
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
             String meesage = "send_pfp";
             out.println(meesage);
-            out.println(name);
+            Thread.sleep(1000);
+            String name = Integer.toString(user_id);
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("user_id",user_id);
+            out.println(jsonObject.toString());
 
             //BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             //String videoName1 = in.readLine();
             DataInputStream in = new DataInputStream(socket.getInputStream());
-            String msg = in.readUTF();
-            //replace it with the real name
-            System.out.println(msg);
+
 
 
             // System.out.println(videoName1);
@@ -327,7 +339,7 @@ public class client {
 
 
             // Save video data to a local file
-            FileOutputStream fileOutputStream = new FileOutputStream("D:\\final_project\\src\\main\\resources\\client_profile_picture\\" +msg+".jpg");
+            FileOutputStream fileOutputStream = new FileOutputStream("D:\\final_project\\src\\main\\resources\\client_profile_picture\\" +name+".jpg");
 
             byte[] buffer = new byte[8192]; // Adjust buffer size as needed
             int bytesRead;
@@ -340,6 +352,8 @@ public class client {
             inputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -576,40 +590,45 @@ public class client {
         return user_id;
     }
 
-    public void send_thumbnail(int video_id,String path){
-        try {
-            Socket socket = new Socket("localhost", 4042);
+    public void send_thumbnail(int video_id, String path) {
+        try (Socket socket = new Socket("localhost", 4042);
+             OutputStream outputStream = socket.getOutputStream()) {
 
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            // Send the "get_thumbnail" message
+            PrintWriter out = new PrintWriter(outputStream, true);
             String message = "get_thumbnail";
             out.println(message);
 
+            // Wait for a moment (optional)
             Thread.sleep(1000);
 
+            // Send the video_id as raw bytes
             JSONObject json = new JSONObject();
-            json.put("video_id",video_id);
-            out.print(json.toString());
+            json.put("video_id", video_id);
 
-            File pictureFile = new File(path);
-            byte[] pictureBytes = new byte[(int) pictureFile.length()];
+            // Send the JSON object as a string
+            out.println(json.toString());
 
-            OutputStream outputStream = socket.getOutputStream();
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(pictureFile));
+            File videofile = new File(path);
+            byte[] buffer = new byte[8192];
+            int bytesRead;
 
-            int count;
-            byte[] buffer = new byte[8192]; // 8KB buffer
-            while ((count = bis.read(buffer)) > 0) {
-                outputStream.write(buffer, 0, count);
-                outputStream.flush(); // Flush after each write
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(videofile));
+            while ((bytesRead = bis.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+                outputStream.flush();
             }
 
             bis.close();
-            outputStream.close();
-            socket.close();
+
+            // Send the thumbnail data
+            // ... (rest of the method remains the same)
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
 
     public String get_thumbnail(int video_id){
         try {
@@ -689,7 +708,7 @@ public class client {
             Socket socket = new Socket("localhost", 4042);
 
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            String message = "search";
+            String message = "search_username";
             out.println(message);
 
             Thread.sleep(1000);
@@ -728,7 +747,7 @@ public class client {
             Socket socket = new Socket("localhost", 4042);
 
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            String message = "search";
+            String message = "search_video";
             out.println(message);
 
             Thread.sleep(1000);
@@ -879,7 +898,7 @@ public class client {
     }
 
 
-    public ArrayList<String> server_get_play_list(int user_id, String watch_list_name){
+    public ArrayList<String> get_play_list(int user_id, String watch_list_name){
         ArrayList <String> myList = new ArrayList<>();
 
         try {
@@ -967,7 +986,7 @@ public class client {
             Socket socket = new Socket("localhost", 4042);
 
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            String message = "get_video_playlist";
+            String message = "get_subscriber";
             out.println(message);
 
             Thread.sleep(1000);
@@ -1150,7 +1169,7 @@ public class client {
             Socket socket = new Socket("localhost", 4042);
 
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            String message = "send_username_comment";
+            String message = "send_likes_comment";
             out.println(message);
 
             Thread.sleep(1000);
@@ -1286,7 +1305,7 @@ public class client {
             Socket socket = new Socket("localhost", 4042);
 
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            String message = "delete_video";
+            String message = "increase_view";
             out.println(message);
 
             Thread.sleep(1000);
@@ -1333,6 +1352,43 @@ public class client {
         }
     }
 
+    public ArrayList<Integer> get_channel_id(int user_id){
+        ArrayList <Integer> myList = new ArrayList<>();
+
+        try {
+
+            Socket socket = new Socket("localhost", 4042);
+
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            String message = "get_channel";
+            out.println(message);
+
+            Thread.sleep(1000);
+
+            JSONObject json = new JSONObject();
+            json.put("user_id",user_id);
+
+
+            out.print(json.toString());
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String clientData = reader.readLine();
+            socket.close();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // Deserialize the JSON array to an ArrayList
+            myList = objectMapper.readValue(clientData, new TypeReference<ArrayList<Integer>>() {});
+
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return myList;
+    }
 
 
 
@@ -1357,12 +1413,16 @@ public class client {
         //sending_birth_dates("patric_bateman",1969,"january",18,"man");
         //send_email_password_bio("patric_bateman","nvjkn@gmail.com","vfknk;v","hello there -obi-one");
         client client = new client();
-        login("patric_bateman","vfknk;v");
+        client.send_thumbnail(3,"C:\\Users\\Sepanta\\Downloads\\won.jpg");
+        //login("patric_bateman","vfknk;v");
         //client.sending_comment("lame video","mrbeast",1);
         //client.liking_the_video(3,1);
         //sending_fname_lname_user_name("sepanta","hos","mrbeast1");
         //System.out.println(client.get_user_id("mrbeast"));
        //client.sending_video("vlog3","C:\\Users\\Sepanta\\Downloads\\ccc8ac35723faa7986342aff76a0eda68350123-360p.mp4","mrbeast",5);
+       // client.send_thumbnail(3,"C:\\Users\\Sepanta\\Downloads\\won.jpg");
+        //client.sending_video("ldn","C:\\Users\\Sepanta\\Downloads\\@movieo_bot.Black.Bullet.E01.720p.BluRay.@movieo_bot.mkv","mia");
+        //client.get_thumbnail(3);
 
 
     }
