@@ -212,14 +212,15 @@ class ServerHandler implements Runnable {
         }
     }
 
+
+
     public void get_thumbnail(Socket clientSocket) {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String clientData = reader.readLine();
 
             // Parse the JSON data
-            JSONObject json = new JSONObject(clientData);
-            int video_id = json.getInt("video_id");
+
 
             InputStream inputStream = clientSocket.getInputStream();
             byte[] buffer = new byte[8192];
@@ -228,7 +229,7 @@ class ServerHandler implements Runnable {
             // Read video_id from the client
 
 
-            String name = Integer.toString(video_id);
+            String name = Integer.toString(database.getLastVideoId());
             String path = "D:\\final_project\\src\\main\\resources\\server_thumbnail\\" + name + ".jpg";
 
             lock.lock();

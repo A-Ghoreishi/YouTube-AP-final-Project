@@ -1028,6 +1028,8 @@ public class database {
 
     }
 
+
+
     public void add_thumbnail(String path){
         Connection conn = null;
         PreparedStatement pstmt = null;

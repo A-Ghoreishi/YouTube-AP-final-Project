@@ -18,7 +18,7 @@ public class client {
     //change the path of vieo for client and for server
     static Scanner  scanner = new Scanner(System.in);
 
-    public void send_thumbnail(int video_id, String path) {
+    public void send_thumbnail( String path) {
         try (Socket socket = new Socket("localhost", 4042);
              OutputStream outputStream = socket.getOutputStream()) {
 
@@ -31,11 +31,9 @@ public class client {
             Thread.sleep(1000);
 
             // Send the video_id as raw bytes
-            JSONObject json = new JSONObject();
-            json.put("video_id", video_id);
+
 
             // Send the JSON object as a string
-            out.println(json.toString());
 
             File videofile = new File(path);
             byte[] buffer = new byte[8192];
