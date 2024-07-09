@@ -87,7 +87,7 @@
                <children>
                   <VBox prefHeight="143.0" prefWidth="260.0">
                      <children>
-                        <HBox fx:id="homehbox" alignment="CENTER" onDragDetected="#homehbox" prefHeight="45.0" prefWidth="260.0" spacing="20.0" stylesheets="@style.css">
+                        <HBox fx:id="homehbox" alignment="CENTER" onDragDetected="#homehbox" onMouseClicked="#homehbox" prefHeight="45.0" prefWidth="260.0" spacing="20.0" stylesheets="@style.css">
                            <children>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

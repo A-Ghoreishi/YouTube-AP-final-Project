@@ -6,6 +6,8 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static program.youtube.database.*;
 
@@ -13,6 +15,7 @@ import static program.youtube.database.*;
 class ServerHandler implements Runnable {
     static database database = new database();
     private final Socket clientSocket;
+    private final Lock lock = new ReentrantLock();
 
     public ServerHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
@@ -40,14 +43,8 @@ class ServerHandler implements Runnable {
                         server_video_sender(clientSocket);
                         out.println("sent");
                     }
-                    case "sign_in" -> {
-                        System.out.println("on");
-                        server_sign_in(clientSocket);
-                        System.out.println("got the info");
-                    }
                     case "get_pfp" -> {
                         System.out.println("pfp");
-                        String name = in.readLine();
                         get_pfp(clientSocket);
                     }
                     case "send_pfp" ->{
@@ -101,7 +98,104 @@ class ServerHandler implements Runnable {
                         System.out.println("change bio");
                         server_change_bio(clientSocket);
                     }
+                    case "search_video" ->{
+                        System.out.println("searching video");
+                        server_search_video(clientSocket);
+                    }
+                    case "search_user_name" ->{
+                        System.out.println("searching user_name");
+                        server_search_user_name(clientSocket);
+                    }
+                    case "get_video_title" ->{
+                        System.out.println("send title");
+                        server_send_video_title(clientSocket);
 
+                    }
+                    case "get_video_user_name" -> {
+                        System.out.println("send_video_user_name");
+                        server_send_video_user_name(clientSocket);
+                    }
+                    case "get_video_likes" ->{
+                        System.out.println("send likes");
+                        server_send_video_likes(clientSocket);
+                    }
+                    case "send_view" ->{
+                        System.out.println("send_view");
+                        server_send_views();
+                    }
+                    case "increase_view" -> {
+                        System.out.println("increase view");
+                        increase_view_videos(clientSocket);
+                    }
+                    case "send_videos_of_user" ->{
+                        System.out.println("videos of user");
+                        server_videos_of_user(clientSocket);
+                    }
+                    case "send_name_familyname" ->{
+                        System.out.println("send names");
+                        server_send_name(clientSocket);
+                    }
+                    case "delete_video" -> {
+                        System.out.println("delete video");
+                        server_delete_video(clientSocket);
+                    }
+                    case "send_likes_comment" -> {
+                        System.out.println("send like comments");
+                        server_send_comment_like(clientSocket);
+                    }
+                    case "send_username_comment" ->{
+                        System.out.println("user name of comments");
+                        server_send_username_comment(clientSocket);
+                    }
+                    case "send_comment" -> {
+                        System.out.println("send the comment");
+                        server_send_comment(clientSocket);
+                    }
+                    case "get_liked_list" -> {
+                        System.out.println("get comments");
+                        server_get_liked_list(clientSocket);
+                    }
+
+                    case "add to subscriber" -> {
+                        System.out.println("add_to_subscriber");
+                        add_subscriber(clientSocket);
+                    }
+                    case "get_subscriber" -> {
+                        System.out.println("get subscriber");
+                        server_send_subscriber(clientSocket);
+                    }
+                    case "get_video_playlist" -> {
+                        System.out.println("get video of playlist");
+                        server_send_video_playlist(clientSocket);
+                    }
+                    case "get_playlists" -> {
+                        System.out.println("sending play list");
+                        server_send_play_list(clientSocket);
+                    }
+                    case "add_video_to_play_list" -> {
+                        System.out.println("add_video_to_play_list");
+                        server_add_video_play_list(clientSocket);
+                    }
+                    case "make_new_play_list" -> {
+                        System.out.println("make new play list");
+                        server_make_new_watch_list(clientSocket);
+                    }
+                    case "get_watch_later" -> {
+                        System.out.println("get_watch_later");
+                        server_get_watch_later(clientSocket);
+                    }
+                    case "add_to_watch_later" -> {
+                        System.out.println("add_to_watch_later");
+                        server_add_to_watch_later(clientSocket);
+                    }
+                    case "search_username" -> {
+                        System.out.println("search_username");
+                        server_search_user_name(clientSocket);
+                    }
+                    case "get_channel" -> {
+                        System.out.println("get_channel");
+                        server_send_channel_id(clientSocket);
+                    }
                 }
 
                 // Process client input (you can customize this part)
@@ -118,9 +212,50 @@ class ServerHandler implements Runnable {
         }
     }
 
+    public void get_thumbnail(Socket clientSocket) {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+
+            // Parse the JSON data
+            JSONObject json = new JSONObject(clientData);
+            int video_id = json.getInt("video_id");
+
+            InputStream inputStream = clientSocket.getInputStream();
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+
+            // Read video_id from the client
 
 
-    public static void get_video(Socket clientSocket){
+            String name = Integer.toString(video_id);
+            String path = "C:\\Users\\Ailin Ghoreishi\\Music\\Java\\FINAL_AP_PROJECT_YOUTUBE\\src\\main\\resources\\" + name + ".jpg";
+
+            lock.lock();
+            database.add_thumbnail(video_id, path);
+            lock.unlock();
+
+
+            // Receive thumbnail data and save it to the file
+            FileOutputStream fileOutputStream = new FileOutputStream(path);
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+
+                fileOutputStream.write(buffer, 0, bytesRead);
+            }
+
+
+            fileOutputStream.close();
+            inputStream.close();
+            clientSocket.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public  void get_video(Socket clientSocket){
+
         try {
 
             // Read data from the client
@@ -136,21 +271,26 @@ class ServerHandler implements Runnable {
             String description = json.getString("description");
             database database = new database();
             //inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
+            lock.lock();
             add_video(user_id,userName,title,description);
+            lock.unlock();
 
 
             // Send a response back to the client
             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
             writer.println("Server received your sign-in data: " + clientData);
 
-            int videoid=database.getLastVideoId();
+            int videoid = database.getLastVideoId();
             String name = Integer.toString(videoid);
-            String save_path = "D:\\final_project\\src\\main\\resources\\server_videos\\"+name+".mkv";
+            String save_path = "C:\\Users\\Ailin Ghoreishi\\Music\\Java\\FINAL_AP_PROJECT_YOUTUBE\\src\\main\\resources\\images"+name+".mp4";
+            lock.lock();
+            database.putting_the_file_path_into_table(save_path,videoid);
+            lock.unlock();
             InputStream inputStream = clientSocket.getInputStream();
             byte[] buffer = new byte[1024];
             int byteread;
             FileOutputStream fileOutputStream = new FileOutputStream(save_path);
-            database.putting_the_file_path_into_table(save_path,videoid);
+
 
             while ((byteread = inputStream.read(buffer)) != -1){
                 fileOutputStream.write(buffer,0,byteread);
@@ -203,6 +343,7 @@ class ServerHandler implements Runnable {
             Thread.sleep(1000);
             // Create a JSON object with the provided data
             JSONObject jsonParams = new JSONObject();
+
             jsonParams.put("title",database.get_video_title(video_id));
 
             // Write data to the server
@@ -219,7 +360,7 @@ class ServerHandler implements Runnable {
             throw new RuntimeException(e);
         }
     }
-    public void server_send_likes(Socket clientSocket){
+    public void server_send_video_likes(Socket clientSocket){
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String clientData = reader.readLine();
@@ -339,15 +480,10 @@ class ServerHandler implements Runnable {
         JSONObject json = new JSONObject(clientData);
         int user_id = json.getInt("user_id");
 
-
-
-        FileInputStream videoFile = new FileInputStream(get_profile_pic_path(user_id));
+        FileInputStream videoFile = new FileInputStream(database.get_profile_pic_path(user_id));
 
         while (true) {
             System.out.println("Client connected: " + clientSocket.getInetAddress());
-
-            DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
-            out.writeUTF("msg");
 
             OutputStream outputStream = clientSocket.getOutputStream();
 
@@ -363,75 +499,39 @@ class ServerHandler implements Runnable {
         }
     }
 //check methods about sending pfp
-    public static void get_pfp(Socket clientSocket) {
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            String clientData = reader.readLine();
-            System.out.println("Received login-in data from client: " + clientData);
+public void get_pfp(Socket clientSocket) {
+    try {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            JSONObject json = new JSONObject(clientData);
-            int user_id = json.getInt("user_id");
-            String name = Integer.toString(user_id);
+        // Read JSON data from the client
+        String clientData = reader.readLine();
+        JSONObject json = new JSONObject(clientData);
+        int userId = json.getInt("user_id"); // Assuming the key is "user_id"
 
-            String path = "D:\\final_project\\src\\main\\resources\\server_profile_pictures\\" + name + ".jpg";
-            add_profile_pic_path(path,user_id);
+        // Save profile picture to a file (e.g., user123.jpg)
+        String profilePicPath = "C:\\Users\\Ailin Ghoreishi\\Music\\Java\\FINAL_AP_PROJECT_YOUTUBE\\src\\main\\resources\\" + userId + ".png";
+        database.add_profile_pic_path(profilePicPath,userId);
+        FileOutputStream fileOutputStream = new FileOutputStream(profilePicPath);
+        byte[] buffer = new byte[8192];
+        int bytesRead;
 
-
-            InputStream inputStream = clientSocket.getInputStream();
-            byte[] buffer = new byte[8192];
-            int byteread;
-
-            FileOutputStream fileOutputStream = new FileOutputStream(path);
-
-            while ((byteread = inputStream.read(buffer)) != -1) {
-                fileOutputStream.write(buffer, 0, byteread);
-            }
-            fileOutputStream.close();
-            inputStream.close();
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        InputStream inputStream = clientSocket.getInputStream();
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            fileOutputStream.write(buffer, 0, bytesRead);
         }
+
+        fileOutputStream.close();
+        inputStream.close();
+        clientSocket.close();
+
+        System.out.println("Profile picture saved for user " + userId + ": " + profilePicPath);
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+}
 
 
-
-
-
-    private static void server_sign_in(Socket clientSocket) {
-        try {
-            // Read data from the client
-            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            String clientData = reader.readLine();
-            System.out.println("Received sign-in data from client: " + clientData);
-
-            // Parse the JSON data
-            JSONObject json = new JSONObject(clientData);
-            String name = json.getString("name");
-            String userName = json.getString("user_name");
-            String familyName = json.getString("family_name");
-            String password = json.getString("user_password");
-            String bio = json.getString("bio");
-            int birthYear = json.getInt("birth_year");
-            String birthMonth = json.getString("birth_month");
-            int birthDay = json.getInt("birth_day");
-            database database = new database();
-            //inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
-
-            // Insert data into the database (use your actual method here)
-            // Example (assuming you have a method called insertIntoDatabase):
-            // insertIntoDatabase(name, userName, familyName, password, bio, birthYear, birthMonth, birthDay);
-
-            // Send a response back to the client
-            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
-            writer.println("Server received your sign-in data: " + clientData);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void sign_in_get_name(Socket clientSocket) throws IOException {
+    public  void sign_in_get_name(Socket clientSocket) throws IOException {
         // Read data from the client
         try{
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -445,7 +545,9 @@ class ServerHandler implements Runnable {
             String familyName = json.getString("family_name");
 
             database database = new database();
-            inserting_name_username_lname(name,familyName,userName);
+            lock.lock();
+            database.inserting_name_username_lname(name,familyName,userName);
+            lock.lock();
             //inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
 
             // Insert data into the database (use your actual method here)
@@ -462,7 +564,7 @@ class ServerHandler implements Runnable {
 
 
 
-    public static void sign_in_get_birth_dates(Socket clientSocket) throws IOException {
+    public  void sign_in_get_birth_dates(Socket clientSocket) throws IOException {
         // Read data from the client
         try{
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -478,7 +580,10 @@ class ServerHandler implements Runnable {
             String gender = json.getString("gender");
 
             database database = new database();
-            inserting_birth_date_and_gender(birth_year,birth_month,birth_day,user_name,gender);
+
+            lock.lock();
+            database.inserting_birth_date_and_gender(birth_year,birth_month,birth_day,user_name,gender);
+            lock.unlock();
             //inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
 
             // Insert data into the database (use your actual method here)
@@ -493,7 +598,7 @@ class ServerHandler implements Runnable {
         }
     }
 
-    public static void sign_in_get_email_pass_bio(Socket clientSocket){
+    public  void sign_in_get_email_pass_bio(Socket clientSocket){
         try{
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String clientData = reader.readLine();
@@ -508,7 +613,9 @@ class ServerHandler implements Runnable {
 
 
             database database = new database();
+            lock.lock();
             inserting_password_email_bio(user_name,password,email,bio);
+            lock.unlock();
             //inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
 
             // Insert data into the database (use your actual method here)
@@ -523,7 +630,7 @@ class ServerHandler implements Runnable {
         }
     }
 
-    public static void server_log_in(Socket clientSocket){
+    public  void server_log_in(Socket clientSocket){
         try {
             // Read data from the client
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -536,7 +643,9 @@ class ServerHandler implements Runnable {
             String password = json.getString("user_password");
             database database = new database();
             //inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
+            lock.lock();
             boolean login = database.login(userName,password);
+            lock.unlock();
             // Insert data into the database (use your actual method here)
             // Example (assuming you have a method called insertIntoDatabase):
             // insertIntoDatabase(name, userName, familyName, password, bio, birthYear, birthMonth, birthDay);
@@ -552,7 +661,7 @@ class ServerHandler implements Runnable {
         }
 
     }
-    public static void server_add_comment(Socket clientSocket){
+    public  void server_add_comment(Socket clientSocket){
         try {
             // Read data from the client
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -566,7 +675,9 @@ class ServerHandler implements Runnable {
             int video_id = json.getInt("video_id");
             database database = new database();
             //inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
-            making_comment(video_id,userName,comment);
+            lock.lock();
+            database.making_comment(video_id,userName,comment);
+            lock.unlock();
             // Insert data into the database (use your actual method here)
             // Example (assuming you have a method called insertIntoDatabase):
             // insertIntoDatabase(name, userName, familyName, password, bio, birthYear, birthMonth, birthDay);
@@ -593,8 +704,10 @@ class ServerHandler implements Runnable {
 
             database database = new database();
             //inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
-            increase_likes_of_video(video_id);
-            add_to_liked(user_id,video_id);
+            lock.lock();
+            database.increase_likes_of_video(video_id);
+            database.add_to_liked(user_id,video_id);
+            lock.unlock();
             // Insert data into the database (use your actual method here)
             // Example (assuming you have a method called insertIntoDatabase):
             // insertIntoDatabase(name, userName, familyName, password, bio, birthYear, birthMonth, birthDay);
@@ -618,8 +731,8 @@ class ServerHandler implements Runnable {
             JSONObject json = new JSONObject(clientData);
             String user_name = json.getString("user_name");
 
-            database database = new database();
-            int user_id = get_user_id(user_name);
+            int user_id = database.get_user_id(user_name);
+
             json.put("user_id",user_id);
 
             // Send a response back to the client
@@ -631,37 +744,7 @@ class ServerHandler implements Runnable {
         }
     }
 
-    public void get_thumbnail(Socket clientSocket) {
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            String clientData = reader.readLine();
-            System.out.println("Received login-in data from client: " + clientData);
 
-            JSONObject json = new JSONObject(clientData);
-            int video_id = json.getInt("video_id");
-            String name = Integer.toString(video_id);
-
-            String path = "D:\\final_project\\src\\main\\resources\\server_thumbnail\\" + name + ".jpg";
-            //add_profile_pic_path(path,video_id);
-            database.add_thumbnail(video_id,path);
-
-            InputStream inputStream = clientSocket.getInputStream();
-            byte[] buffer = new byte[8192];
-            int byteread;
-
-            FileOutputStream fileOutputStream = new FileOutputStream(path);
-
-            while ((byteread = inputStream.read(buffer)) != -1) {
-                fileOutputStream.write(buffer, 0, byteread);
-            }
-            fileOutputStream.close();
-            inputStream.close();
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public void server_send_thumbnail(Socket clientSocket){
         try{
@@ -711,7 +794,7 @@ class ServerHandler implements Runnable {
 
             // Create a JSON object with the provided data
             JSONObject jsonParams = new JSONObject();
-            jsonParams.put("bio",get_bio(user_id));
+            jsonParams.put("bio",database.get_bio(user_id));
 
             // Write data to the server
             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -814,8 +897,9 @@ class ServerHandler implements Runnable {
 
             int video_id = json.getInt("video_id");
             int user_id = json.getInt("user_id");
+            lock.lock();
             add_watch_later(video_id,user_id);
-
+            lock.unlock();
 
         }catch (Exception e){
             e.printStackTrace();
@@ -872,7 +956,9 @@ class ServerHandler implements Runnable {
             int user_id = jsonObject.getInt("user_id");
             String name = jsonObject.getString("name");
 
-            add_to_playlists(user_id,name);
+            lock.lock();
+            database.add_to_playlists(user_id,name);
+            lock.unlock();
 
             System.out.println("sent");
 
@@ -884,7 +970,7 @@ class ServerHandler implements Runnable {
         }
     }
 
-    public void Server_add_video_play_list(Socket clientSocket){
+    public void server_add_video_play_list(Socket clientSocket){
         try{
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -896,8 +982,9 @@ class ServerHandler implements Runnable {
             String name = jsonObject.getString("name");
             int video_id = jsonObject.getInt("video_id");
 
-
+            lock.lock();
             database.add_video_to_play_list(video_id,user_id,name);
+            lock.unlock();
 
             System.out.println("sent");
 
@@ -909,7 +996,7 @@ class ServerHandler implements Runnable {
         }
     }
 
-    public void server_get_play_list(Socket clientSocket){
+    public void server_send_play_list(Socket clientSocket){
         try{
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -949,7 +1036,7 @@ class ServerHandler implements Runnable {
         }
     }
 
-    public void Server_get_video_playlist(Socket clientSocket){
+    public void server_send_video_playlist(Socket clientSocket){
         try{
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -990,7 +1077,7 @@ class ServerHandler implements Runnable {
         }
     }
 
-    public void server_get_subscriber(Socket clientSocket){
+    public void server_send_subscriber(Socket clientSocket){
         try{
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -1031,7 +1118,9 @@ class ServerHandler implements Runnable {
         }
     }
 
-    public void server_channel_id(Socket clientSocket){
+    // i should make this for the client
+
+    public void server_send_channel_id(Socket clientSocket){
         try{
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -1124,9 +1213,9 @@ class ServerHandler implements Runnable {
             int user_id = jsonObject.getInt("user_id");
             int channel_id = jsonObject.getInt("channel_id");
 
-
+            lock.lock();
             database.add_subscriber(channel_id,user_id);
-
+            lock.unlock();
 
             // Create a JSON object with the provided data
 
@@ -1232,7 +1321,7 @@ class ServerHandler implements Runnable {
         }
     }
 
-    public void server_send_like(Socket clientSocket){
+    public void server_send_comment_like(Socket clientSocket){
         try{
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -1280,14 +1369,9 @@ class ServerHandler implements Runnable {
             clientSocket.close();
             int video_id = jsonObject.getInt("video_id");
 
+            lock.lock();
             database.delete_video(video_id);
-            // Create an ObjectMapper
-
-
-            // Read the server's response
-
-
-
+            lock.unlock();
 
         }catch (Exception e){
             e.printStackTrace();
@@ -1384,7 +1468,9 @@ class ServerHandler implements Runnable {
             clientSocket.close();
             int video_id = jsonObject.getInt("video_id");
 
+            lock.lock();
             database.increase_view_of_video(video_id);
+            lock.unlock();
             // Create an ObjectMapper
 
 
@@ -1410,7 +1496,9 @@ class ServerHandler implements Runnable {
             int user_id = jsonObject.getInt("user_id");
             String bio  = jsonObject.getString("bio");
 
+            lock.lock();
             database.change_bio(bio,user_id);
+            lock.unlock();
 
             clientSocket.close();
 

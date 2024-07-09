@@ -34,8 +34,8 @@
             <Pane prefHeight="200.0" prefWidth="200.0" />
             <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="35.0" prefWidth="455.0" styleClass="search-bar" stylesheets="@style.css">
                <children>
-                  <TextField prefHeight="14.0" prefWidth="394.0" promptText="Search" styleClass="transplant" stylesheets="@style.css" />
-                  <ImageView fitHeight="28.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <TextField fx:id="searchbar" onMouseClicked="#searchbar" prefHeight="14.0" prefWidth="394.0" promptText="Search" styleClass="transplant" stylesheets="@style.css" />
+                  <ImageView fx:id="searchbtn" fitHeight="28.0" fitWidth="40.0" onMouseClicked="#searchbtn" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/search.png" />
                      </image>
@@ -342,7 +342,7 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button mnemonicParsing="false" prefHeight="22.0" prefWidth="170.0" text="1 MONTH FREE" textFill="#fdfdfd">
+                  <Button fx:id="premium" mnemonicParsing="false" onAction="#premium" prefHeight="22.0" prefWidth="170.0" text="1 MONTH FREE" textFill="#fdfdfd">
                      <VBox.margin>
                         <Insets bottom="10.0" left="30.0" />
                      </VBox.margin>

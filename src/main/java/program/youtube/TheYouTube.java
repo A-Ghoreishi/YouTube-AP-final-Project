@@ -1,5 +1,6 @@
 package program.youtube;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -7,7 +8,10 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -64,6 +68,9 @@ public class TheYouTube implements Initializable {
     private HBox premiumhbox;
 
     @FXML
+    private Button premium;
+
+    @FXML
     private ImageView profile;
 
     @FXML
@@ -74,6 +81,9 @@ public class TheYouTube implements Initializable {
 
     @FXML
     private HBox subscriptionhbox;
+
+    @FXML
+    private TextField searchbar;
 
     @FXML
     private HBox trendinghbox;
@@ -89,6 +99,9 @@ public class TheYouTube implements Initializable {
 
     @FXML
     private HBox yourvideoshbox;
+
+    @FXML
+    private ImageView searchbtn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -146,6 +159,7 @@ public class TheYouTube implements Initializable {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
                 });
 
                 if (columns == 3) {
@@ -156,6 +170,12 @@ public class TheYouTube implements Initializable {
                 videoGrid.add(box, columns++, rows);
                 GridPane.setMargin(box, new Insets(10));
             }
+//            Client client = new Client();
+//            int userID = client.get_user_id(Youtube.theUser);
+//            String propath = client.get_profile_picture(userID);
+//            System.out.println(propath);
+//            Image image = new Image(propath);
+//            profile.setImage(image);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -203,6 +223,15 @@ public class TheYouTube implements Initializable {
     }
 
     @FXML
+    void premium(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("musicpremium.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
     void premiumhbox(MouseEvent event) {
     }
 
@@ -220,6 +249,23 @@ public class TheYouTube implements Initializable {
     }
 
     @FXML
+    void searchbar(MouseEvent event) {
+
+    }
+    @FXML
+    void searchbtn(MouseEvent event) throws IOException {
+        String search = searchbar.getText();
+        Parent root = FXMLLoader.load(getClass().getResource("search.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+        Client client = new Client();
+        client.search_video(search);
+
+    }
+
+    @FXML
     void settinghbox(MouseEvent event) {
     }
 
@@ -232,21 +278,12 @@ public class TheYouTube implements Initializable {
     }
 
     @FXML
-    void uploadvideohbox(MouseEvent event) {
-        try {
-            System.out.println("Trying to load FXML...");
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("upload.fxml"));
-            Parent root = fxmlLoader.load();
-            System.out.println("FXML loaded successfully.");
-
-            Stage stage = new Stage();
-            stage.setTitle("Upload your video");
-            stage.setScene(new Scene(root));
-            stage.show();
-            System.out.println("Stage shown.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    void uploadvideohbox(MouseEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("upload.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="1306.0" style="-fx-background-color: transplant;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.youtube.SearchController">
+   <top>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="white-color" stylesheets="@style.css" BorderPane.alignment="CENTER_RIGHT">
+         <children>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/three%20line%20menu.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/images%20(1).png" />
+               </image>
+            </ImageView>
+            <Pane prefHeight="200.0" prefWidth="200.0" />
+            <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="35.0" prefWidth="455.0" styleClass="search-bar" stylesheets="@style.css">
+               <children>
+                  <TextField prefHeight="14.0" prefWidth="394.0" promptText="Search" styleClass="transplant" stylesheets="@style.css" />
+                  <ImageView fitHeight="28.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/search.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/microphone.jpg" />
+               </image>
+            </ImageView>
+            <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox fx:id="uploadvideohbox" alignment="CENTER" layoutX="68.0" layoutY="8.0" onMouseClicked="#uploadvideohbox" prefHeight="85.0" prefWidth="106.0">
+                     <children>
+                        <ImageView fitHeight="50.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/yourvideo.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children></Pane>
+            <ImageView fx:id="notification" fitHeight="47.0" fitWidth="41.0" onDragDetected="#notification" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/notification-icon-for-web-vector.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="menu" fitHeight="58.0" fitWidth="55.0" onDragDetected="#menu" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/grid-dots.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="profile" fitHeight="98.0" fitWidth="136.0" onMouseClicked="#profile" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/avatar1.jpg" />
+               </image>
+            </ImageView>
+         </children>
+         <padding>
+            <Insets left="30.0" right="30.0" />
+         </padding>
+      </HBox>
+   </top>
+   <left>
+      <ScrollPane prefWidth="280.0" BorderPane.alignment="CENTER">
+         <content>
+            <VBox prefHeight="810.0" prefWidth="260.0" styleClass="white-color" stylesheets="@style.css">
+               <children>
+                  <VBox prefHeight="143.0" prefWidth="260.0">
+                     <children>
+                        <HBox fx:id="homehbox" alignment="CENTER" onDragDetected="#homehbox" prefHeight="45.0" prefWidth="260.0" spacing="20.0" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/homeBtn.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Home">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <styleClass>
+                              <String fx:value="selected" />
+                              <String fx:value="over" />
+                           </styleClass>
+                        </HBox>
+                        <HBox fx:id="trendinghbox" alignment="CENTER" onDragDetected="#trendinghbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/trending.png" />
+                                 </image></ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Trending">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="subscriptionhbox" alignment="CENTER" onDragDetected="#subscriptionhbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/subscription.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Subscribtions">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="40.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <Separator prefWidth="200.0" />
+                  <VBox prefHeight="96.0" prefWidth="260.0">
+                     <children>
+                        <HBox fx:id="yourchannelhbox" alignment="CENTER" onDragDetected="#yourchannelhbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/yourchannel.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Your channel">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="historyhbox" alignment="CENTER" onDragDetected="#historyhbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/history.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="History">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="97.0" prefWidth="260.0">
+                     <children>
+                        <HBox fx:id="playlisthbox" alignment="CENTER" onMouseClicked="#playlisthbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/playlist.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Playlists">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="yourvideoshbox" alignment="CENTER" onDragDetected="#yourvideoshbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/yourvideos.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Your videos">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="97.0" prefWidth="260.0">
+                     <children>
+                        <HBox fx:id="watchlaterhbox" alignment="CENTER" onDragDetected="#watchlaterhbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/watchlater.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Watch later">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="likedvideoshbox" alignment="CENTER" onDragDetected="#likedvideoshbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="17.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/liked.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Liked videos">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <Separator prefWidth="200.0" />
+                  <VBox prefHeight="97.0" prefWidth="260.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="226.0" spacing="20.0">
+                           <children>
+                              <Label prefHeight="30.0" prefWidth="245.0" text="     More From YouTube" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="premiumhbox" alignment="CENTER" onDragDetected="#premiumhbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="17.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/premium.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Youtube premium">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  
+
+                  <VBox prefHeight="181.0" prefWidth="260.0">
+                     <children>
+                        <HBox fx:id="gaminhbox" alignment="CENTER" onDragDetected="#gaminhbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/game.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Gaming">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="0.0" prefWidth="260.0" spacing="20.0" />
+                        <Separator prefWidth="200.0" />
+                        <HBox fx:id="settinghbox" alignment="CENTER" onDragDetected="#settinghbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="32.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/setting.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="58.0" prefWidth="150.0" text="Settings">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="reporthbox" alignment="CENTER" layoutX="10.0" layoutY="59.0" onDragDetected="#reporthbox" prefHeight="69.0" prefWidth="260.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="21.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/report.jpeg" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="38.0" prefWidth="160.0" text="Report history">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </left>
+   <center>
+      <VBox fx:id="middlepage" onDragDetected="#middlepage" prefHeight="200.0" prefWidth="100.0" styleClass="body-background" stylesheets="@style.css" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="250.0" prefWidth="100.0" styleClass="black-color" stylesheets="@style.css">
+               <children>
+                  <HBox prefHeight="3.0" prefWidth="975.0">
+                     <children>
+                        <ImageView fitHeight="127.0" fitWidth="204.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/ytmusic.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                  </HBox>
+                  <Label prefHeight="148.0" prefWidth="424.0" text="Greate value by sharing. Family plan lets&#10;you add up to 6 separate personalized&#10;accounts.&#10;" textFill="WHITE">
+                     <VBox.margin>
+                        <Insets left="30.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Button mnemonicParsing="false" prefHeight="22.0" prefWidth="170.0" text="1 MONTH FREE" textFill="#fdfdfd">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="30.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="transplant" stylesheets="@style.css" VBox.vgrow="ALWAYS">
+               <content>
+                  <GridPane fx:id="videoGrid">
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                  </GridPane>
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

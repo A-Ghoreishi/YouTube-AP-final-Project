@@ -420,7 +420,7 @@ public class database {
         return subscribers_id;
     }
 
-    public static boolean login(String inputUsername,String inputPassword){
+    public  boolean login(String inputUsername,String inputPassword){
 
 
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
@@ -448,7 +448,7 @@ public class database {
         return false;
     }
 
-    public static int get_user_id(String user_name){
+    public  int get_user_id(String user_name){
         String query = "SELECT user_id FROM user_info WHERE user_name = ?";
 
 
@@ -470,7 +470,7 @@ public class database {
         return 0;
     }
 
-    public static String get_bio(int user_id){
+    public  String get_bio(int user_id){
         String query = "SELECT bio FROM user_info WHERE user_id = ?";
 
 
@@ -608,7 +608,7 @@ public class database {
             }
         }
     }
-    public static void increase_likes_of_video(int video_id){
+    public  void increase_likes_of_video(int video_id){
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -647,7 +647,7 @@ public class database {
 
 
 
-    public static void decrease_like_for_video (int video_id){
+    public  void decrease_like_for_video (int video_id){
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -746,7 +746,7 @@ public class database {
     }
 
 
-    public static void making_comment(int video_id,String user_name,String comment) {
+    public  void making_comment(int video_id,String user_name,String comment) {
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -819,7 +819,7 @@ public class database {
 
 
 
-    public static void decrease_like_for_comment (int comment_id){
+    public  void decrease_like_for_comment (int comment_id){
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -972,7 +972,7 @@ public class database {
         return null;
     }
 
-    public static String get_profile_pic_path(int user_id){
+    public  String get_profile_pic_path(int user_id){
         String query = "SELECT profile_pic_path FROM user_info WHERE user_id = ?";
 
 
@@ -995,7 +995,7 @@ public class database {
 
         return null;
     }
-    public static void add_profile_pic_path(String path,int user_id){
+    public  void add_profile_pic_path(String path,int user_id){
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -1343,6 +1343,7 @@ public class database {
         //inserting_name_username_lname("sepanta","hos","mrbeast");
         //System.out.println(database.get_video_path(3));
         //login("patric_bateman","bb2edb1762549e25f9656f7fce3101d889447e010d4a5d9dac6694f0d47eafd3");
+        add_video(5,"name","title","djnksnk");
 
 
 

@@ -210,6 +210,8 @@ public class Videoplayer implements Initializable {
     }
 
     public void setVideoData(Video video) {
+        System.out.println(video.getVideosrc());
+
         String videoPath = getClass().getResource(video.getVideosrc()).toString();
         media = new Media(videoPath);
         if (mediaPlayer != null) {

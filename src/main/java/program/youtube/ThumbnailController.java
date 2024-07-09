@@ -43,31 +43,6 @@ public class ThumbnailController {
     }
 
     public void setData(Video video) {
-//        try {
-//            InputStream thumbStream = getClass().getResourceAsStream(video.getThumbsrc());
-//            if (thumbStream == null) {
-//                logger.severe("Thumbnail resource not found: " + video.getThumbsrc());
-//                throw new NullPointerException("Thumbnail resource not found: " + video.getThumbsrc());
-//            }
-//            Image thumbImage = new Image(thumbStream);
-//            thumbnail.setImage(thumbImage);
-//
-//            InputStream profileStream = getClass().getResourceAsStream(video.getProfilesrc());
-//            if (profileStream == null) {
-//                logger.severe("Profile image resource not found: " + video.getProfilesrc());
-//                throw new NullPointerException("Profile image resource not found: " + video.getProfilesrc());
-//            }
-//            Image profileImage = new Image(profileStream);
-//            profile.setImage(profileImage);
-//
-//            title.setText(video.getName());
-//            channelName.setText(video.getChannnel());
-//            views.setText(video.getViews());
-//            date.setText(video.getDate());
-//        } catch (Exception e) {
-//            logger.severe("Error setting data: " + e.getMessage());
-//            e.printStackTrace();
-//        }
 
         try {
             Image image = new Image(getClass().getResourceAsStream(video.getThumbsrc()));
@@ -85,20 +60,4 @@ public class ThumbnailController {
             e.printStackTrace();
         }
     }
-
-//    @FXML
-//    void handleClick(MouseEvent event) throws IOException {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("video.fxml"));
-//        Parent root = loader.load();
-//
-//        // Access the controller of video.fxml
-//        Videoplayer videoController = loader.getController();
-//        videoController.setVideoData(video);
-//
-//        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        Scene scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//    }
-
 }

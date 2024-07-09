@@ -9,6 +9,8 @@ public class Video {
     private String date;
     private String videosrc; // Field to store video source URL or path
 
+    private String description;
+
     public String getThumbsrc() {
         return thumbsrc;
     }
@@ -63,5 +65,13 @@ public class Video {
 
     public void setVideosrc(String videosrc) {
         this.videosrc = videosrc;
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
+    public void setDescription(String descriptionText) {
+        this.description = description;
     }
 }
