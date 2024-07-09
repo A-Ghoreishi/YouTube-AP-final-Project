@@ -45,7 +45,6 @@ class ServerHandler implements Runnable {
                     }
                     case "get_pfp" -> {
                         System.out.println("pfp");
-                        String name = in.readLine();
                         get_pfp(clientSocket);
                     }
                     case "send_pfp" ->{
@@ -500,39 +499,37 @@ class ServerHandler implements Runnable {
         }
     }
 //check methods about sending pfp
-    public  void get_pfp(Socket clientSocket) {
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            String clientData = reader.readLine();
-            System.out.println("Received login-in data from client: " + clientData);
+public void get_pfp(Socket clientSocket) {
+    try {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            JSONObject json = new JSONObject(clientData);
-            int user_id = json.getInt("user_id");
-            String name = Integer.toString(user_id);
+        // Read JSON data from the client
+        String clientData = reader.readLine();
+        JSONObject json = new JSONObject(clientData);
+        int userId = json.getInt("user_id"); // Assuming the key is "user_id"
 
-            String path = "D:\\final_project\\src\\main\\resources\\server_profile_pictures\\" + name + ".jpg";
-            lock.lock();
-            database.add_profile_pic_path(path,user_id);
-            lock.unlock();
+        // Save profile picture to a file (e.g., user123.jpg)
+        String profilePicPath = "D:\\final_project\\src\\main\\resources\\server_profile_pictures\\" + userId + ".jpg";
+        FileOutputStream fileOutputStream = new FileOutputStream(profilePicPath);
+        byte[] buffer = new byte[8192];
+        int bytesRead;
 
-
-            InputStream inputStream = clientSocket.getInputStream();
-            byte[] buffer = new byte[8192];
-            int byteread;
-
-            FileOutputStream fileOutputStream = new FileOutputStream(path);
-
-            while ((byteread = inputStream.read(buffer)) != -1) {
-                fileOutputStream.write(buffer, 0, byteread);
-            }
-            fileOutputStream.close();
-            inputStream.close();
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        InputStream inputStream = clientSocket.getInputStream();
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            fileOutputStream.write(buffer, 0, bytesRead);
         }
+
+        fileOutputStream.close();
+        inputStream.close();
+        clientSocket.close();
+
+        System.out.println("Profile picture saved for user " + userId + ": " + profilePicPath);
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+}
+
+
 
 
 
@@ -714,7 +711,7 @@ class ServerHandler implements Runnable {
             database database = new database();
             //inserting_user_info(name,userName,familyName,password,bio,birthYear,birthMonth,birthDay);
             lock.lock();
-            increase_likes_of_video(video_id);
+            database.increase_likes_of_video(video_id);
             database.add_to_liked(user_id,video_id);
             lock.unlock();
             // Insert data into the database (use your actual method here)
@@ -803,7 +800,7 @@ class ServerHandler implements Runnable {
 
             // Create a JSON object with the provided data
             JSONObject jsonParams = new JSONObject();
-            jsonParams.put("bio",get_bio(user_id));
+            jsonParams.put("bio",database.get_bio(user_id));
 
             // Write data to the server
             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);

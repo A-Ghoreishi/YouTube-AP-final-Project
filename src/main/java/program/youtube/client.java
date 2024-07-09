@@ -17,39 +17,83 @@ public class client {
     //change the path of vieo for client and for server
     static Scanner  scanner = new Scanner(System.in);
 
-    public static void send_profile_picture(String path, int user_id) {
+    public void send_thumbnail(int video_id, String path) {
+        try (Socket socket = new Socket("localhost", 4042);
+             OutputStream outputStream = socket.getOutputStream()) {
 
-
-        try {
-            Socket socket = new Socket("localhost", 4042);
-
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            String message = "get_pfp";
+            // Send the "get_thumbnail" message
+            PrintWriter out = new PrintWriter(outputStream, true);
+            String message = "get_thumbnail";
             out.println(message);
+
+            // Wait for a moment (optional)
+            Thread.sleep(1000);
+
+            // Send the video_id as raw bytes
             JSONObject json = new JSONObject();
-            json.put("user_id",user_id);
-            out.print(json.toString());
+            json.put("video_id", video_id);
 
-            File pictureFile = new File(path);
-            byte[] pictureBytes = new byte[(int) pictureFile.length()];
+            // Send the JSON object as a string
+            out.println(json.toString());
 
-            OutputStream outputStream = socket.getOutputStream();
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(pictureFile));
+            File videofile = new File(path);
+            byte[] buffer = new byte[8192];
+            int bytesRead;
 
-            int count;
-            byte[] buffer = new byte[8192]; // 8KB buffer
-            while ((count = bis.read(buffer)) > 0) {
-                outputStream.write(buffer, 0, count);
-                outputStream.flush(); // Flush after each write
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(videofile));
+            while ((bytesRead = bis.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+                outputStream.flush();
             }
 
             bis.close();
-            outputStream.close();
-            socket.close();
+
+            // Send the thumbnail data
+            // ... (rest of the method remains the same)
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public static void send_profile_picture(String path, int user_id) {
+        String serverAddress = "localhost"; // Server address
+        int serverPort = 4042; // Server port
+
+        try (Socket socket = new Socket(serverAddress, serverPort)) {
+            OutputStream outputStream = socket.getOutputStream();
+            PrintWriter out = new PrintWriter(outputStream, true);
+            String message = "get_pfp";
+            out.println(message);
+            Thread.sleep(1000);
+
+
+            // Create a JSON object with user ID
+            JSONObject json = new JSONObject();
+            json.put("user_id", user_id); // Replace with the actual user ID
+
+            // Send the JSON object as a string
+
+            out.println(json.toString());
+
+            // Send profile picture data (read from a file)
+            File profilePicFile = new File(path); // Replace with the actual path
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(profilePicFile));
+            while ((bytesRead = bis.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+                outputStream.flush();
+            }
+
+            bis.close();
+            socket.close();
+            System.out.println("Profile picture sent to server.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 
@@ -590,43 +634,7 @@ public class client {
         return user_id;
     }
 
-    public void send_thumbnail(int video_id, String path) {
-        try (Socket socket = new Socket("localhost", 4042);
-             OutputStream outputStream = socket.getOutputStream()) {
 
-            // Send the "get_thumbnail" message
-            PrintWriter out = new PrintWriter(outputStream, true);
-            String message = "get_thumbnail";
-            out.println(message);
-
-            // Wait for a moment (optional)
-            Thread.sleep(1000);
-
-            // Send the video_id as raw bytes
-            JSONObject json = new JSONObject();
-            json.put("video_id", video_id);
-
-            // Send the JSON object as a string
-            out.println(json.toString());
-
-            File videofile = new File(path);
-            byte[] buffer = new byte[8192];
-            int bytesRead;
-
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(videofile));
-            while ((bytesRead = bis.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-                outputStream.flush();
-            }
-
-            bis.close();
-
-            // Send the thumbnail data
-            // ... (rest of the method remains the same)
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 
 
@@ -1453,7 +1461,7 @@ public class client {
         //sending_birth_dates("patric_bateman",1969,"january",18,"man");
         //send_email_password_bio("patric_bateman","nvjkn@gmail.com","vfknk;v","hello there -obi-one");
         client client = new client();
-        client.send_thumbnail(3,"C:\\Users\\Sepanta\\Downloads\\won.jpg");
+       // client.send_thumbnail(3,"C:\\Users\\Sepanta\\Downloads\\won.jpg");
         //login("patric_bateman","vfknk;v");
         //client.sending_comment("lame video","mrbeast",1);
         //client.liking_the_video(3,1);
@@ -1463,6 +1471,8 @@ public class client {
        // client.send_thumbnail(3,"C:\\Users\\Sepanta\\Downloads\\won.jpg");
         //client.sending_video("ldn","C:\\Users\\Sepanta\\Downloads\\@movieo_bot.Black.Bullet.E01.720p.BluRay.@movieo_bot.mkv","mia");
         //client.get_thumbnail(3);
+       send_profile_picture("C:\\Users\\Sepanta\\Downloads\\won.jpg",3);
+       // client.send_thumbnail(3,"C:\\Users\\Sepanta\\Downloads\\won.jpg");
 
 
     }
