@@ -90,7 +90,7 @@ The Local YouTube project includes the following features:
 
 ## Bugs
 
-Despite our efforts, the Local YouTube project may encounter occasional bugs or issues during operation. We strive to address and resolve these promptly to enhance user experience and application stability. If you encounter any issues, please report them to our support team for immediate assistance and resolution.
+This is a project for our advanced programing course in our first year and our second semester. Despite our efforts, the Local YouTube project may encounter occasional bugs or issues during operation. We strive to address and resolve these promptly to enhance user experience and application stability. If you encounter any issues, please report them to our support team for immediate assistance and resolution.
 
 
 ## Chit Chat
@@ -98,3 +98,10 @@ Despite our efforts, the Local YouTube project may encounter occasional bugs or 
 The development team is committed to further enhancing the Local YouTube project by adding more features, improving user interface elements, and optimizing performance. User feedback is highly valued and will be incorporated into future updates to ensure a satisfying user experience.
 
 This report provides a comprehensive overview of the Local YouTube project, highlighting its backend and frontend components, features, and future development goals.
+
+## Developers
+Ailin Ghoreishi
+Sepanat Hosseini
+
+Mentor:
+Navid Ebadi
