@@ -49,18 +49,23 @@ The Homepage serves as the central hub where users land upon logging in. It dyna
 ### Video Player
 
 The Video Player FXML component allows seamless playback of videos from the Local YouTube platform. It supports features such as play, pause, seek, volume control, and fullscreen mode, ensuring an immersive viewing experience for users.
+![VideoPlayer](https://github.com/skeletknight/FINAL_AP_PROJECT_YOUTUBE/blob/front/src/main/resources/images/videoplayer.jpg)
 
 ### Video Uploader
 
 The Video Uploader interface enables users to upload their videos to the platform. It includes fields for title, description, tags, and privacy settings, providing a straightforward process for content creators to share their videos with the community.
+![VideoUploader](https://github.com/skeletknight/FINAL_AP_PROJECT_YOUTUBE/blob/front/src/main/resources/images/uploadpage.jpg)
 
 ### Profile
 
 The Profile FXML provides a personalized view of user profiles. It displays user information, uploaded videos, playlists, and subscriber counts, allowing users to customize their profiles and manage their content effectively.
+![ProfilePage](https://github.com/skeletknight/FINAL_AP_PROJECT_YOUTUBE/blob/front/src/main/resources/images/profilepage.jpg)
+!!ج
 
 ### Musicpremium
 
 The Musicpremium component offers a dedicated space for music enthusiasts. It features playlists, music tracks, and recommendations, with interactive elements for playing and managing music content seamlessly within the Local YouTube application.
+![youtube Premium](https://github.com/skeletknight/FINAL_AP_PROJECT_YOUTUBE/blob/front/src/main/resources/images/youtubepremium.jpg)
 
 ### Other Components
 
