@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -26,6 +27,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class TheYouTube implements Initializable {
+    @FXML
+    private ImageView darklight;
 
     private UserInfo userInfo;
 
@@ -60,6 +63,15 @@ public class TheYouTube implements Initializable {
 
     @FXML
     private ImageView notification;
+
+    @FXML
+    private BorderPane parent;
+
+    @FXML
+    private VBox parentLeft;
+
+    @FXML
+    private HBox parentUp;
 
     @FXML
     private HBox playlisthbox;
@@ -102,6 +114,8 @@ public class TheYouTube implements Initializable {
 
     @FXML
     private ImageView searchbtn;
+
+    private boolean isLightMode = true;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -186,6 +200,95 @@ public class TheYouTube implements Initializable {
     }
 
     @FXML
+    void darklight(MouseEvent event) {
+        isLightMode = !isLightMode;
+        if (isLightMode) {
+            setLightMode();
+        } else {
+            setDarkMode();
+        }
+    }
+
+    int num = 0;
+
+    private void setLightMode() {
+        URL lightModeUrl = getClass().getResource("/styles/lightmode.css");
+        URL darkImageUrl = getClass().getResource("/images/dark.png");
+
+        if (lightModeUrl == null) {
+            System.out.println("Light mode CSS not found");
+            return;
+        }
+        if (darkImageUrl == null) {
+            System.out.println("Dark image not found");
+            return;
+        }
+
+        System.out.println("Light mode CSS path: " + lightModeUrl);
+        System.out.println("Dark image path: " + darkImageUrl);
+
+        switch (num) {
+            case 0:
+                parentUp.getStylesheets().add(lightModeUrl.toExternalForm());
+                parentLeft.getStylesheets().add(lightModeUrl.toExternalForm());
+                videoGrid.getStylesheets().add(lightModeUrl.toExternalForm());
+                Image image = new Image(darkImageUrl.toExternalForm());
+                darklight.setImage(image);
+                num++;
+                break;
+
+            case 1:
+                parentUp.getStylesheets().remove(getClass().getResource("/styles/darkmode.css").toExternalForm());
+                parentLeft.getStylesheets().remove(getClass().getResource("/styles/darkmode.css").toExternalForm());
+                videoGrid.getStylesheets().remove(getClass().getResource("/styles/darkmode.css").toExternalForm());
+                parentUp.getStylesheets().add(lightModeUrl.toExternalForm());
+                parentLeft.getStylesheets().add(lightModeUrl.toExternalForm());
+                videoGrid.getStylesheets().add(lightModeUrl.toExternalForm());
+                Image lightImage = new Image(darkImageUrl.toExternalForm());
+                darklight.setImage(lightImage);
+        }
+    }
+
+    private void setDarkMode() {
+        URL darkModeUrl = getClass().getResource("/styles/darkmode.css");
+        URL lightImageUrl = getClass().getResource("/images/light.png");
+
+        if (darkModeUrl == null) {
+            System.out.println("Dark mode CSS not found");
+            return;
+        }
+        if (lightImageUrl == null) {
+            System.out.println("Light image not found");
+            return;
+        }
+
+        System.out.println("Dark mode CSS path: " + darkModeUrl);
+        System.out.println("Light image path: " + lightImageUrl);
+
+        switch (num) {
+            case 0:
+                parentUp.getStylesheets().add(darkModeUrl.toExternalForm());
+                parentLeft.getStylesheets().add(darkModeUrl.toExternalForm());
+                videoGrid.getStylesheets().add(darkModeUrl.toExternalForm());
+                Image image = new Image(lightImageUrl.toExternalForm());
+                darklight.setImage(image);
+                num++;
+                break;
+
+            case 1:
+                parentUp.getStylesheets().remove(getClass().getResource("/styles/lightmode.css").toExternalForm());
+                parentLeft.getStylesheets().remove(getClass().getResource("/styles/lightmode.css").toExternalForm());
+                videoGrid.getStylesheets().remove(getClass().getResource("/styles/lightmode.css").toExternalForm());
+                parentUp.getStylesheets().add(darkModeUrl.toExternalForm());
+                parentLeft.getStylesheets().add(darkModeUrl.toExternalForm());
+                videoGrid.getStylesheets().add(darkModeUrl.toExternalForm());
+                Image darkImage = new Image(lightImageUrl.toExternalForm());
+                darklight.setImage(darkImage);
+        }
+    }
+
+
+    @FXML
     void gaminhbox(MouseEvent event) {
     }
 
@@ -232,7 +335,12 @@ public class TheYouTube implements Initializable {
     }
 
     @FXML
-    void premiumhbox(MouseEvent event) {
+    void premiumhbox(MouseEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("musicpremium.fxml"));
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML

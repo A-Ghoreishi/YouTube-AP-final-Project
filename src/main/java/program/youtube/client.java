@@ -438,7 +438,7 @@ public class Client {
         }
         return login;
     }
-    public static void sending_fname_lname_user_name(String name,String lname,String user_name){
+    public void sending_fname_lname_user_name(String name,String lname,String user_name){
         try {
             Socket socket = new Socket("localhost", 4042);
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -471,7 +471,7 @@ public class Client {
         }
     }
 
-    public static void sending_birth_dates(String user_name,int birth_year,String birth_month,int birth_day,String gender){
+    public void sending_birth_dates(String user_name,int birth_year,String birth_month,int birth_day,String gender){
         try {
             Socket socket = new Socket("localhost", 4042);
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -503,7 +503,7 @@ public class Client {
         }
     }
 
-    public static void send_email_password_bio(String user_name,String email,String password,String bio){
+    public void send_email_password_bio(String user_name,String email,String password,String bio){
         password = hashPassword(password);
 
         try {
@@ -1474,7 +1474,7 @@ public class Client {
        // client.send_thumbnail(3,"C:\\Users\\Sepanta\\Downloads\\won.jpg");
         //client.sending_video("ldn","C:\\Users\\Sepanta\\Downloads\\@movieo_bot.Black.Bullet.E01.720p.BluRay.@movieo_bot.mkv","mia");
         //client.get_thumbnail(3);
-       send_profile_picture("C:\\Users\\Sepanta\\Downloads\\won.jpg",3);
+//       send_profile_picture("C:\\Users\\Sepanta\\Downloads\\won.jpg",3);
        // client.send_thumbnail(3,"C:\\Users\\Sepanta\\Downloads\\won.jpg");
 
 

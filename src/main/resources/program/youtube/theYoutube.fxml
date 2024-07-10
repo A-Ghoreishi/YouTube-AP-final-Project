@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -17,9 +18,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="1306.0" style="-fx-background-color: transplant;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.youtube.TheYouTube">
+<BorderPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="1306.0" style="-fx-background-color: transplant;" styleClass="primary-color" stylesheets="@darkmode.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.youtube.TheYouTube">
    <top>
-      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="white-color" stylesheets="@style.css" BorderPane.alignment="CENTER_RIGHT">
+      <HBox fx:id="parentUp" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="primary-color" BorderPane.alignment="CENTER_RIGHT">
          <children>
             <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -31,7 +32,12 @@
                   <Image url="@../images/images%20(1).png" />
                </image>
             </ImageView>
-            <Pane prefHeight="200.0" prefWidth="200.0" />
+            <ImageView fx:id="darklight" fitHeight="65.0" fitWidth="50.0" onMouseClicked="#darklight" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/dark.png" />
+               </image>
+            </ImageView>
+            <Pane prefHeight="80.0" prefWidth="50.0" />
             <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="35.0" prefWidth="455.0" styleClass="search-bar" stylesheets="@style.css">
                <children>
                   <TextField fx:id="searchbar" onMouseClicked="#searchbar" prefHeight="14.0" prefWidth="394.0" promptText="Search" styleClass="transplant" stylesheets="@style.css" />
@@ -78,12 +84,16 @@
          <padding>
             <Insets left="30.0" right="30.0" />
          </padding>
+         <stylesheets>
+            <URL value="@style.css" />
+            <URL value="@lightmode.css" />
+         </stylesheets>
       </HBox>
    </top>
    <left>
       <ScrollPane prefWidth="280.0" BorderPane.alignment="CENTER">
          <content>
-            <VBox prefHeight="810.0" prefWidth="260.0" styleClass="white-color" stylesheets="@style.css">
+            <VBox fx:id="parentLeft" prefHeight="810.0" prefWidth="260.0" stylesheets="@style.css">
                <children>
                   <VBox prefHeight="143.0" prefWidth="260.0">
                      <children>
@@ -313,6 +323,10 @@
                      </children>
                   </VBox>
                </children>
+               <styleClass>
+                  <String fx:value="white-color" />
+                  <String fx:value="primary-color" />
+               </styleClass>
             </VBox>
          </content>
       </ScrollPane>
@@ -349,7 +363,7 @@
                   </Button>
                </children>
             </VBox>
-            <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="transplant" stylesheets="@style.css" VBox.vgrow="ALWAYS">
+            <ScrollPane prefHeight="200.0" prefWidth="200.0" stylesheets="@style.css" VBox.vgrow="ALWAYS">
                <content>
                   <GridPane fx:id="videoGrid">
                     <rowConstraints>
@@ -357,6 +371,10 @@
                     </rowConstraints>
                   </GridPane>
                </content>
+               <styleClass>
+                  <String fx:value="transplant" />
+                  <String fx:value="primary-color" />
+               </styleClass>
             </ScrollPane>
          </children>
       </VBox>

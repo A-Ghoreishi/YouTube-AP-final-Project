@@ -2,6 +2,7 @@ package program.youtube;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -372,117 +373,189 @@ public class Youtube {
 
     @FXML
     void nextBtn(ActionEvent event) {
-
+        System.out.println("Current step (clicked): " + clicked);
         theUser = username.getText();
+        System.out.println("theUser: " + theUser);
 
-        if (clicked == 0) {
-            if (username.getText().isEmpty() || passBar.getText().isEmpty()) {
-                if (username.getText().isEmpty()) {
-                    mustEmail.setVisible(true);
+        switch (clicked) {
+            case 0:
+                handleLogin(event);
+                break;
+            case 1:
+                handleStep1();
+                break;
+            case 2:
+                handleStep2();
+                break;
+            case 3:
+                handleStep3(event);
+                break;
+            default:
+                System.out.println("Invalid step: " + clicked);
+                break;
+        }
+    }
+
+    private void handleLogin(ActionEvent event) {
+        System.out.println("Handling login...");
+        if (username.getText().isEmpty() || passBar.getText().isEmpty()) {
+            if (username.getText().isEmpty()) {
+                mustEmail.setVisible(true);
+            }
+            if (passBar.getText().isEmpty()) {
+                mustPass.setVisible(true);
+            }
+        } else {
+            String Username = username.getText();
+            String Password = passBar.getText();
+            Client client = new Client();
+
+            Task<Boolean> loginTask = new Task<>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    return client.login(Username, Password);
                 }
+            };
 
-                if (passBar.getText().isEmpty()) {
-                    mustPass.setVisible(true);
-                }
-            } else {
-                String Username = username.getText();
-                String Password = passBar.getText();
-                Client client = new Client();
-
-
-                if (client.login(Username, Password)) {
-                    try {
-                        // Set UserInfo
-                        UserInfo userInfo = new UserInfo();
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("theYoutube.fxml"));
-                        Parent root = loader.load();
-                        TheYouTube controller = loader.getController();
-                        controller.setUserInfo(userInfo);
-
-                        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        Scene scene = new Scene(root);
-                        stage.setScene(scene);
-                        stage.show();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            loginTask.setOnSucceeded(e -> {
+                if (loginTask.getValue()) {
+                    System.out.println("Login successful");
+                    loadMainPage(event);
                 } else {
                     System.out.println("invalid");
                 }
-            }
-        }
+                clicked++; // Move to the next step
+                System.out.println("Clicked after login: " + clicked);
+            });
 
-        if (clicked == 1) {
-            if (firstname.getText().isEmpty() || username.getText().isEmpty()) {
-                if (firstname.getText().isEmpty()) {
-                    mustName.setVisible(true);
+            new Thread(loginTask).start();
+        }
+    }
+
+    private void handleStep1() {
+        System.out.println("Handling step 1...");
+        if (firstname.getText().isEmpty() || username.getText().isEmpty()) {
+            if (firstname.getText().isEmpty()) {
+                mustName.setVisible(true);
+            }
+        } else {
+            String name = firstname.getText();
+            String lname = lastname.getText();
+            Client client = new Client();
+
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() throws Exception {
+                    client.sending_fname_lname_user_name(name, lname, theUser);
+                    return null;
                 }
-            } else {
-                String name = firstname.getText();
-                String lname = lastname.getText();
-                Client client = new Client();
-                client.sending_fname_lname_user_name(name,lname,theUser);
-//                if (Database.inserting_name_username_lname(name, lname, theUser)) {
-//
-//                }
+            };
+
+            task.setOnSucceeded(e -> {
+                System.out.println("Step 1 task succeeded");
                 signUp1(false);
                 signIn(false);
                 signUp2(true);
                 mustName.setVisible(false);
-                clicked++;
-            }
-        } else if (clicked == 2) {
-            if (gender.getSelectionModel().isEmpty() || month.getSelectionModel().isEmpty() || day.getText().isEmpty() || year.getText().isEmpty()) {
-                mustBirth.setVisible(true);
-            } else {
-                int Day = Integer.parseInt(day.getText());
-                int Year = Integer.parseInt(year.getText());
-                String Month = selectedMonth;
-                String Gender = selectedGender;
+                clicked++; // Move to the next step
+                System.out.println("Clicked after step 1: " + clicked);
+            });
 
-                Client client = new Client();
-                client.sending_birth_dates(theUser,Year,Month,Day,Gender);
+            new Thread(task).start();
+        }
+    }
 
+    private void handleStep2() {
+        System.out.println("Handling step 2...");
+        if (gender.getSelectionModel().isEmpty() || month.getSelectionModel().isEmpty() || day.getText().isEmpty() || year.getText().isEmpty()) {
+            mustBirth.setVisible(true);
+        } else {
+            int Day = Integer.parseInt(day.getText());
+            int Year = Integer.parseInt(year.getText());
+            String Month = selectedMonth;
+            String Gender = selectedGender;
+
+            System.out.println(Day);
+            System.out.println(Year);
+            System.out.println(Month);
+            System.out.println(Gender);
+
+
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() throws Exception {
+                    Client client = new Client();
+                    client.sending_birth_dates(theUser, Year, Month, Day, Gender);
+                    return null;
+                }
+            };
+
+            task.setOnSucceeded(e -> {
+                System.out.println("Step 2 task succeeded");
                 signUp2(false);
                 signUp3(true);
                 mustBirth.setVisible(false);
-                clicked++;
-            }
-        } else if (clicked == 3) {
-            if (emailbar.getText().isEmpty() || passBar.getText().isEmpty()) {
-                if (emailbar.getText().isEmpty()) {
-                    mustEmail.setVisible(true);
-                }
+                clicked++; // Move to the next step
+                System.out.println("Clicked after step 2: " + clicked);
+            });
 
-                if (passBar.getText().isEmpty()) {
-                    mustPass.setVisible(true);
-                }
-            } else {
-                // getname of UserInfo class and then again home page but this time with videos
-                String Email = emailbar.getText();
-                String PassWord = passBar.getText();
-                String Bio = biobar.getText();
-                Client client = new Client();
-                client.send_email_password_bio(theUser,Email,PassWord,Bio);
-
-                try {
-                    // Set UserInfo
-                    UserInfo userInfo = new UserInfo();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("theYoutube.fxml"));
-                    Parent root = loader.load();
-                    TheYouTube controller = loader.getController();
-                    controller.setUserInfo(userInfo);
-
-                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            new Thread(task).start();
         }
     }
+
+    private void handleStep3(ActionEvent event) {
+        System.out.println("Handling step 3...");
+        if (emailbar.getText().isEmpty() || passBar.getText().isEmpty()) {
+            if (emailbar.getText().isEmpty()) {
+                mustEmail.setVisible(true);
+            }
+            if (passBar.getText().isEmpty()) {
+                mustPass.setVisible(true);
+            }
+        } else {
+            String Email = emailbar.getText();
+            String PassWord = passBar.getText();
+            String Bio = biobar.getText();
+            Client client = new Client();
+
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() throws Exception {
+                    client.send_email_password_bio(theUser, Email, PassWord, Bio);
+                    return null;
+                }
+            };
+
+            task.setOnSucceeded(e -> {
+                System.out.println("Step 3 task succeeded");
+                loadMainPage(event);
+                clicked++; // Move to the next step
+                System.out.println("Clicked after step 3: " + clicked);
+            });
+
+            new Thread(task).start();
+        }
+    }
+
+    private void loadMainPage(ActionEvent event) {
+        System.out.println("Loading main page...");
+        try {
+            UserInfo userInfo = new UserInfo();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("theYoutube.fxml"));
+            Parent root = loader.load();
+            TheYouTube controller = loader.getController();
+            controller.setUserInfo(userInfo);
+
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 
     @FXML

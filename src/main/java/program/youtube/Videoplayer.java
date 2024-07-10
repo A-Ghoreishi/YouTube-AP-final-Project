@@ -2,7 +2,11 @@ package program.youtube;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -16,8 +20,10 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -122,11 +128,11 @@ public class Videoplayer implements Initializable {
     }
 
     private String getUserProfileImage() {
-        return "/images/pro1.png";
+        return "/images/avatar1.jpg";
     }
 
     private String getUsername() {
-        return "janedoe2004";
+        return "farshadsilent";
     }
 
     @FXML
@@ -149,9 +155,19 @@ public class Videoplayer implements Initializable {
 
     }
 
+    public void stopVideo() {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
+    }
     @FXML
-    void home(MouseEvent event) {
-
+    void home(MouseEvent event) throws IOException {
+        stopVideo();
+        Parent root = FXMLLoader.load(getClass().getResource("theYoutube.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML

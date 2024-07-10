@@ -29,7 +29,7 @@
                         <Slider prefHeight="15.0" prefWidth="870.0" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" layoutX="11.0" layoutY="511.0" prefHeight="32.0" prefWidth="711.0" spacing="5.0">
+                  <HBox alignment="CENTER_LEFT" layoutX="35.0" layoutY="497.0" prefHeight="32.0" prefWidth="711.0" spacing="5.0">
                      <children>
                         <ImageView fx:id="playpause" fitHeight="27.0" fitWidth="30.0" onMouseClicked="#playpause" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -62,12 +62,12 @@
                                  <children>
                                     <ImageView fx:id="channelprofile" fitHeight="70.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../images/pro2.png" />
+                                          <Image url="@../../images/pro1.png" />
                                        </image>
                                     </ImageView>
                                     <VBox prefHeight="77.0" prefWidth="158.0">
                                        <children>
-                                          <Label fx:id="channelname" prefHeight="39.0" prefWidth="183.0" text="channel Name">
+                                          <Label fx:id="channelname" prefHeight="39.0" prefWidth="183.0" text="jessicaV">
                                              <font>
                                                 <Font name="System Bold" size="18.0" />
                                              </font>
@@ -107,7 +107,7 @@
                                  <children>
                                     <ImageView fx:id="commenter" fitHeight="55.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../images/pro1.png" />
+                                          <Image url="@../../images/avatar1.jpg" />
                                        </image>
                                     </ImageView>
                                     <TextArea fx:id="commentArea" prefHeight="36.0" prefWidth="633.0" />
@@ -131,7 +131,7 @@
                               <Image url="@../images/three%20line%20menu.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="home" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#home" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/images%20(1).png" />
                            </image>

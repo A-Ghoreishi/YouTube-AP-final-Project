@@ -1,14 +1,716 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="program.youtube.Musicpremium"
-            prefHeight="400.0" prefWidth="600.0">
+<BorderPane fx:id="parent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="840.0" prefWidth="1306.0" style="-fx-background-color: transplant;" styleClass="primary-color" stylesheets="@darkmode.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="program.youtube.Musicpremium">
+   <top>
+      <HBox fx:id="parentUp" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="primary-color" BorderPane.alignment="CENTER_RIGHT">
+         <children>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/three%20line%20menu.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/images%20(1).png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="darklight" fitHeight="65.0" fitWidth="50.0" onMouseClicked="#darklight" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/dark.png" />
+               </image>
+            </ImageView>
+            <Pane prefHeight="80.0" prefWidth="50.0" />
+            <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="35.0" prefWidth="455.0" styleClass="search-bar" stylesheets="@style.css">
+               <children>
+                  <TextField fx:id="searchbar" onMouseClicked="#searchbar" prefHeight="14.0" prefWidth="394.0" promptText="Search" styleClass="transplant" stylesheets="@style.css" />
+                  <ImageView fx:id="searchbtn" fitHeight="28.0" fitWidth="40.0" onMouseClicked="#searchbtn" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/search.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/microphone.jpg" />
+               </image>
+            </ImageView>
+            <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox fx:id="uploadvideohbox" alignment="CENTER" layoutX="68.0" layoutY="8.0" onMouseClicked="#uploadvideohbox" prefHeight="85.0" prefWidth="106.0">
+                     <children>
+                        <ImageView fitHeight="50.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/yourvideo.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children></Pane>
+            <ImageView fx:id="notification" fitHeight="47.0" fitWidth="41.0" onDragDetected="#notification" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/notification-icon-for-web-vector.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="menu" fitHeight="58.0" fitWidth="55.0" onDragDetected="#menu" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/grid-dots.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="profile" fitHeight="98.0" fitWidth="136.0" onMouseClicked="#profile" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/avatar1.jpg" />
+               </image>
+            </ImageView>
+         </children>
+         <padding>
+            <Insets left="30.0" right="30.0" />
+         </padding>
+         <stylesheets>
+            <URL value="@style.css" />
+            <URL value="@lightmode.css" />
+         </stylesheets>
+      </HBox>
+   </top>
+   <left>
+      <ScrollPane prefWidth="280.0" BorderPane.alignment="CENTER">
+         <content>
+            <VBox fx:id="parentLeft" prefHeight="810.0" prefWidth="260.0" stylesheets="@style.css">
+               <children>
+                  <VBox prefHeight="143.0" prefWidth="260.0">
+                     <children>
+                        <HBox fx:id="homehbox" alignment="CENTER" onDragDetected="#homehbox" onMouseClicked="#homehbox" prefHeight="45.0" prefWidth="260.0" spacing="20.0" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/homeBtn.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Home">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <styleClass>
+                              <String fx:value="selected" />
+                              <String fx:value="over" />
+                           </styleClass>
+                        </HBox>
+                        <HBox fx:id="trendinghbox" alignment="CENTER" onDragDetected="#trendinghbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/trending.png" />
+                                 </image></ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Trending">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="subscriptionhbox" alignment="CENTER" onDragDetected="#subscriptionhbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/subscription.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Subscribtions">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="40.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <Separator prefWidth="200.0" />
+                  <VBox prefHeight="96.0" prefWidth="260.0">
+                     <children>
+                        <HBox fx:id="yourchannelhbox" alignment="CENTER" onDragDetected="#yourchannelhbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/yourchannel.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Your channel">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="historyhbox" alignment="CENTER" onDragDetected="#historyhbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/history.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="History">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="97.0" prefWidth="260.0">
+                     <children>
+                        <HBox fx:id="playlisthbox" alignment="CENTER" onMouseClicked="#playlisthbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/playlist.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Playlists">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="yourvideoshbox" alignment="CENTER" onDragDetected="#yourvideoshbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/yourvideos.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Your videos">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="97.0" prefWidth="260.0">
+                     <children>
+                        <HBox fx:id="watchlaterhbox" alignment="CENTER" onDragDetected="#watchlaterhbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/watchlater.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Watch later">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="likedvideoshbox" alignment="CENTER" onDragDetected="#likedvideoshbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="17.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/liked.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Liked videos">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <Separator prefWidth="200.0" />
+                  <VBox prefHeight="97.0" prefWidth="260.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="226.0" spacing="20.0">
+                           <children>
+                              <Label prefHeight="30.0" prefWidth="245.0" text="     More From YouTube" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="premiumhbox" alignment="CENTER" onMouseClicked="#premiumhbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="17.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/premium.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Youtube premium">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  
 
-</AnchorPane>
+                  <VBox prefHeight="181.0" prefWidth="260.0">
+                     <children>
+                        <HBox fx:id="gaminhbox" alignment="CENTER" onDragDetected="#gaminhbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/game.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="39.0" prefWidth="150.0" text="Gaming">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="0.0" prefWidth="260.0" spacing="20.0" />
+                        <Separator prefWidth="200.0" />
+                        <HBox fx:id="settinghbox" alignment="CENTER" onDragDetected="#settinghbox" prefHeight="46.0" prefWidth="226.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="32.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/setting.png" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="58.0" prefWidth="150.0" text="Settings">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="reporthbox" alignment="CENTER" layoutX="10.0" layoutY="59.0" onDragDetected="#reporthbox" prefHeight="69.0" prefWidth="260.0" spacing="20.0" styleClass="over" stylesheets="@style.css">
+                           <children>
+                              <ImageView fitHeight="21.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/report.jpeg" />
+                                 </image>
+                              </ImageView>
+                              <Label prefHeight="38.0" prefWidth="160.0" text="Report history">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+               <styleClass>
+                  <String fx:value="white-color" />
+                  <String fx:value="primary-color" />
+               </styleClass>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </left>
+   <center>
+      <VBox fx:id="middlepage" onDragDetected="#middlepage" prefHeight="200.0" prefWidth="100.0" stylesheets="@style.css" BorderPane.alignment="CENTER">
+         <children>
+            <ScrollPane prefHeight="200.0" prefWidth="200.0" stylesheets="@style.css" VBox.vgrow="ALWAYS">
+               <styleClass>
+                  <String fx:value="transplant" />
+                  <String fx:value="primary-color" />
+               </styleClass>
+               <content>
+                  <VBox prefHeight="711.0" prefWidth="1028.0" styleClass="white-color" stylesheets="@../../styles.css">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                           <children>
+                              <Label text="Musics played the Most">
+                                 <font>
+                                    <Font name="System Bold" size="48.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox fx:id="eyesclosed" alignment="CENTER_LEFT" onMouseClicked="#eyesclosed" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="over" stylesheets="@../../styles.css">
+                           <children>
+                              <ImageView fitHeight="86.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../images/eyesclosed.jpeg" />
+                                 </image>
+                              </ImageView>
+                              <VBox prefHeight="90.0" prefWidth="216.0">
+                                 <children>
+                                    <Label text="Eyes closed">
+                                       <font>
+                                          <Font name="System Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="23.0" prefWidth="215.0" text="Imagine dragons">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="3.78 M played" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="savedyourtears" alignment="CENTER_LEFT" onMouseClicked="#savedyourtears" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="over" stylesheets="@../../styles.css">
+                           <children>
+                              <ImageView fitHeight="86.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../images/saveyourtears.jpeg" />
+                                 </image>
+                              </ImageView>
+                              <VBox prefHeight="90.0" prefWidth="241.0">
+                                 <children>
+                                    <Label text="Save Your Tears">
+                                       <font>
+                                          <Font name="System Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="23.0" prefWidth="215.0" text="The Weeknd">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="3.5 M played" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="oceandrive" alignment="CENTER_LEFT" onMouseClicked="#oceandrive" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="over" stylesheets="@../../styles.css">
+                           <children>
+                              <ImageView fitHeight="86.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../images/oceandrive.jpg" />
+                                 </image>
+                              </ImageView>
+                              <VBox prefHeight="90.0" prefWidth="198.0">
+                                 <children>
+                                    <Label text="Ocean Drive">
+                                       <font>
+                                          <Font name="System Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="23.0" prefWidth="215.0" text="Duke Dumont">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="1.24 M played" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="skyfall" alignment="CENTER_LEFT" onMouseClicked="#skyfall" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="over" stylesheets="@../../styles.css">
+                           <children>
+                              <ImageView fitHeight="86.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../images/skyfall.jpg" />
+                                 </image>
+                              </ImageView>
+                              <VBox prefHeight="90.0" prefWidth="116.0">
+                                 <children>
+                                    <Label text="Skyfall">
+                                       <font>
+                                          <Font name="System Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="23.0" prefWidth="215.0" text="Adele">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="3.5 M played" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="thegreatest" alignment="CENTER_LEFT" onMouseClicked="#thegreatest" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="over" stylesheets="@../../styles.css">
+                           <children>
+                              <ImageView fitHeight="86.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../images/sia.png" />
+                                 </image>
+                              </ImageView>
+                              <VBox prefHeight="90.0" prefWidth="196.0">
+                                 <children>
+                                    <Label text="The Greatest">
+                                       <font>
+                                          <Font name="System Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="23.0" prefWidth="215.0" text="Sia">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="2.09 M played" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="venom" alignment="CENTER_LEFT" onMouseClicked="#venom" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="over" stylesheets="@../../styles.css">
+                           <children>
+                              <ImageView fitHeight="86.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../images/venom.jpeg" />
+                                 </image>
+                              </ImageView>
+                              <VBox prefHeight="90.0" prefWidth="110.0">
+                                 <children>
+                                    <Label text="Venom">
+                                       <font>
+                                          <Font name="System Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="23.0" prefWidth="215.0" text="Eminem">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="5 M played" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="thenights" alignment="CENTER_LEFT" onMouseClicked="#thenights" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="over" stylesheets="@../../styles.css">
+                           <children>
+                              <ImageView fitHeight="86.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../images/thenights.jpg" />
+                                 </image>
+                              </ImageView>
+                              <VBox prefHeight="90.0" prefWidth="173.0">
+                                 <children>
+                                    <Label text="The Nights">
+                                       <font>
+                                          <Font name="System Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="23.0" prefWidth="215.0" text="Avicii">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="3.5 M played" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="coraline" alignment="CENTER_LEFT" onMouseClicked="#coraline" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="over" stylesheets="@../../styles.css">
+                           <children>
+                              <ImageView fitHeight="86.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../images/coraline.jpeg" />
+                                 </image>
+                              </ImageView>
+                              <VBox prefHeight="90.0" prefWidth="347.0">
+                                 <children>
+                                    <Label text="Coraline">
+                                       <font>
+                                          <Font name="System Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="23.0" prefWidth="215.0" text="Maneskin">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="1.5 M played" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="daylight" alignment="CENTER_LEFT" onMouseClicked="#daylight" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="over" stylesheets="@../../styles.css">
+                           <children>
+                              <ImageView fitHeight="86.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../images/David_Kushner-_Daylight.png" />
+                                 </image>
+                              </ImageView>
+                              <VBox prefHeight="100.0" prefWidth="350.0">
+                                 <children>
+                                    <Label text="Daylight">
+                                       <font>
+                                          <Font name="System Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="23.0" prefWidth="215.0" text="David Kushner">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="4.5 M played" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="breakofdawn" alignment="CENTER_LEFT" onMouseClicked="#breakofdawn" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="over" stylesheets="@../../styles.css">
+                           <children>
+                              <ImageView fitHeight="86.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../images/breakofdawn.jpeg" />
+                                 </image>
+                              </ImageView>
+                              <VBox prefHeight="100.0" prefWidth="350.0">
+                                 <children>
+                                    <Label text="Break of Dawn">
+                                       <font>
+                                          <Font name="System Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="23.0" prefWidth="215.0" text="Michael Jackson">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="7.5 M played" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="up" alignment="CENTER_LEFT" onMouseClicked="#up" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="over" stylesheets="@../../styles.css">
+                           <children>
+                              <ImageView fitHeight="86.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../images/Cardi_B_-_Up.png" />
+                                 </image>
+                              </ImageView>
+                              <VBox prefHeight="100.0" prefWidth="350.0">
+                                 <children>
+                                    <Label text="Up">
+                                       <font>
+                                          <Font name="System Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="23.0" prefWidth="215.0" text="Cardi B">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="4.5 M played" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="perfect" alignment="CENTER_LEFT" onMouseClicked="#perfect" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="over" stylesheets="@../../styles.css">
+                           <children>
+                              <ImageView fitHeight="86.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../images/perfect.jpg" />
+                                 </image>
+                              </ImageView>
+                              <VBox prefHeight="100.0" prefWidth="350.0">
+                                 <children>
+                                    <Label text="Perfect">
+                                       <font>
+                                          <Font name="System Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="23.0" prefWidth="215.0" text="Ed Sheeran">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="2.5 M played" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="hotel" alignment="CENTER_LEFT" onMouseClicked="#hotel" prefHeight="100.0" prefWidth="200.0" spacing="15.0" styleClass="over" stylesheets="@../../styles.css">
+                           <children>
+                              <ImageView fitHeight="86.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <image>
+                                    <Image url="@../../images/Hotel-California-Album-Cover.png" />
+                                 </image>
+                              </ImageView>
+                              <VBox prefHeight="100.0" prefWidth="350.0">
+                                 <children>
+                                    <Label text="Hotel California">
+                                       <font>
+                                          <Font name="System Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <Label prefHeight="23.0" prefWidth="215.0" text="Eagles">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="3.3 M played" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </children>
+         <styleClass>
+            <String fx:value="body-background" />
+            <String fx:value="white-color" />
+         </styleClass>
+      </VBox>
+   </center>
+</BorderPane>
