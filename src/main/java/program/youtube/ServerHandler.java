@@ -1522,6 +1522,90 @@ public void get_pfp(Socket clientSocket) {
         }
     }
 
+    public void send_birth_year(Socket clientSocket){
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            JSONObject jsonObject = new JSONObject(clientData);
+            int user_id = jsonObject.getInt("user_id");
+
+
+            Thread.sleep(1000);
+            // Create a JSON object with the provided data
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("day",database.get_birth_day(user_id));
+
+            // Write data to the server
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            writer.println(jsonParams.toString());
+            System.out.println("sent");
+
+            // Read the server's response
+
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void send_birth_month(Socket clientSocket){
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            JSONObject jsonObject = new JSONObject(clientData);
+            int user_id = jsonObject.getInt("user_id");
+
+
+            Thread.sleep(1000);
+            // Create a JSON object with the provided data
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("month",database.get_birth_month(user_id));
+
+            // Write data to the server
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            writer.println(jsonParams.toString());
+            System.out.println("sent");
+
+            // Read the server's response
+
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void send_birth_year(){
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            JSONObject jsonObject = new JSONObject(clientData);
+            int user_id = jsonObject.getInt("user_id");
+
+
+            Thread.sleep(1000);
+            // Create a JSON object with the provided data
+            JSONObject jsonParams = new JSONObject();
+            jsonParams.put("month",database.get_birth_month(user_id));
+
+            // Write data to the server
+            PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            writer.println(jsonParams.toString());
+            System.out.println("sent");
+
+            // Read the server's response
+
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
 
     

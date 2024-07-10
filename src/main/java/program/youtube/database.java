@@ -1304,6 +1304,54 @@ public class database {
 
         }
     }
+    public int get_birth_day(int user_id){
+        String sql = "SELECT birth_day FROM user_info WHERE user_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(url,user,password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            // Set the search string as a parameter (using % for wildcard matching)
+            statement.setInt(1, user_id);
+
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+
+                    return resultSet.getInt("birth_day");
+
+                }
+            }
+        } catch (SQLException e) {
+            // Handle any exceptions (e.g., log or throw)
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
+    public int birth_year(int user_id){
+        String sql = "SELECT birth_year FROM user_info WHERE user_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(url,user,password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            // Set the search string as a parameter (using % for wildcard matching)
+            statement.setInt(1, user_id);
+
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+
+                    return resultSet.getInt("birth_year");
+
+                }
+            }
+        } catch (SQLException e) {
+            // Handle any exceptions (e.g., log or throw)
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
 
 
 
@@ -1345,7 +1393,9 @@ public class database {
         //inserting_name_username_lname("sepanta","hos","mrbeast");
         //System.out.println(database.get_video_path(3));
         //login("patric_bateman","bb2edb1762549e25f9656f7fce3101d889447e010d4a5d9dac6694f0d47eafd3");
-        add_video(5,"name","title","djnksnk");
+        //add_video(5,"name","title","djnksnk");
+        database database = new database();
+        System.out.println(database.birth_year(1));
 
 
 
@@ -1353,5 +1403,27 @@ public class database {
 
         }
 
+    public String get_birth_month(int user_id) {
+        String sql = "SELECT birth_month FROM user_info WHERE user_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(url,user,password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            // Set the search string as a parameter (using % for wildcard matching)
+            statement.setInt(1, user_id);
+
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+
+                    return resultSet.getString("birth_month");
+
+                }
+            }
+        } catch (SQLException e) {
+            // Handle any exceptions (e.g., log or throw)
+            e.printStackTrace();
+        }
+        return null;
     }
+}
 

@@ -1436,13 +1436,112 @@ public class client {
 
     }
 
+    public int got_birth_day(int user_id){
+        try {
+            Socket clientSocket = new Socket("localhost",4042);
 
-// i should do the cathegory and make the video liked for once
-    
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            String message = "send_birth_day";
+            out.println(message);
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("user_id",user_id);
+
+            out.println(jsonObject.toString());
+            // Read data from the client
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            // Parse the JSON data
+            JSONObject json = new JSONObject(clientData);
+            int day = json.getInt("day");
 
 
-//things to do: completing the apis about the whatch list not letting user like somthing twice and handeling race condition  and chck the method about sending profile pic rename where videos save and api for getting comment from the server
-//make api for search:done
+            // Send a response back to the client
+            clientSocket.close();
+            return day;
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int birth_year(int user_id){
+        try {
+            Socket clientSocket = new Socket("localhost",4042);
+
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            String message = "send_birth_day";
+            out.println(message);
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("user_id",user_id);
+
+            out.println(jsonObject.toString());
+
+            // Read data from the client
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            // Parse the JSON data
+            JSONObject json = new JSONObject(clientData);
+            int year = json.getInt("year");
+
+
+            // Send a response back to the client
+            clientSocket.close();
+            return year;
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public String birth_month(int user_id){
+        try {
+            Socket clientSocket = new Socket("localhost",4042);
+
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            String message = "send_birth_day";
+            out.println(message);
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("user_id",user_id);
+
+            out.println(jsonObject.toString());
+
+            // Read data from the client
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String clientData = reader.readLine();
+            System.out.println("Received login-in data from client: " + clientData);
+
+            // Parse the JSON data
+            JSONObject json = new JSONObject(clientData);
+            String month = json.getString("month");
+
+
+            // Send a response back to the client
+            clientSocket.close();
+            return month;
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
 
 
 
